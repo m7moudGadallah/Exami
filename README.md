@@ -101,3 +101,7 @@ After development, we will **publish the application as a single executable file
 This **Examination Management System** makes exams **easier to create, take, and manage**. It has a **clear structure** with different roles for **admins, teachers, and students**.
 
 With **secure logins, exam reports, and question bookmarking**, it helps students and teachers **use exams smoothly**. Built with **C#, SQL Server, and Windows Forms**, it is **simple, fast, and reliable**.
+
+## License
+
+This repository is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
