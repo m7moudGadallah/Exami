@@ -1,4 +1,6 @@
 --------  Dummy Data  -----------
+USE Exami;
+GO
 
 -- Insert Users (Admins, Teachers, and Students)
 INSERT INTO [User] (FirstName, LastName, Role, Email, Password) VALUES

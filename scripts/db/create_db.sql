@@ -1,8 +1,13 @@
 --DATABASE Creation --
+USE master;
+DROP DATABASE IF EXISTS Exami;
+GO
 
 CREATE DATABASE Exami;
+GO
 
 USE Exami;
+GO
 
 CREATE TABLE [User] (
     Id INT IDENTITY(1,1) PRIMARY KEY,
