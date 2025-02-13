@@ -96,6 +96,40 @@ After development, we will **publish the application as a single executable file
 - **Ensure dependencies** (like SQL Server) are correctly configured.
 - **Distribute the installer** to users.
 
+## Installation
+
+### Development Installation
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone <repository-url>
+   ```
+
+2. **Open the Solution in Visual Studio** (`\Exami` Directory).
+3. **Restore NuGet Packages**: Let Visual Studio restore the packages automatically, or manually restore them using:
+
+   ```bash
+   dotnet restore
+   ```
+
+4. **Set Up Configuration**:
+
+   - Copy `appsettings.example.json` to `appsettings.json`:
+
+   ```bash
+   copy Utility\appsettings.example.json Utility\appsettings.json
+   ```
+
+   - Update the values in `appsettings.json` with local environment-specific settings.
+
+5. **Configure Database** : Set up the database locally using those [scripts](./scripts/db/) and update the connection string in `appsettings.json`.
+
+6. **Build and Run**:
+
+   - Build the solution (`Ctrl + Shift + B` in Visual Studio).
+   - Run the application to ensure everything is set up correctly.
+
 ## Conclusion
 
 This **Examination Management System** makes exams **easier to create, take, and manage**. It has a **clear structure** with different roles for **admins, teachers, and students**.
