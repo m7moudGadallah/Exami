@@ -35,18 +35,23 @@ _For more details, Please review [System Requirements Specification Document](./
 
 ## High-Level Architecture
 
-Our project follows a **multi-tier architecture** for better organization:
+Our project follows a simplified **multi-tier architecture** to ensure better organization and maintainability:
 
-- **Entities (Data Model)** – Classes that map to database tables.
-- **Repository Layer (Data Access Layer)** – Handles database operations using **Entities**.
-- **Service Layer (Business Logic)** – Contains the core logic of the system.
-- **Presentation Layer (UI)** – The **Windows Forms** application that interacts with users.
+- **Entities (Data Model)** – Classes that map to database tables and represent the data structure.
+- **Mappers**: Converts database rows (`DataRow` or `DataTable`) into entity objects and vice versa.
+- **DatabaseManager**: Handles all database interactions, such as executing queries and commands.
+- **Service Layer (Business Logic)** – Contains the core logic of the system. This layer interacts with the database using the `DatabaseManager` and mappers. SQL statements are written directly within service methods for simplicity.
+- **Presentation Layer (UI)** – The **Windows Forms** application that interacts with users and provides an intuitive interface for admins, teachers, and students.
 
 ![High-Level Architecture](./attachments/imgs/iti-examination-system-architecture.png)
 
+This architecture eliminates the need for a separate repository layer, reducing complexity while maintaining a clear separation of concerns between the UI, business logic, and database operations.
+
+## File Structure
+
 We use a **single .NET solution** with multiple projects, ensuring **a clear separation of concerns** and making development **structured and intuitive**. Below is the updated project structure:
 
-### Project Structure
+### Solution Structure
 
 - **Exami.Presentation** – A Windows Forms project that handles the user interface.
 
