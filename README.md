@@ -78,6 +78,9 @@ We use a **single .NET solution** with multiple projects, ensuring **a clear sep
 - **Exami.Database** – Manages shared database logic.
   - **DatabaseManager**: Handles all database interactions.
   - **DBCommandParams**: Encapsulates parameters for database commands.
+- **Exami.Test** – A console application used for **manual testing purposes** during development.
+  - This project allows developers to test specific functionalities without running the full application.
+  - **Note** : This project is **development-only** and will be **excluded from the final build and shipment** .
 
 ### Benefits of This Structure
 
