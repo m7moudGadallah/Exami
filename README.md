@@ -94,7 +94,9 @@ _For more details, Please review [Database Schema in detail using DBML](./attach
 
 ## Class Diagram
 
-// will be added later
+The class diagram below illustrates the relationships between key classes in the system. It show how services interact with `DatabaseManager` to perform operations and how it uses mappers to convert data from different formats like `DataTable` to entities.
+
+![General Class Diagram](./attachments/imgs/iti-examination-system-general-class-diagram.png)
 
 ## UI Design
 
