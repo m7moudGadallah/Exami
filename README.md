@@ -44,23 +44,42 @@ Our project follows a **multi-tier architecture** for better organization:
 
 ![High-Level Architecture](./attachments/imgs/iti-examination-system-architecture.png)
 
-## File Structure
-
-We use a **single .NET solution** with multiple projects, ensuring **a clear separation of concerns** and making development **structured and intuitive**.
+We use a **single .NET solution** with multiple projects, ensuring **a clear separation of concerns** and making development **structured and intuitive**. Below is the updated project structure:
 
 ### Project Structure
 
-- **Presentation Layer** – A Windows Forms project that handles the user interface.
-- **Data Access Layer (Repos)** – Manages database interactions using repositories.
-- **Entities (Types/Models)** – Defines data models mapped to database tables.
-- **Business Logic Layer (Services)** – Contains the core application logic.
-- **Utilities** – A helper project for common functionalities like logging, validation, or configuration.
+- **Exami.Presentation** – A Windows Forms project that handles the user interface.
+
+  - **Forms**: Contains forms for different user roles (e.g., `AdminForm.cs`, `TeacherForm.cs`, `StudentForm.cs`).
+  - **Controls**: Custom UI controls if any.
+  - **Resources**: Icons, images, and other resources.
+
+- **Exami.Entities** – Defines data models mapped to database tables.
+
+  - **Entities**: Includes classes like `User.cs`, `Exam.cs`, `Question.cs`, and `Answer.cs`.
+
+- **Exami.Services** – Contains the core application logic.
+
+  - **Services**: Implements business logic for different features (e.g., `ExamService.cs`, `UserService.cs`).
+  - **DTOs**: Custom types for input/output used in service methods.
+  - **Mappers**: Mapping logic between entities and DTOs if needed.
+
+- **Exami.Utilities** – A helper project for common functionalities.
+
+  - **Logging**: Logging utilities (e.g., `Logger.cs`).
+  - **Config**: Configuration management (e.g., `AppConfig.cs`).
+  - **Extensions**: Utility methods or extension methods.
+
+- **Exami.Database** – Manages shared database logic.
+  - **DatabaseManager**: Handles all database interactions.
+  - **DBCommandParams**: Encapsulates parameters for database commands.
 
 ### Benefits of This Structure
 
-- **Separation of Concerns** – Each layer has a distinct responsibility.
-- **Scalability** – Makes future enhancements easier.
-- **Maintainability** – Changes in one layer do not affect others.
+- **Separation of Concerns**: Each project has a distinct responsibility, ensuring clean and maintainable code.
+- **Scalability**: The structure makes it easier to add new features or enhance existing ones without affecting other parts of the system.
+- **Maintainability**: Changes in one layer do not affect others, reducing the risk of unintended side effects.
+- **Reusability**: Common functionalities are centralized in the `Exami.Utilities` and `Exami.Database` projects, promoting code reuse.
 
 ## Database Design
 
