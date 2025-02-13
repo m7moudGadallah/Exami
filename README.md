@@ -163,3 +163,49 @@ With **secure logins, exam reports, and question bookmarking**, it helps student
 ## License
 
 This repository is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+## Glossary
+
+This section defines key terms and concepts used throughout the documentation:
+
+- **Entities**:
+  Classes that represent data models and map directly to database tables. For example, `User`, `Exam`, and `Question` are entities in this project.
+
+- **Database Manager**:
+  A utility class responsible for handling all interactions with the database. It executes SQL queries and commands, such as inserting, updating, or retrieving data.
+
+- **DTO (Data Transfer Object)**:
+  A lightweight object used to transfer data between different layers of the application. DTOs simplify communication by encapsulating only the necessary data for a specific operation.
+
+- **Service**:
+  A component in the business logic layer that contains the core functionality of the system. Services handle operations like creating exams, managing users, or calculating scores.
+
+- **Mappers**:
+  Classes or methods that convert data between different formats. In this project, mappers are used to transform database rows (`DataRow` or `DataTable`) into entity objects and vice versa.
+
+- **UI (User Interface)**:  
+  The part of the application that users interact with. In this project, the UI is built using Windows Forms.
+
+- **Business Logic**:  
+  The rules and processes that govern how the application works. In this project, business logic is implemented in the service layer.
+
+- **Data Access Layer**:  
+  The layer responsible for interacting with the database. In this project, the `DatabaseManager` acts as the data access layer.
+
+- **Presentation Layer**:  
+  The layer responsible for displaying information to users and collecting input. In this project, the presentation layer is implemented using Windows Forms.
+
+- **Configuration Files**:  
+  Files used to store application settings, such as connection strings or logging configurations. In this project, `appsettings.json` or similar files are used to manage configuration.
+
+- **Logging**:  
+  The process of recording events or errors that occur during application execution. This project uses basic logging (e.g., `Debug.WriteLine`) for debugging purposes or more advanced logging libraries for production environments.
+
+- **ERD (Entity Relationship Diagram)**:  
+   A visual representation of database tables and their relationships. The ERD in this project shows how tables like `User`, `Exam`, and `Question` are connected.
+
+- **ADO.NET**:  
+  A .NET framework for interacting with databases. This project uses ADO.NET components like `SqlConnection`, `SqlCommand`, and `SqlDataAdapter` to execute database operations.
+
+- **Microsoft.Data.SqlClient**:  
+  A library in .NET for working with SQL Server databases. It provides classes like `SqlConnection` and `SqlCommand` for database interaction.
