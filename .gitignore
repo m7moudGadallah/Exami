@@ -1,4 +1,5 @@
-## Default .NET ignore rules
+# Visual Studio workspace files
+.vs/
 
 # User-specific files
 *.user
