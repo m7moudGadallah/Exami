@@ -137,9 +137,6 @@ namespace Presentation
 
 
         }
-
-
-
         private void nxt_btn_Click(object sender, EventArgs e)
         {
             if (currentQuestionIndex < questionlist.Count - 1)
