@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.Data.SqlClient;
-using System.Configuration;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
+﻿using Presentation;
+using Services.DTOs;
 
 namespace Presentation
 {
@@ -28,7 +18,7 @@ namespace Presentation
         }
         private void InitializeTimer()
         {
-            timer.Interval = 1000; // 1 second
+            timer.Interval = 1000;
             timer.Tick += Timer_Tick;
             timer.Start();
         }
@@ -96,47 +86,57 @@ namespace Presentation
             }
         }
 
+
         private void LoadQuestions()
         {
-            questionlist.Clear(); // Prevent duplication on reload
+            questionlist.Clear();
+            
 
-            string connectionString = "Data Source=HEBA\\sqlEXPRESS;Initial Catalog=Exami;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = @"
-                    SELECT Question.Id, Question.Body, Answer.AnswerText 
-                    FROM Question
-                    JOIN Answer ON Answer.QuestionId = Question.Id";
-                SqlCommand command = new SqlCommand(query, connection);
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-                Dictionary<int, Question> questionMap = new Dictionary<int, Question>();
-
-                while (reader.Read())
-                {
-                    int questionId = reader.GetInt32(0);
-                    string questionBody = reader.GetString(1);
-                    string answerText = reader.GetString(2);
-
-                    if (!questionMap.ContainsKey(questionId))
-                    {
-                        questionMap[questionId] = new Question
-                        {
-                            Id = questionId,
-                            Body = questionBody,
-                            AnswerList = new List<string>()
-                        };
-                    }
-
-                    questionMap[questionId].AnswerList.Add(answerText);
-                }
-
-                questionlist = new List<Question>(questionMap.Values);
-            }
-
+            GetStudentExamInputDto dto = new GetStudentExamInputDto(1);
 
         }
+
+        //private void LoadQuestions()
+        //{
+        //    questionlist.Clear(); // Prevent duplication on reload
+
+        //    string connectionString = "Data Source=HEBA\\sqlEXPRESS;Initial Catalog=Exami;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        string query = @"
+        //            SELECT Question.Id, Question.Body, Answer.AnswerText 
+        //            FROM Question
+        //            JOIN Answer ON Answer.QuestionId = Question.Id";
+        //        SqlCommand command = new SqlCommand(query, connection);
+        //        connection.Open();
+        //        SqlDataReader reader = command.ExecuteReader();
+        //        Dictionary<int, Question> questionMap = new Dictionary<int, Question>();
+
+        //        while (reader.Read())
+        //        {
+        //            int questionId = reader.GetInt32(0);
+        //            string questionBody = reader.GetString(1);
+        //            string answerText = reader.GetString(2);
+
+        //            if (!questionMap.ContainsKey(questionId))
+        //            {
+        //                questionMap[questionId] = new Question
+        //                {
+        //                    Id = questionId,
+        //                    Body = questionBody,
+        //                    AnswerList = new List<string>()
+        //                };
+        //            }
+
+        //            questionMap[questionId].AnswerList.Add(answerText);
+        //        }
+
+        //        questionlist = new List<Question>(questionMap.Values);
+        //    }
+
+
+        //}
         private void nxt_btn_Click(object sender, EventArgs e)
         {
             if (currentQuestionIndex < questionlist.Count - 1)

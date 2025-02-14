@@ -1,8 +1,9 @@
+using Entities;
 using Services.DTOs;
 using Services.Services;
 namespace Presentation
 {
-    public partial class  loggin : Form
+    public partial class loggin : Form
     {
         #region componnents intialzation
         public loggin()
@@ -351,6 +352,7 @@ namespace Presentation
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Name = "loggin";
             ShowIcon = false;
+            Load += loggin_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
@@ -384,6 +386,7 @@ namespace Presentation
         {
             string email = email_txt_box.Text.Trim();
             string password = pass_txt.Text.Trim();
+
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Please enter both email and password.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -391,20 +394,55 @@ namespace Presentation
             }
 
             var loginDto = new LoginInputDto(email, password);
+
             try
             {
-                var loginSuccess = AuthService.Login(loginDto);
-                var examForm = new exam();
-                examForm.Show();
+                User user = AuthService.Login(loginDto);
+                if (user == null)
+                {
+                    MessageBox.Show("Invalid email or password.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                UserSession.SetUser(user);
+                var role = user.Role;
+
+                switch (role)
+                {
+                    case UserRole.Admin:
+                        MessageBox.Show("Welcome Admin!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
+                        break;
+
+                    case UserRole.Student:
+                        var studentForm = new st_main();
+                        studentForm.Show();
+                        break;
+
+                    case UserRole.Teacher:
+                        MessageBox.Show("Welcome Teacher!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
+                        break;
+
+                    default:
+                        MessageBox.Show("Invalid Role", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                }
+
                 Hide();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Login failed. Please try again.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Login failed. Error: {ex.Message}", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         #endregion
-    
+
+        private void loggin_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }
