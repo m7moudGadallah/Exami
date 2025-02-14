@@ -15,8 +15,8 @@ public class StudentExamMapper : BaseMapper<StudentExam>
             ExamId: Convert.ToInt32(row["ExamId"]),
             StudentId: Convert.ToInt32(row["StudentId"]),
             SubmissionTime: row["SubmissionTime"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["SubmissionTime"]),
-            CreatedAt: row["CreatedAt"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["CreatedAt"]),
-            UpdatedAt: row["UpdatedAt"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["UpdatedAt"])
+            CreatedAt: Convert.ToDateTime(row["CreatedAt"]),
+            UpdatedAt: Convert.ToDateTime(row["UpdatedAt"])
         );
     }
 
