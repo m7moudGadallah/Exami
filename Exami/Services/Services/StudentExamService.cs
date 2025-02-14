@@ -9,7 +9,7 @@ namespace Services.Services;
 
 public class StudentExamService
 {
-    public static StudentExam? GetStudentExam(GetStudentExamInputDto data)
+    public static StudentExam? GetStudentExam(GetStudentExamInputDto dto)
     {
         try
         {
@@ -18,7 +18,7 @@ public class StudentExamService
             FROM [StudentExam]
             WHERE Id = @Id";
 
-            DBCommandParams cmdParams = new(sql, CommandType.Text, new() { ["@Id"] = data.Id });
+            DBCommandParams cmdParams = new(sql, CommandType.Text, new() { ["@Id"] = dto.Id });
 
             var exams = new StudentExamMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams));
 
