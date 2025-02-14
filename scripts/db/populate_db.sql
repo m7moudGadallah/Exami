@@ -73,12 +73,12 @@ INSERT INTO ExamQuestion (ExamId, QuestionId) VALUES
 (4, 6), (4, 8);
 
 -- Insert Student Exams
-INSERT INTO StudentExam (ExamId, StudentId, SubmissionTime) VALUES
-(1, 6, '2025-06-01 12:00'),
-(2, 7, '2025-06-10 16:00'),
-(3, 8, '2025-06-15 11:00'),
-(4, 9, '2025-06-20 14:00'),
-(5, 10, '2025-06-25 17:00');
+INSERT INTO StudentExam (ExamId, StudentId, SubmissionTime, CreatedAt, UpdatedAt) VALUES
+(1, 6, '2023-04-15 14:30', '2023-04-15 14:00', '2023-04-15 14:30'),
+(2, 7, '2023-04-16 11:45', '2023-04-16 11:00', '2023-04-16 11:45'),
+(3, 8, '2023-04-17 09:50', '2023-04-17 09:00', '2023-04-17 09:50'),
+(4, 9, '2023-04-18 13:20', '2023-04-18 13:00', '2023-04-18 13:20'),
+(5, 10, '2023-04-19 16:15', '2023-04-19 16:00', '2023-04-19 16:15');
 
 -- Insert Marked Questions
 INSERT INTO MarkedQuestion (StudentExamId, QuestionId) VALUES
