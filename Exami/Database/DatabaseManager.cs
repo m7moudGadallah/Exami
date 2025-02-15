@@ -80,7 +80,7 @@ public static class DatabaseManager
             }
         }
     }
-
+ 
     /// <summary>
     /// Logs errors to a proper logging system (replace with a real logger in production).
     /// </summary>

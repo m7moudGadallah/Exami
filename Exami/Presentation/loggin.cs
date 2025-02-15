@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using Entities;
 using Services.DTOs;
 using Services.Services;
+using Utilities.Exceptoins;
 namespace Presentation
 {
     public partial class loggin : Form
@@ -411,7 +413,6 @@ namespace Presentation
                 {
                     case UserRole.Admin:
                         MessageBox.Show("Welcome Admin!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        
                         break;
 
                     case UserRole.Student:
@@ -421,7 +422,6 @@ namespace Presentation
 
                     case UserRole.Teacher:
                         MessageBox.Show("Welcome Teacher!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        
                         break;
 
                     default:
@@ -431,9 +431,14 @@ namespace Presentation
 
                 Hide();
             }
+            catch (AppException ex)
+            {
+                MessageBox.Show(ex.Message, "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Login failed. Error: {ex.Message}", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("An unexpected error occurred. Please try again later.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Debug.WriteLine($"Unexpected error: {ex.Message}\n{ex}");
             }
         }
 
