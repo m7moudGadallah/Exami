@@ -11,7 +11,7 @@ public class StudentAnswerMapper : BaseMapper<StudentAnswer>
 
         // Convert the DataRow into a StudentAnswer object
         return new StudentAnswer(
-            StudentExam: Convert.ToInt32(row["StudentExam"]),
+            StudentExamId: Convert.ToInt32(row["StudentExamId"]),
             AnswerId: Convert.ToInt32(row["AnswerId"]),
             CreatedAt: (row["CreatedAt"] == DBNull.Value) ? null : Convert.ToDateTime(row["CreatedAt"])
         );
