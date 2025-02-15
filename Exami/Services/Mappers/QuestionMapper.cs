@@ -10,14 +10,25 @@ namespace Services.Mappers
         {
             if (row == null) return null;
 
-           
+
             return new Question(
                 Id: Convert.ToInt32(row["Id"]),
                 Mark: Convert.ToDouble(row["Mark"]),
-                Body: row["Body"] == DBNull.Value ? null : row["Body"].ToString(),
-                QuestionType: row["QuestionType"].ToString(),
-                SubjectId: Convert.ToInt32(row["SubjectId"])
+                Body: row["Body"].ToString(),
+                QuestionType: ParseQuetionType(row["QuestionType"].ToString()),
+                SubjectId: row["SubjectId"] == DBNull.Value ? null : Convert.ToInt32(row["SubjectId"])
             );
+        }
+
+        private QuestionType ParseQuetionType(string questionType)
+        {
+            return questionType switch
+            {
+                "TrueOrFalse" => QuestionType.TrueOrFalse,
+                "ChooseOne" => QuestionType.ChooseOne,
+                "ChooseAll" => QuestionType.ChooseAll,
+                _ => throw new ArgumentException($"Invalid exam type: {questionType}")
+            };
         }
     }
 }
