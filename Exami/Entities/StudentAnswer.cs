@@ -1,15 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Entities;
 
-namespace Entities
-{
-    internal class StudentAnswer
-    {
-        int StudentExam {  get; set; }
-        int AnswerId {  get; set; }
-        DateTime CreatedAt { get; set; }
-    }
-}
+public record StudentAnswer(int StudentExam, int AnswerId, DateTime? CreatedAt);
