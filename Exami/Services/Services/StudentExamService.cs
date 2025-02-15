@@ -44,7 +44,7 @@ public class StudentExamService
                 }
             }
 
-            var exams = new StudentExamMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams));
+            var exams = new StudentExamMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams with { Sql = sql.ToString() }));
 
             return exams;
         }
