@@ -9,7 +9,7 @@ using Utilities.Exceptoins;
 namespace Services.Services;
 
 /// <summary>
-/// Provides methods to manage student answers, including retrieving a list of student answers based on filters and creating new student answers.
+/// Provides methods to manage student answers, including retrieving a list of student answers based on filters, creating new student answers, and deleting existing student answers.
 /// </summary>
 public static class StudentAnswerService
 {
@@ -78,6 +78,35 @@ public static class StudentAnswerService
             var stdAnswer = new StudentAnswerMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams))[0];
 
             return stdAnswer;
+        }
+        catch (Exception ex)
+        {
+            throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
+        }
+    }
+
+    /// <summary>
+    /// Deletes a student answer based on the provided input.
+    /// </summary>
+    /// <param name="dto">A <see cref="DeleteStudentAnswerInputDto"/> object containing the details of the student answer to delete.</param>
+    /// <returns><see langword="true"/> if the deletion was successful; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if an error occurs during the database operation or if the input data is invalid.
+    /// </exception>
+    public static bool DeleteStudentAnswer(DeleteStudentAnswerInputDto dto)
+    {
+        try
+        {
+            var @sql = @"
+                DELETE [StudentAnswer]
+                WHERE StudentExamId = @StudentExamId AND AnswerId = @AnswerId";
+
+
+            DBCommandParams cmdParams = new(sql, CommandType.Text, new() { ["@StudentExamId"] = dto.StudentExamId, ["@AnswerId"] = dto.AnswerId });
+
+            int rowsAffected = DatabaseManager.ExecuteNonQuery(cmdParams);
+
+            return rowsAffected > 0;
         }
         catch (Exception ex)
         {
