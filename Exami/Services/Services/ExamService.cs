@@ -7,8 +7,19 @@ using Utilities.Exceptoins;
 
 namespace Services.Services;
 
+/// <summary>
+/// Provides methods to manage exams, including retrieving exam details by ID.
+/// </summary>
 public class ExamService
 {
+    /// <summary>
+    /// Retrieves an exam by its unique identifier.
+    /// </summary>
+    /// <param name="dto">A <see cref="GetExamInputDto"/> object containing the ID of the exam to retrieve.</param>
+    /// <returns>A <see cref="Exam"/> object if an exam with the specified ID exists; otherwise, <see langword="null"/>.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if an error occurs during the database operation.
+    /// </exception>
     public static Exam GetExam(GetExamInputDto dto)
     {
         try
