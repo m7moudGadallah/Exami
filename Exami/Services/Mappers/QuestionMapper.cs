@@ -13,7 +13,7 @@ namespace Services.Mappers
 
             return new Question(
                 Id: Convert.ToInt32(row["Id"]),
-                Mark: Convert.ToDouble(row["Mark"]),
+                Marks: Convert.ToDouble(row["Marks"]),
                 Body: row["Body"].ToString(),
                 QuestionType: ParseQuetionType(row["QuestionType"].ToString()),
                 SubjectId: row["SubjectId"] == DBNull.Value ? null : Convert.ToInt32(row["SubjectId"])

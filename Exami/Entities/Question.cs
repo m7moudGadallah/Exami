@@ -2,7 +2,7 @@
 
 public record Question(
    int Id,
-   double Mark,
+   double Marks,
    string Body,
    QuestionType QuestionType,
    int? SubjectId
