@@ -11,7 +11,7 @@ namespace Services.Services;
 /// <summary>
 /// Provides methods to manage exams, including retrieving exam details by ID.
 /// </summary>
-public class ExamService
+public static class ExamService
 {
     /// <summary>
     /// Retrieves a list of exams based on the provided filters.
