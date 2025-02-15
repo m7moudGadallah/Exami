@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+using Entities;
 
-namespace Services.Mappers
+namespace Services.Mappers;
+
+public class AnswerMapper : BaseMapper<Answer>
 {
-    internal class AnswerMapper
+    public override Answer MapFromDataRow(DataRow row)
     {
+        if (row == null) return null;
+
+        return new Answer(
+            Id: Convert.ToInt32(row["Id"]),
+            QuestionId: row["QuestionId"] == DBNull.Value ? null : Convert.ToInt32(row["QuestionId"]),
+            AnswerText: row["AnswerText"].ToString(),
+            IsCorrect: Convert.ToBoolean(row["IsCorrect"])
+       );
     }
 }
