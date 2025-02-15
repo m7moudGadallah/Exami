@@ -1,13 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Entities;
 
-namespace Entities
-{
-    internal class MarkedQuestion
-    { int StudentExamID {  get; set; }  
-        int QuestionId {  get; set; }
-    }
-}
+public record MarkedQuestion(int StudentExamID, int QuestionId);

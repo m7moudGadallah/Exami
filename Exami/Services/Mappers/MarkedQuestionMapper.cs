@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+using Entities;
 
-namespace Services.Mappers
+namespace Services.Mappers;
+
+public class MarkedQuestionMapper : BaseMapper<MarkedQuestion>
 {
-    internal class MarkedQuestionMapper
+    public override MarkedQuestion MapFromDataRow(DataRow row)
     {
+        if (row == null) return null;
+
+        return new(
+            StudentExamID: Convert.ToInt32(row["StudentExamID"]),
+            QuestionId: Convert.ToInt32(row["QuestionId"])
+            );
     }
 }
