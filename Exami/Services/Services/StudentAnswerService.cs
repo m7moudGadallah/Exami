@@ -9,7 +9,7 @@ using Utilities.Exceptoins;
 namespace Services.Services;
 
 /// <summary>
-/// Provides methods to manage student answers, including retrieving a list of student answers based on filters.
+/// Provides methods to manage student answers, including retrieving a list of student answers based on filters and creating new student answers.
 /// </summary>
 public static class StudentAnswerService
 {
@@ -49,6 +49,35 @@ public static class StudentAnswerService
             var stdAnswers = new StudentAnswerMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams with { Sql = sql.ToString() }));
 
             return stdAnswers;
+        }
+        catch (Exception ex)
+        {
+            throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
+        }
+    }
+
+    /// <summary>
+    /// Creates a new student answer and returns the created record.
+    /// </summary>
+    /// <param name="dto">A <see cref="CreateStudentAnswerInputDto"/> object containing the details of the student answer to create.</param>
+    /// <returns>The newly created <see cref="StudentAnswer"/> object.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if an error occurs during the database operation or if the input data is invalid.
+    /// </exception>
+    public static StudentAnswer CreateStudentAnswer(CreateStudentAnswerInputDto dto)
+    {
+        try
+        {
+            var sql = @"
+                INSERT INTO [StudentAnswer] (StudentExamId, AnswerId, CreatedAt)
+                OUTPUT INSERTED.*
+                VALUES (@StudentExamId, @AnswerId, GETDATE());";
+
+            DBCommandParams cmdParams = new(sql, CommandType.Text, new() { ["@StudentExamId"] = dto.StudentExamId, ["@AnswerId"] = dto.AnswerId });
+
+            var stdAnswer = new StudentAnswerMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams))[0];
+
+            return stdAnswer;
         }
         catch (Exception ex)
         {
