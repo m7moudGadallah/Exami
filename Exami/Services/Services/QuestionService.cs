@@ -11,7 +11,7 @@ namespace Services.Services;
 /// <summary>
 /// Provides methods to manage questions, including retrieving a list of questions based on filters.
 /// </summary>
-public class QuestionService
+public static class QuestionService
 {
     /// <summary>
     /// Retrieves a list of questions based on the provided filters.
