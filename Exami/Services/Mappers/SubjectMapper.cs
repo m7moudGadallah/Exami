@@ -9,11 +9,10 @@ public class SubjectMapper : BaseMapper<Subject>
     {
         if (row == null) return null;
 
-        // Convert the DataRow into a Subject object
         return new Subject(
             Id: Convert.ToInt32(row["Id"]),
-            Name: row["Name"] == DBNull.Value ? null : row["Name"].ToString(),
-            TeacherId: Convert.ToInt32(row["TeacherId"])
+            Name: row["Name"].ToString(),
+            TeacherId: (row["TeacherId"] == DBNull.Value) ? null : Convert.ToInt32(row["TeacherId"])
         );
     }
 
