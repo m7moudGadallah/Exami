@@ -56,6 +56,16 @@
 - `CreateStudentAnswer`
 - `DeleteStudentAnswer`
 
+### Database (App Classes)
+
+- `DatabaseManager`
+- `DBCommandParams`
+
+### Utilities
+
+- `AppConfig`
+- `AppException`
+
 ### Presentation (Forms)
 
 ## Database
