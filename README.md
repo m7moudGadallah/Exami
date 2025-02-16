@@ -56,6 +56,7 @@ We use a **single .NET solution** with multiple projects, ensuring **a clear sep
   - **Forms**: Contains forms for different user roles (e.g., `AdminForm.cs`, `TeacherForm.cs`, `StudentForm.cs`).
   - **Controls**: Custom UI controls if any.
   - **Resources**: Icons, images, and other resources.
+  - **Helpers**: Contains any extra classes or helper methods.
 
 - **Exami.Entities** – Defines data models mapped to database tables.
 
