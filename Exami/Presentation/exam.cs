@@ -1,66 +1,48 @@
-//<<<<<<< HEAD
-//﻿using System;
-//using System.Collections.Generic;
-//using System.ComponentModel;
-//using System.Data;
-//using System.Drawing;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Windows.Forms;
-//using Microsoft.Data.SqlClient;
-//using System.Configuration;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
-//=======
-using Services.DTOs;
-//>>>>>>> 99247afe6d564181e16edde76a531060002e7fd9
 
+using Services.DTOs;
 namespace Presentation
 {
     public partial class exam : Form
     {
         int currentQuestionIndex = 0;
         List<Question> questionlist = new List<Question>();
-        private int timeLeft = 600;
+        //private int timeLeft = 600;
 
 
         public exam()
         {
             InitializeComponent();
-            InitializeTimer();
+            //InitializeTimer();
 
         }
-        private void InitializeTimer()
-        {
-//<<<<<<< HEAD
-//            timer.Interval = 1000; // 1 second
-//=======
-            timer.Interval = 1000;
-//>>>>>>> 99247afe6d564181e16edde76a531060002e7fd9
-            timer.Tick += Timer_Tick;
-            timer.Start();
-        }
+        //private void InitializeTimer()
+        //{
 
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if (timeLeft > 0)
-            {
-                timeLeft--;
-                int minutes = timeLeft / 60;
-                int seconds = timeLeft % 60;
-                timerbtn.Text = $"Time Left: {minutes:D2}:{seconds:D2}";
-            }
-            else
-            {
-                timer.Stop();
-                MessageBox.Show("Time is up! The exam will be submitted.");
+        //    timer.Interval = 1000;
+        //    timer.Tick += Timer_Tick;
+        //    timer.Start();
+        //}
+
+        //private void Timer_Tick(object sender, EventArgs e)
+        //{
+        //    if (timeLeft > 0)
+        //    {
+        //        timeLeft--;
+        //        int minutes = timeLeft / 60;
+        //        int seconds = timeLeft % 60;
+        //        timerbtn.Text = $"Time Left: {minutes:D2}:{seconds:D2}";
+        //    }
+        //    else
+        //    {
+        //        timer.Stop();
+        //        MessageBox.Show("Time is up! The exam will be submitted.");
                
-            }
-        }
+        //    }
+        //}
 
         private void exam_Load(object sender, EventArgs e)
         {
-            LoadQuestions();  // Load all questions once
+            LoadQuestions(); 
             if (questionlist.Count > 0)
             {
                 DisplayQuestion();
@@ -84,10 +66,10 @@ namespace Presentation
             {
                 Text = question.Body,
                 AutoSize = true,
-                Location = new Point(29, 48) // Adjust position inside headsection
+                Location = new Point(29, 48) 
             };
 
-            headsection.Controls.Add(questionLabel); // Add the question label to headsection
+            headsection.Controls.Add(questionLabel);
 
 
             int yOffset = 67;
@@ -104,104 +86,13 @@ namespace Presentation
             }
         }
 
-//<<<<<<< HEAD
-//        private void LoadQuestions()
-//        {
-//            questionlist.Clear(); // Prevent duplication on reload
-
-//            string connectionString = "Data Source=HEBA\\sqlEXPRESS;Initial Catalog=Exami;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
-
-//            using (SqlConnection connection = new SqlConnection(connectionString))
-//            {
-//                string query = @"
-//                    SELECT Question.Id, Question.Body, Answer.AnswerText 
-//                    FROM Question
-//                    JOIN Answer ON Answer.QuestionId = Question.Id";
-//                SqlCommand command = new SqlCommand(query, connection);
-//                connection.Open();
-//                SqlDataReader reader = command.ExecuteReader();
-//                Dictionary<int, Question> questionMap = new Dictionary<int, Question>();
-
-//                while (reader.Read())
-//                {
-//                    int questionId = reader.GetInt32(0);
-//                    string questionBody = reader.GetString(1);
-//                    string answerText = reader.GetString(2);
-
-//                    if (!questionMap.ContainsKey(questionId))
-//                    {
-//                        questionMap[questionId] = new Question
-//                        {
-//                            Id = questionId,
-//                            Body = questionBody,
-//                            AnswerList = new List<string>()
-//                        };
-//                    }
-
-//                    questionMap[questionId].AnswerList.Add(answerText);
-//                }
-
-//                questionlist = new List<Question>(questionMap.Values);
-//            }
-
-
-//        }
-
-
-
-//=======
 
         private void LoadQuestions()
         {
             questionlist.Clear();
-            
-
             GetStudentExamInputDto dto = new GetStudentExamInputDto(1);
-
         }
 
-        //private void LoadQuestions()
-        //{
-        //    questionlist.Clear(); // Prevent duplication on reload
-
-        //    string connectionString = "Data Source=HEBA\\sqlEXPRESS;Initial Catalog=Exami;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
-
-        //    using (SqlConnection connection = new SqlConnection(connectionString))
-        //    {
-        //        string query = @"
-        //            SELECT Question.Id, Question.Body, Answer.AnswerText 
-        //            FROM Question
-        //            JOIN Answer ON Answer.QuestionId = Question.Id";
-        //        SqlCommand command = new SqlCommand(query, connection);
-        //        connection.Open();
-        //        SqlDataReader reader = command.ExecuteReader();
-        //        Dictionary<int, Question> questionMap = new Dictionary<int, Question>();
-
-        //        while (reader.Read())
-        //        {
-        //            int questionId = reader.GetInt32(0);
-        //            string questionBody = reader.GetString(1);
-        //            string answerText = reader.GetString(2);
-
-        //            if (!questionMap.ContainsKey(questionId))
-        //            {
-        //                questionMap[questionId] = new Question
-        //                {
-        //                    Id = questionId,
-        //                    Body = questionBody,
-        //                    AnswerList = new List<string>()
-        //                };
-        //            }
-
-        //            questionMap[questionId].AnswerList.Add(answerText);
-        //        }
-
-        //        questionlist = new List<Question>(questionMap.Values);
-        //    }
-
-
-        //}
-//>>>>>>> 99247afe6d564181e16edde76a531060002e7fd9
         private void nxt_btn_Click(object sender, EventArgs e)
         {
             if (currentQuestionIndex < questionlist.Count - 1)
