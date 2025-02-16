@@ -1,14 +1,15 @@
 using System.Diagnostics;
 using Entities;
+using Presentation.Helpers;
 using Services.DTOs;
 using Services.Services;
 using Utilities.Exceptoins;
 namespace Presentation.Forms
 {
-    public partial class loggin : Form
+    public partial class LoginForm : Form
     {
         #region componnents intialzation
-        public loggin()
+        public LoginForm()
         {
             InitializeComponent();
         }
@@ -281,6 +282,7 @@ namespace Presentation.Forms
             header.TabIndex = 27;
             header.Text = "Exami";
             header.TextAlign = HorizontalAlignment.Center;
+            header.TextChanged += header_TextChanged;
             // 
             // groupBox2
             // 
@@ -418,7 +420,7 @@ namespace Presentation.Forms
                         break;
 
                     case UserRole.Student:
-                        var studentForm = new st_main();
+                        var studentForm = new StudentMainForm();
                         studentForm.Show();
                         break;
 
@@ -457,6 +459,11 @@ namespace Presentation.Forms
         }
 
         private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void header_TextChanged(object sender, EventArgs e)
         {
 
         }

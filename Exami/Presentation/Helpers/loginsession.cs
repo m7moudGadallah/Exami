@@ -1,6 +1,6 @@
 ﻿using Entities;
 
-namespace Presentation
+namespace Presentation.Helpers
 {
     public static class UserSession
     {

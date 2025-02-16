@@ -1,6 +1,6 @@
 ﻿namespace Presentation
 {
-    partial class exam
+    partial class ExamForm
     {
         /// <summary>
         /// Required designer variable.
@@ -61,21 +61,21 @@
             footer.Controls.Add(prev_btn);
             footer.Controls.Add(nxt_btn);
             footer.Controls.Add(submit_btn);
-            footer.Location = new Point(0, 552);
+            footer.Location = new Point(0, 480);
             footer.Name = "footer";
-            footer.Size = new Size(893, 168);
+            footer.Size = new Size(794, 146);
             footer.TabIndex = 36;
             footer.TabStop = false;
             // 
             // prev_btn
             // 
-            prev_btn.Location = new Point(435, 59);
+            prev_btn.Location = new Point(387, 51);
             prev_btn.Name = "prev_btn";
             prev_btn.OverrideDefault.Back.Color1 = Color.Brown;
             prev_btn.OverrideDefault.Back.Color2 = Color.Brown;
             prev_btn.OverrideFocus.Back.Color1 = Color.Brown;
             prev_btn.OverrideFocus.Back.Color2 = Color.Brown;
-            prev_btn.Size = new Size(64, 32);
+            prev_btn.Size = new Size(57, 28);
             prev_btn.StateCommon.Back.Color1 = Color.Brown;
             prev_btn.StateCommon.Back.Color2 = Color.Brown;
             prev_btn.StateCommon.Back.ColorAngle = 1F;
@@ -112,13 +112,13 @@
             // 
             // nxt_btn
             // 
-            nxt_btn.Location = new Point(537, 59);
+            nxt_btn.Location = new Point(477, 51);
             nxt_btn.Name = "nxt_btn";
             nxt_btn.OverrideDefault.Back.Color1 = Color.Brown;
             nxt_btn.OverrideDefault.Back.Color2 = Color.Brown;
             nxt_btn.OverrideFocus.Back.Color1 = Color.Brown;
             nxt_btn.OverrideFocus.Back.Color2 = Color.Brown;
-            nxt_btn.Size = new Size(64, 32);
+            nxt_btn.Size = new Size(57, 28);
             nxt_btn.StateCommon.Back.Color1 = Color.Brown;
             nxt_btn.StateCommon.Back.Color2 = Color.Brown;
             nxt_btn.StateCommon.Back.ColorAngle = 1F;
@@ -155,13 +155,13 @@
             // 
             // submit_btn
             // 
-            submit_btn.Location = new Point(734, 88);
+            submit_btn.Location = new Point(652, 77);
             submit_btn.Name = "submit_btn";
             submit_btn.OverrideDefault.Back.Color1 = Color.Brown;
             submit_btn.OverrideDefault.Back.Color2 = Color.Brown;
             submit_btn.OverrideFocus.Back.Color1 = Color.Brown;
             submit_btn.OverrideFocus.Back.Color2 = Color.Brown;
-            submit_btn.Size = new Size(138, 47);
+            submit_btn.Size = new Size(123, 41);
             submit_btn.StateCommon.Back.Color1 = Color.Brown;
             submit_btn.StateCommon.Back.Color2 = Color.Brown;
             submit_btn.StateCommon.Back.ColorAngle = 1F;
@@ -201,14 +201,14 @@
             header.Controls.Add(timerbtn);
             header.Location = new Point(0, -1);
             header.Name = "header";
-            header.Size = new Size(893, 139);
+            header.Size = new Size(794, 121);
             header.TabIndex = 37;
             header.TabStop = false;
             // 
             // timerbtn
             // 
             timerbtn.Enabled = false;
-            timerbtn.Location = new Point(30, 43);
+            timerbtn.Location = new Point(27, 37);
             timerbtn.Name = "timerbtn";
             timerbtn.OverrideDefault.Back.Color1 = Color.Brown;
             timerbtn.OverrideDefault.Back.Color2 = Color.Brown;
@@ -218,7 +218,7 @@
             timerbtn.OverrideFocus.Back.Color2 = Color.Brown;
             timerbtn.OverrideFocus.Content.ShortText.Color1 = Color.Black;
             timerbtn.OverrideFocus.Content.ShortText.Color2 = Color.Black;
-            timerbtn.Size = new Size(444, 54);
+            timerbtn.Size = new Size(395, 47);
             timerbtn.StateCommon.Back.Color1 = Color.WhiteSmoke;
             timerbtn.StateCommon.Back.Color2 = SystemColors.ButtonFace;
             timerbtn.StateCommon.Back.ColorAngle = 1F;
@@ -264,7 +264,7 @@
             // 
             main.BackColor = SystemColors.ButtonHighlight;
             main.BorderStyle = BorderStyle.Fixed3D;
-            main.Location = new Point(0, 141);
+            main.Location = new Point(0, 123);
             main.Name = "main";
             // 
             // main.Panel1
@@ -277,45 +277,46 @@
             main.Panel2.Controls.Add(answersection);
             main.Panel2.Controls.Add(headsection);
             main.Panel2.Paint += splitContainer2_Panel2_Paint;
-            main.Size = new Size(893, 419);
-            main.SplitterDistance = 190;
+            main.Size = new Size(794, 364);
+            main.SplitterDistance = 168;
             main.TabIndex = 38;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(28, 39);
+            label4.Location = new Point(25, 34);
             label4.Name = "label4";
-            label4.Size = new Size(83, 23);
+            label4.Size = new Size(71, 20);
             label4.TabIndex = 4;
             label4.Text = "Qnumber";
             // 
             // materialScrollBar2
             // 
             materialScrollBar2.Depth = 0;
-            materialScrollBar2.Location = new Point(11, 24);
+            materialScrollBar2.Location = new Point(10, 21);
             materialScrollBar2.MouseState = MaterialSkin.MouseState.HOVER;
             materialScrollBar2.Name = "materialScrollBar2";
             materialScrollBar2.Orientation = MaterialSkin.Controls.MaterialScrollOrientation.Vertical;
-            materialScrollBar2.Size = new Size(10, 376);
+            materialScrollBar2.ScrollbarSize = 9;
+            materialScrollBar2.Size = new Size(9, 327);
             materialScrollBar2.TabIndex = 0;
             materialScrollBar2.Text = "materialScrollBar2";
             // 
             // answersection
             // 
             answersection.Controls.Add(label2);
-            answersection.Location = new Point(9, 141);
+            answersection.Location = new Point(8, 123);
             answersection.Name = "answersection";
-            answersection.Size = new Size(673, 262);
+            answersection.Size = new Size(598, 228);
             answersection.TabIndex = 4;
             answersection.TabStop = false;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(29, 67);
+            label2.Location = new Point(26, 58);
             label2.Name = "label2";
-            label2.Size = new Size(63, 23);
+            label2.Size = new Size(55, 20);
             label2.TabIndex = 2;
             label2.Text = "answer";
             // 
@@ -323,27 +324,27 @@
             // 
             headsection.Controls.Add(label1);
             headsection.Controls.Add(questionh);
-            headsection.Location = new Point(9, 18);
+            headsection.Location = new Point(8, 16);
             headsection.Name = "headsection";
-            headsection.Size = new Size(673, 106);
+            headsection.Size = new Size(598, 92);
             headsection.TabIndex = 3;
             headsection.TabStop = false;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(29, 48);
+            label1.Location = new Point(26, 42);
             label1.Name = "label1";
-            label1.Size = new Size(76, 23);
+            label1.Size = new Size(66, 20);
             label1.TabIndex = 1;
             label1.Text = "question";
             // 
             // questionh
             // 
             questionh.AutoSize = true;
-            questionh.Location = new Point(23, 48);
+            questionh.Location = new Point(20, 42);
             questionh.Name = "questionh";
-            questionh.Size = new Size(0, 23);
+            questionh.Size = new Size(0, 20);
             questionh.TabIndex = 0;
             // 
             // materialScrollBar1
@@ -362,15 +363,15 @@
             timer.Interval = 1000;
             timer.Tick += timer_Tick;
             // 
-            // exam
+            // ExamForm
             // 
-            AutoScaleDimensions = new SizeF(9F, 23F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(884, 714);
+            ClientSize = new Size(786, 621);
             Controls.Add(main);
             Controls.Add(header);
             Controls.Add(footer);
-            Name = "exam";
+            Name = "ExamForm";
             ShowIcon = false;
             Load += exam_Load;
             footer.ResumeLayout(false);

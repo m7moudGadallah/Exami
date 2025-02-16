@@ -2,14 +2,14 @@
 using Services.DTOs;
 namespace Presentation
 {
-    public partial class exam : Form
+    public partial class ExamForm : Form
     {
         int currentQuestionIndex = 0;
         List<Question> questionlist = new List<Question>();
         //private int timeLeft = 600;
 
 
-        public exam()
+        public ExamForm()
         {
             InitializeComponent();
             //InitializeTimer();

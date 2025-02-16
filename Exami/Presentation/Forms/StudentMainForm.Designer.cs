@@ -3,7 +3,7 @@ using MaterialColorScheme = MaterialSkin.ColorScheme;
 
 namespace Presentation
 {
-    partial class st_main
+    partial class StudentMainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -22,7 +22,7 @@ namespace Presentation
             }
             base.Dispose(disposing);
         }
-        public st_main()
+        public StudentMainForm()
         {
             InitializeComponent();
         }

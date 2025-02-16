@@ -4,10 +4,11 @@ using Services.DTOs;
 using MaterialSkin.Controls;
 using Services.Services;
 using Krypton.Toolkit;
+using Presentation.Helpers;
 
 namespace Presentation
 {
-    public partial class st_main : Form
+    public partial class StudentMainForm : Form
     {
         private readonly List<Exam> _exams = new List<Exam>();
         private readonly HashSet<int> _loadedExamIds = new HashSet<int>();
