@@ -420,7 +420,7 @@ namespace Presentation.Forms
                         break;
 
                     case UserRole.Student:
-                        var studentForm = new StudentMainForm();
+                        var studentForm = FormsRepo.GetForm<StudentMainForm>();
                         studentForm.Show();
                         break;
 

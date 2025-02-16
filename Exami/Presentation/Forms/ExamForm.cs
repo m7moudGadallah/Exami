@@ -36,13 +36,13 @@ namespace Presentation
         //    {
         //        timer.Stop();
         //        MessageBox.Show("Time is up! The exam will be submitted.");
-               
+
         //    }
         //}
 
         private void exam_Load(object sender, EventArgs e)
         {
-            LoadQuestions(); 
+            LoadQuestions();
             if (questionlist.Count > 0)
             {
                 DisplayQuestion();
@@ -66,7 +66,7 @@ namespace Presentation
             {
                 Text = question.Body,
                 AutoSize = true,
-                Location = new Point(29, 48) 
+                Location = new Point(29, 48)
             };
 
             headsection.Controls.Add(questionLabel);
