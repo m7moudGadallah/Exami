@@ -14,12 +14,12 @@ public static class DatabaseManager
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     static DatabaseManager()
-           {
-               if (string.IsNullOrEmpty(ConnectionString))
-               {
-                   throw new InvalidOperationException("The ConnectionString property has not been initialized.");
-               }
-           }
+    {
+        if (string.IsNullOrEmpty(ConnectionString))
+        {
+            throw new InvalidOperationException("The ConnectionString property has not been initialized.");
+        }
+    }
     /// <summary>
     /// Executes a non-query command (e.g., INSERT, UPDATE, DELETE).
     /// </summary>
@@ -80,7 +80,7 @@ public static class DatabaseManager
             }
         }
     }
- 
+
     /// <summary>
     /// Logs errors to a proper logging system (replace with a real logger in production).
     /// </summary>
