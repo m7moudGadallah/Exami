@@ -1,20 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Utilities.Config
+namespace Utilities.Config;
+public static class AppConfig
 {
-    public static class AppConfig
+    private static string _configFileName = "appsettings.json";
+    private static IConfigurationRoot _configObj = new ConfigurationBuilder().AddJsonFile(_configFileName).Build();
+
+    public static string ConnectionString
     {
-        private static readonly IConfigurationRoot configuration;
-
-        static AppConfig()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
-            configuration = builder.Build();
-        }
-
-        public static string ConnectionString => configuration.GetConnectionString("DefaultConnection");
+        get => _configObj.GetSection("ConnectionString").Value;
     }
 }
