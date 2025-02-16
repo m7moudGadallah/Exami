@@ -90,9 +90,6 @@ packages/
 
 appsettings.json
 
-# Generated Files
-*.Designer.cs
-
 # Temporary Files
 [Tt]humbs.db
 *.tmp
