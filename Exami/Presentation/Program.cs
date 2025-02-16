@@ -1,3 +1,5 @@
+using Presentation.Forms;
+
 namespace Presentation
 {
     internal static class Program

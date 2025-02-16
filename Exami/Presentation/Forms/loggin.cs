@@ -3,7 +3,7 @@ using Entities;
 using Services.DTOs;
 using Services.Services;
 using Utilities.Exceptoins;
-namespace Presentation
+namespace Presentation.Forms
 {
     public partial class loggin : Form
     {
@@ -149,6 +149,7 @@ namespace Presentation
             groupBox1.Size = new Size(549, 454);
             groupBox1.TabIndex = 19;
             groupBox1.TabStop = false;
+            groupBox1.Enter += groupBox1_Enter;
             // 
             // kryptonBorderEdge4
             // 
@@ -216,7 +217,7 @@ namespace Presentation
             email_txt_box.Location = new Point(158, 130);
             email_txt_box.MaxLength = 32;
             email_txt_box.Name = "email_txt_box";
-            email_txt_box.Size = new Size(250, 29);
+            email_txt_box.Size = new Size(250, 34);
             email_txt_box.StateActive.Border.Color1 = Color.Black;
             email_txt_box.StateActive.Border.Color2 = Color.Black;
             email_txt_box.StateActive.Border.Width = 1;
@@ -234,7 +235,7 @@ namespace Presentation
             pass_txt.MaxLength = 16;
             pass_txt.Name = "pass_txt";
             pass_txt.PasswordChar = '*';
-            pass_txt.Size = new Size(250, 29);
+            pass_txt.Size = new Size(250, 34);
             pass_txt.StateActive.Border.Color1 = Color.Black;
             pass_txt.StateActive.Border.Color2 = Color.Black;
             pass_txt.StateActive.Border.Width = 1;
@@ -251,7 +252,7 @@ namespace Presentation
             pass_input.Font = new Font("Tahoma", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pass_input.Location = new Point(158, 226);
             pass_input.Name = "pass_input";
-            pass_input.Size = new Size(250, 27);
+            pass_input.Size = new Size(250, 32);
             pass_input.TabIndex = 1;
             // 
             // header
@@ -263,7 +264,7 @@ namespace Presentation
             header.MaxLength = 3;
             header.Name = "header";
             header.ReadOnly = true;
-            header.Size = new Size(889, 44);
+            header.Size = new Size(889, 49);
             header.StateActive.Border.Color1 = Color.Black;
             header.StateActive.Border.Color2 = Color.Black;
             header.StateActive.Border.Width = 1;
@@ -293,6 +294,7 @@ namespace Presentation
             groupBox2.Size = new Size(889, 718);
             groupBox2.TabIndex = 27;
             groupBox2.TabStop = false;
+            groupBox2.Enter += groupBox2_Enter;
             // 
             // kryptonLinkLabel2
             // 
@@ -302,7 +304,7 @@ namespace Presentation
             kryptonLinkLabel2.OverrideFocus.Padding = new Padding(3);
             kryptonLinkLabel2.OverrideFocus.ShortText.Color1 = Color.FromArgb(64, 64, 64);
             kryptonLinkLabel2.OverrideFocus.ShortText.Color2 = Color.FromArgb(64, 64, 64);
-            kryptonLinkLabel2.Size = new Size(170, 27);
+            kryptonLinkLabel2.Size = new Size(211, 32);
             kryptonLinkLabel2.StateCommon.Padding = new Padding(3);
             kryptonLinkLabel2.StateCommon.ShortText.Color1 = Color.FromArgb(64, 64, 64);
             kryptonLinkLabel2.StateCommon.ShortText.Color2 = Color.FromArgb(64, 64, 64);
@@ -327,7 +329,7 @@ namespace Presentation
             help_link.OverrideFocus.Padding = new Padding(3);
             help_link.OverrideFocus.ShortText.Color1 = Color.FromArgb(64, 64, 64);
             help_link.OverrideFocus.ShortText.Color2 = Color.FromArgb(64, 64, 64);
-            help_link.Size = new Size(100, 27);
+            help_link.Size = new Size(123, 32);
             help_link.StateCommon.Padding = new Padding(3);
             help_link.StateCommon.ShortText.Color1 = Color.FromArgb(64, 64, 64);
             help_link.StateCommon.ShortText.Color2 = Color.FromArgb(64, 64, 64);
@@ -445,6 +447,16 @@ namespace Presentation
         #endregion
 
         private void loggin_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
         {
 
         }
