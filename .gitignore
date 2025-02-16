@@ -107,7 +107,3 @@ logs/
 
 # VS Code Workspace Settings
 .vscode/
-
-# Windows Forms Designer Temp Files
-*.resx
-*.licx
