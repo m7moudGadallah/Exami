@@ -1,3 +1,9 @@
 ﻿namespace Services.DTOs;
 
-public record GetAllStudentExamsInputDto(Dictionary<string, object> Filters);
+public record GetAllStudentExamsInputDto
+{
+    public Dictionary<string, object>? Filters { get; set; }
+    public Dictionary<string, int>? OrderBy { get; set; }
+    public int? Take { get; set; }
+    public int? Skip { get; set; }
+}
