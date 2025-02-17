@@ -1,4 +1,4 @@
 namespace Entities;
 
 public record StudentExam(int Id, int ExamId, int StudentId, DateTime? SubmissionTime,
-                    DateTime CreatedAt, DateTime UpdatedAt);
+                    DateTime CreatedAt, DateTime UpdatedAt, User Student, Exam Exam);
