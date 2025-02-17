@@ -82,3 +82,26 @@ CREATE TABLE StudentAnswer (
     FOREIGN KEY (StudentExamId) REFERENCES StudentExam(Id),
     FOREIGN KEY (AnswerId) REFERENCES Answer(Id)
 );
+GO
+
+CREATE VIEW [StudentExamFullView] AS
+SELECT
+	se.*,
+	u.FirstName,
+	u.LastName,
+	u.Role,
+	u.Email,
+	u.Password,
+	e.Name,
+	e.SubjectId,
+	e.StartTime,
+	e.EndTime,
+	e.ExamType,
+	e.Instructions
+FROM 
+    [StudentExam] se
+INNER JOIN 
+    [User] u ON se.StudentId = u.Id
+INNER JOIN 
+    [Exam] e ON se.ExamId = e.Id;
+GO
