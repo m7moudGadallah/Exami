@@ -6,17 +6,21 @@ namespace Services.Mappers
 {
     public class QuestionMapper : BaseMapper<Question>
     {
-        public override Question MapFromDataRow(DataRow row)
+        private readonly static string[] Columns = ["Id", "Marks", "Body", "QuestionType", "SubjectId"];
+
+        public override Question MapFromDataRow(DataRow row, Dictionary<string, string> columnNameMapping = null)
         {
             if (row == null) return null;
 
+            if (columnNameMapping == null) columnNameMapping = new Dictionary<string, string>();
+
 
             return new Question(
-                Id: Convert.ToInt32(row["Id"]),
-                Marks: Convert.ToDouble(row["Marks"]),
-                Body: row["Body"].ToString(),
-                QuestionType: ParseQuetionType(row["QuestionType"].ToString()),
-                SubjectId: row["SubjectId"] == DBNull.Value ? null : Convert.ToInt32(row["SubjectId"])
+                Id: Convert.ToInt32(row[columnNameMapping["Id"]]),
+                Marks: Convert.ToDouble(row[columnNameMapping["Marks"]]),
+                Body: row[columnNameMapping["Body"]].ToString(),
+                QuestionType: ParseQuetionType(row[columnNameMapping["QuestionType"]].ToString()),
+                SubjectId: row[columnNameMapping["SubjectId"]] == DBNull.Value ? null : Convert.ToInt32(row[columnNameMapping["SubjectId"]])
             );
         }
 

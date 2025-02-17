@@ -5,19 +5,25 @@ namespace Services.Mappers;
 
 public class ExamMapper : BaseMapper<Exam>
 {
-    public override Exam MapFromDataRow(DataRow row)
+    private readonly static string[] Columns = ["Id", "Name", "SubjectId", "StartTime", "EndTime", "ExamType", "Instructions"];
+
+    public override Exam MapFromDataRow(DataRow row, Dictionary<string, string> columnNameMapping = null)
     {
         if (row == null) return null;
 
+        if (columnNameMapping == null) columnNameMapping = new Dictionary<string, string>();
+
+        InitializeColumnNameMapping(Columns, columnNameMapping);
+
         // Convert the DataRow into an Exam object
         return new Exam(
-           Id: row["Id"] == DBNull.Value ? 0 : Convert.ToInt32(row["Id"]),
-           Name: row["Name"].ToString(),
-           SubjectId: row["SubjectId"] == DBNull.Value ? (int?)null : Convert.ToInt32(row["SubjectId"]),
-           StartTime: Convert.ToDateTime(row["StartTime"]),
-           EndTime: Convert.ToDateTime(row["EndTime"]),
-           ExamType: ParseExamType(row["ExamType"].ToString()),
-           Instructions: row["Instructions"] == DBNull.Value ? null : row["Instructions"].ToString()
+           Id: row[columnNameMapping["Id"]] == DBNull.Value ? 0 : Convert.ToInt32(row[columnNameMapping["Id"]]),
+           Name: row[columnNameMapping["Name"]].ToString(),
+           SubjectId: row[columnNameMapping["SubjectId"]] == DBNull.Value ? (int?)null : Convert.ToInt32(row[columnNameMapping["SubjectId"]]),
+           StartTime: Convert.ToDateTime(row[columnNameMapping["StartTime"]]),
+           EndTime: Convert.ToDateTime(row[columnNameMapping["EndTime"]]),
+           ExamType: ParseExamType(row[columnNameMapping["ExamType"]].ToString()),
+           Instructions: row[columnNameMapping["Instructions"]] == DBNull.Value ? null : row[columnNameMapping["Instructions"]].ToString()
        );
     }
 

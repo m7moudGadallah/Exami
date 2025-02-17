@@ -4,8 +4,22 @@ namespace Services.Mappers;
 
 public abstract class BaseMapper<T> where T : class
 {
+    protected Dictionary<string, string> InitializeColumnNameMapping(string[] columns, Dictionary<string, string> inputMapping)
+    {
+        var result = inputMapping ?? new Dictionary<string, string>();
 
-    public abstract T MapFromDataRow(DataRow row);
+        foreach (var column in columns)
+        {
+            if (!result.ContainsKey(column))
+            {
+                result[column] = column; // Use the default column name if not specified
+            }
+        }
+
+        return result;
+    }
+
+    public abstract T MapFromDataRow(DataRow row, Dictionary<string, string> columnNameMapping = null);
 
     public List<T> MapFromDataTable(DataTable table)
     {
