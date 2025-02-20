@@ -95,4 +95,25 @@ public static class QuestionService
             throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
         }
     }
+
+    public static bool DeleteQuestion(DeleteQuestionDto dto)
+    {
+        try
+        {
+            var @sql = @"
+                DELETE [Question]
+                WHERE Id = @Id";
+
+
+            DBCommandParams cmdParams = new(sql, CommandType.Text, new() { ["@Id"] = dto.Id });
+
+            int rowsAffected = DatabaseManager.ExecuteNonQuery(cmdParams);
+
+            return rowsAffected > 0;
+        }
+        catch (Exception ex)
+        {
+            throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
+        }
+    }
 }
