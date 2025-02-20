@@ -105,3 +105,14 @@ INNER JOIN
 INNER JOIN 
     [Exam] e ON se.ExamId = e.Id;
 GO
+
+CREATE VIEW [QuestionFullView] AS
+SELECT
+	q.*,
+	a.Id AS AnswerId,
+	a.AnswerText,
+	a.IsCorrect
+FROM 
+    [Question] q
+LEFT JOIN 
+    [Answer] a ON q.Id = a.QuestionId;
