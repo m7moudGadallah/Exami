@@ -17,7 +17,7 @@ namespace Services.Mappers
 
             List<Answer> answers = new List<Answer>();
 
-            if (row["AnswerId"] != DBNull.Value)
+            if (row.Table.Columns.Contains("AnswerId") && row["AnswerId"] != DBNull.Value)
             {
                 answers.Add(new AnswerMapper().MapFromDataRow(row, new() { ["Id"] = "AnswerId", ["QuestionId"] = "Id" }));
             }

@@ -74,4 +74,25 @@ public static class QuestionService
             throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
         }
     }
+
+    public static Question CreateQuestion(CreateQuestionDto dto)
+    {
+        try
+        {
+            var sql = @"
+                INSERT INTO [Question] (Marks, Body, QuestionType, SubjectId)
+                OUTPUT INSERTED.*
+                VALUES (@Marks, @Body, @QuestionType, @SubjectId);";
+
+            DBCommandParams cmdParams = new(sql, CommandType.Text, new() { ["@Marks"] = dto.Marks, ["@Body"] = dto.Body, ["@QuestionType"] = dto.QuestionType.ToString(), ["@SubjectId"] = dto?.SubjectId == null ? DBNull.Value : dto.SubjectId });
+
+            var question = new QuestionMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams))[0];
+
+            return question;
+        }
+        catch (Exception ex)
+        {
+            throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
+        }
+    }
 }
