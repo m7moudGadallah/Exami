@@ -13,11 +13,23 @@ public class SubjectMapper : BaseMapper<Subject>
 
         if (columnNameMapping == null) columnNameMapping = new Dictionary<string, string>();
 
+        InitializeColumnNameMapping(Columns, columnNameMapping);
+
+        User teacher = null;
+
+        if (row.Table.Columns.Contains("FirstName"))
+        {
+            teacher = new UserMapper().MapFromDataRow(row, new() { ["Id"] = "TeacherId" });
+        }
+
         return new Subject(
             Id: Convert.ToInt32(row[columnNameMapping["Id"]]),
             Name: row[columnNameMapping["Name"]].ToString(),
             TeacherId: (row["TeacherId"] == DBNull.Value) ? null : Convert.ToInt32(row[columnNameMapping["TeacherId"]])
-        );
+        )
+        {
+            Teacher = teacher
+        };
     }
 
 }

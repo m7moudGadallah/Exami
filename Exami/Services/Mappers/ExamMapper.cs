@@ -15,6 +15,14 @@ public class ExamMapper : BaseMapper<Exam>
 
         InitializeColumnNameMapping(Columns, columnNameMapping);
 
+        Subject subject = null;
+
+        if (row.Table.Columns.Contains("SubjectName") && row["SubjectName"] != DBNull.Value)
+        {
+            subject = new SubjectMapper().MapFromDataRow(row, new() { ["Name"] = "SubjectName" });
+        }
+
+
         // Convert the DataRow into an Exam object
         return new Exam(
            Id: row[columnNameMapping["Id"]] == DBNull.Value ? 0 : Convert.ToInt32(row[columnNameMapping["Id"]]),
@@ -24,7 +32,10 @@ public class ExamMapper : BaseMapper<Exam>
            EndTime: Convert.ToDateTime(row[columnNameMapping["EndTime"]]),
            ExamType: ParseExamType(row[columnNameMapping["ExamType"]].ToString()),
            Instructions: row[columnNameMapping["Instructions"]] == DBNull.Value ? null : row[columnNameMapping["Instructions"]].ToString()
-       );
+       )
+        {
+            Subject = subject
+        };
     }
 
 
