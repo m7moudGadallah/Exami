@@ -1,4 +1,6 @@
-﻿using MaterialSkin;
+﻿using Entities;
+using MaterialSkin;
+using Presentation.Helpers;
 using MaterialColorScheme = MaterialSkin.ColorScheme;
 
 namespace Presentation
@@ -22,21 +24,125 @@ namespace Presentation
             }
             base.Dispose(disposing);
         }
+ 
         public StudentMainForm()
         {
+            this.Load += new EventHandler(StudentMainForm_Load);
             InitializeComponent();
+            sd_name.Text = $"{UserSession.LoggedInUser.FirstName} {UserSession.LoggedInUser.LastName}";
+            this.FormClosing += StudentMainForm_FormClosing;
+
         }
 
-        private void st_main_Load(object sender, EventArgs e)
+        private void StudentMainForm_Load(object sender, EventArgs e)
         {
-            var materialSkinManager = MaterialSkinManager.Instance;
-            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            materialSkinManager.ColorScheme = new MaterialColorScheme(
-                Primary.Blue600, Primary.Blue700,
-                Primary.Blue200, Accent.Pink200,
-                TextShade.WHITE);
             LoadExams();
             DisplayExams(_exams);
+        }
+
+        private void DisplayExams(List<Exam> e)
+        {
+            panel2.Controls.Clear();
+            if (e == null || e.Count == 0)
+            {
+                MessageBox.Show("No exams found.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            int yOffset = splitContainer1.Panel2.Controls.Count * 130 + 20; // Start after existing cards
+
+            foreach (var exam in e) // Use the parameter 'e' instead of '_exams'
+            {
+                string examId = exam.Id.ToString();
+                var examinfo = new MaterialSkin.Controls.MaterialCard();
+                var eview = new Krypton.Toolkit.KryptonButton();
+                var eduration = new Label();
+                var edate = new Label();
+                var ename = new Label();
+
+                examinfo.SuspendLayout();
+
+                // Exam Card
+                examinfo.BackColor = Color.FromArgb(255, 255, 255);
+                examinfo.BorderStyle = BorderStyle.Fixed3D;
+                examinfo.Controls.Add(eview);
+                examinfo.Controls.Add(eduration);
+                examinfo.Controls.Add(edate);
+                examinfo.Controls.Add(ename);
+                examinfo.Depth = 0;
+                examinfo.ForeColor = Color.FromArgb(222, 0, 0, 0);
+                examinfo.Location = new Point(60, yOffset);
+                examinfo.Margin = new Padding(14);
+                examinfo.MouseState = MouseState.HOVER;
+                examinfo.Name = $"examinfo_{examId}"; // Unique name
+                examinfo.Padding = new Padding(14);
+                examinfo.Size = new Size(750, 117);
+                examinfo.TabIndex = 0;
+
+                // View Button
+                eview.Location = new Point(591, 37);
+                eview.Name = $"eview_{examId}"; // Unique name
+                eview.Size = new Size(138, 50);
+                eview.StateCommon.Back.Color1 = Color.Brown;
+                eview.StateCommon.Back.Color2 = Color.Brown;
+                eview.StateCommon.Border.Rounding = 3F;
+                eview.StateCommon.Border.Width = 2;
+                eview.StateCommon.Content.ShortText.Color1 = Color.White;
+                eview.StateCommon.Content.ShortText.Font = new Font("Tahoma", 15.75F);
+                eview.Values.Text = "View";
+                eview.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
+                eview.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
+                eview.StateDisabled.Back.Color1 = Color.Brown;
+                eview.StateDisabled.Back.Color2 = Color.Brown;
+                eview.StateCommon.Border.Rounding = 3F;
+                eview.StateCommon.Border.Width = 2;
+                eview.StateNormal.Back.Color1 = Color.Brown;
+                eview.StateNormal.Back.Color2 = Color.Brown;
+                eview.StatePressed.Back.Color1 = Color.Maroon;
+                eview.StatePressed.Back.Color2 = Color.Maroon;
+                eview.StateCommon.Border.Rounding = 3F;
+                eview.StateCommon.Border.Width = 2;
+                eview.StateTracking.Back.Color1 = Color.Brown;
+                eview.StateTracking.Back.Color2 = Color.Brown;
+                // Duration Label
+                eduration.BackColor = Color.Brown;
+                eduration.Font = new Font("Tahoma", 18F);
+                eduration.ForeColor = SystemColors.ButtonHighlight;
+                eduration.Location = new Point(407, 37);
+                eduration.Name = $"eduration_{examId}"; // Unique name
+                eduration.Size = new Size(143, 50);
+                eduration.TabIndex = 51;
+                eduration.Text = $"{exam.EndTime - exam.StartTime}";
+                eduration.TextAlign = ContentAlignment.MiddleCenter;
+
+                // Date Label
+                edate.BackColor = Color.Brown;
+                edate.Font = new Font("Tahoma", 18F);
+                edate.ForeColor = SystemColors.ButtonHighlight;
+                edate.Location = new Point(209, 37);
+                edate.Name = $"edate_{examId}"; // Unique name
+                edate.Size = new Size(143, 50);
+                edate.TabIndex = 51;
+                edate.Text = $"{exam.StartTime}";
+                edate.TextAlign = ContentAlignment.MiddleCenter;
+
+                // Name Label
+                ename.BackColor = Color.Brown;
+                ename.Font = new Font("Tahoma", 18F);
+                ename.ForeColor = SystemColors.ButtonHighlight;
+                ename.Location = new Point(19, 37);
+                ename.Name = $"ename_{examId}"; // Unique name
+                ename.Size = new Size(143, 50);
+                ename.TabIndex = 50;
+                ename.Text = $"{exam.Name}";
+                ename.TextAlign = ContentAlignment.MiddleCenter;
+
+                // Add card to panel
+                splitContainer1.Panel2.Controls.Add(examinfo);
+
+                // Adjust Y position for next card
+                yOffset += 130;
+            }
         }
 
         #region Windows Form Designer generated code
@@ -47,55 +153,29 @@ namespace Presentation
         /// </summary>
         private void InitializeComponent()
         {
-            header = new Krypton.Toolkit.KryptonTextBox();
             contactlink = new Krypton.Toolkit.KryptonLinkLabel();
             help_link = new Krypton.Toolkit.KryptonLinkLabel();
             done_btn = new Krypton.Toolkit.KryptonButton();
             inqueue_btn = new Krypton.Toolkit.KryptonButton();
             allexams_btn = new Krypton.Toolkit.KryptonButton();
-            view_btn = new Krypton.Toolkit.KryptonButton();
-            examname = new Krypton.Toolkit.KryptonButton();
-            duration = new Krypton.Toolkit.KryptonButton();
-            date = new Krypton.Toolkit.KryptonButton();
-            content = new FlowLayoutPanel();
-            name = new Label();
-            d = new Label();
-            du = new Label();
-            view = new Krypton.Toolkit.KryptonButton();
-            content.SuspendLayout();
+            header = new Panel();
+            sd_name = new Label();
+            pictureBox1 = new PictureBox();
+            logo = new Label();
+            panel2 = new Panel();
+            splitContainer1 = new SplitContainer();
+            header.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.SuspendLayout();
             SuspendLayout();
-            // 
-            // header
-            // 
-            header.Cursor = Cursors.No;
-            header.Dock = DockStyle.Top;
-            header.Enabled = false;
-            header.Location = new Point(0, 0);
-            header.MaxLength = 3;
-            header.Name = "header";
-            header.ReadOnly = true;
-            header.Size = new Size(893, 44);
-            header.StateActive.Border.Color1 = Color.Black;
-            header.StateActive.Border.Color2 = Color.Black;
-            header.StateActive.Border.Width = 1;
-            header.StateActive.Content.Font = new Font("Tahoma", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            header.StateCommon.Back.Color1 = Color.Brown;
-            header.StateCommon.Border.Color1 = Color.Black;
-            header.StateCommon.Border.Color2 = Color.Black;
-            header.StateCommon.Border.Rounding = 3F;
-            header.StateCommon.Border.Width = 0;
-            header.StateCommon.Content.Color1 = Color.White;
-            header.StateCommon.Content.Font = new Font("Microsoft Sans Serif", 27.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            header.StateCommon.Content.Padding = new Padding(10);
-            header.StateCommon.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            header.TabIndex = 39;
-            header.Text = "Exami";
-            header.TextAlign = HorizontalAlignment.Center;
             // 
             // contactlink
             // 
             contactlink.LinkBehavior = Krypton.Toolkit.KryptonLinkBehavior.HoverUnderline;
-            contactlink.Location = new Point(23, 666);
+            contactlink.Location = new Point(30, 38);
             contactlink.Name = "contactlink";
             contactlink.OverrideFocus.Padding = new Padding(3);
             contactlink.OverrideFocus.ShortText.Color1 = Color.FromArgb(64, 64, 64);
@@ -120,7 +200,7 @@ namespace Presentation
             // help_link
             // 
             help_link.LinkBehavior = Krypton.Toolkit.KryptonLinkBehavior.HoverUnderline;
-            help_link.Location = new Point(771, 666);
+            help_link.Location = new Point(776, 38);
             help_link.Name = "help_link";
             help_link.OverrideFocus.Padding = new Padding(3);
             help_link.OverrideFocus.ShortText.Color1 = Color.FromArgb(64, 64, 64);
@@ -142,7 +222,7 @@ namespace Presentation
             // 
             // done_btn
             // 
-            done_btn.Location = new Point(556, 141);
+            done_btn.Location = new Point(672, 21);
             done_btn.Name = "done_btn";
             done_btn.OverrideDefault.Back.Color1 = Color.Brown;
             done_btn.OverrideDefault.Back.Color2 = Color.Brown;
@@ -182,10 +262,11 @@ namespace Presentation
             done_btn.Values.ImageTransparentColor = Color.White;
             done_btn.Values.Text = "Done";
             done_btn.Click += done_btn_Click;
+
             // 
             // inqueue_btn
             // 
-            inqueue_btn.Location = new Point(225, 141);
+            inqueue_btn.Location = new Point(60, 21);
             inqueue_btn.Name = "inqueue_btn";
             inqueue_btn.OverrideDefault.Back.Color1 = Color.Brown;
             inqueue_btn.OverrideDefault.Back.Color2 = Color.Brown;
@@ -228,7 +309,7 @@ namespace Presentation
             // 
             // allexams_btn
             // 
-            allexams_btn.Location = new Point(390, 141);
+            allexams_btn.Location = new Point(361, 21);
             allexams_btn.Name = "allexams_btn";
             allexams_btn.OverrideDefault.Back.Color1 = Color.Brown;
             allexams_btn.OverrideDefault.Back.Color2 = Color.Brown;
@@ -269,256 +350,120 @@ namespace Presentation
             allexams_btn.Values.Text = "All Exams";
             allexams_btn.Click += allexams_btn_Click;
             // 
-            // view_btn
+            // header
             // 
-            view_btn.Location = new Point(0, 0);
-            view_btn.Name = "view_btn";
-            view_btn.Size = new Size(90, 25);
-            view_btn.TabIndex = 0;
+            header.BackColor = Color.Brown;
+            header.Controls.Add(sd_name);
+            header.Controls.Add(pictureBox1);
+            header.Controls.Add(logo);
+            header.Dock = DockStyle.Top;
+            header.Location = new Point(0, 0);
+            header.Name = "header";
+            header.Size = new Size(1000, 109);
+            header.TabIndex = 46;
             // 
-            // examname
+            // sd_name
             // 
-            examname.Location = new Point(0, 0);
-            examname.Name = "examname";
-            examname.Size = new Size(90, 25);
-            examname.TabIndex = 0;
+            sd_name.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            sd_name.Font = new Font("Tahoma", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            sd_name.ForeColor = SystemColors.ButtonHighlight;
+            sd_name.Location = new Point(641, 0);
+            sd_name.Name = "sd_name";
+            sd_name.Size = new Size(235, 109);
+            sd_name.TabIndex = 49;
+            sd_name.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // duration
+            // pictureBox1
             // 
-            duration.Enabled = false;
-            duration.Location = new Point(234, 45);
-            duration.Name = "duration";
-            duration.OverrideDefault.Back.Color1 = Color.Brown;
-            duration.OverrideDefault.Back.Color2 = Color.Brown;
-            duration.OverrideFocus.Back.Color1 = Color.Brown;
-            duration.OverrideFocus.Back.Color2 = Color.Brown;
-            duration.Size = new Size(138, 47);
-            duration.StateCommon.Back.Color1 = Color.Brown;
-            duration.StateCommon.Back.Color2 = Color.Brown;
-            duration.StateCommon.Back.ColorAngle = 1F;
-            duration.StateCommon.Border.Color1 = Color.FromArgb(64, 64, 64);
-            duration.StateCommon.Border.Color2 = Color.FromArgb(64, 64, 64);
-            duration.StateCommon.Border.ColorAngle = 1F;
-            duration.StateCommon.Border.Rounding = 3F;
-            duration.StateCommon.Border.Width = 2;
-            duration.StateCommon.Content.LongText.Color1 = Color.FromArgb(224, 224, 224);
-            duration.StateCommon.Content.LongText.Color2 = Color.White;
-            duration.StateCommon.Content.ShortText.Color1 = Color.White;
-            duration.StateCommon.Content.ShortText.Color2 = Color.White;
-            duration.StateCommon.Content.ShortText.Font = new Font("Tahoma", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            duration.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            duration.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            duration.StateDisabled.Back.Color1 = Color.Brown;
-            duration.StateDisabled.Back.Color2 = Color.Brown;
-            duration.StateDisabled.Border.Rounding = 3F;
-            duration.StateDisabled.Border.Width = 2;
-            duration.StateDisabled.Content.ShortText.Color1 = Color.White;
-            duration.StateDisabled.Content.ShortText.Color2 = Color.White;
-            duration.StateNormal.Back.Color1 = Color.Brown;
-            duration.StateNormal.Back.Color2 = Color.Brown;
-            duration.StatePressed.Back.Color1 = Color.Maroon;
-            duration.StatePressed.Back.Color2 = Color.Maroon;
-            duration.StatePressed.Border.Rounding = 3F;
-            duration.StatePressed.Border.Width = 5;
-            duration.StateTracking.Back.Color1 = Color.Brown;
-            duration.StateTracking.Back.Color2 = Color.Brown;
-            duration.TabIndex = 27;
-            duration.UseMnemonic = false;
-            duration.Values.DropDownArrowColor = Color.Empty;
-            duration.Values.ImageTransparentColor = Color.White;
+            pictureBox1.BackColor = Color.White;
+            pictureBox1.BorderStyle = BorderStyle.Fixed3D;
+            pictureBox1.Location = new Point(872, 0);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(128, 109);
+            pictureBox1.TabIndex = 48;
+            pictureBox1.TabStop = false;
             // 
-            // date
+            // logo
             // 
-            date.Enabled = false;
-            date.Location = new Point(455, 45);
-            date.Name = "date";
-            date.OverrideDefault.Back.Color1 = Color.Brown;
-            date.OverrideDefault.Back.Color2 = Color.Brown;
-            date.OverrideFocus.Back.Color1 = Color.Brown;
-            date.OverrideFocus.Back.Color2 = Color.Brown;
-            date.Size = new Size(138, 47);
-            date.StateCommon.Back.Color1 = Color.Brown;
-            date.StateCommon.Back.Color2 = Color.Brown;
-            date.StateCommon.Back.ColorAngle = 1F;
-            date.StateCommon.Border.Color1 = Color.FromArgb(64, 64, 64);
-            date.StateCommon.Border.Color2 = Color.FromArgb(64, 64, 64);
-            date.StateCommon.Border.ColorAngle = 1F;
-            date.StateCommon.Border.Rounding = 3F;
-            date.StateCommon.Border.Width = 2;
-            date.StateCommon.Content.LongText.Color1 = Color.FromArgb(224, 224, 224);
-            date.StateCommon.Content.LongText.Color2 = Color.White;
-            date.StateCommon.Content.ShortText.Color1 = Color.White;
-            date.StateCommon.Content.ShortText.Color2 = Color.White;
-            date.StateCommon.Content.ShortText.Font = new Font("Tahoma", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            date.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            date.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            date.StateDisabled.Back.Color1 = Color.Brown;
-            date.StateDisabled.Back.Color2 = Color.Brown;
-            date.StateDisabled.Border.Rounding = 3F;
-            date.StateDisabled.Border.Width = 2;
-            date.StateDisabled.Content.ShortText.Color1 = Color.White;
-            date.StateDisabled.Content.ShortText.Color2 = Color.White;
-            date.StateNormal.Back.Color1 = Color.Brown;
-            date.StateNormal.Back.Color2 = Color.Brown;
-            date.StatePressed.Back.Color1 = Color.Maroon;
-            date.StatePressed.Back.Color2 = Color.Maroon;
-            date.StatePressed.Border.Rounding = 3F;
-            date.StatePressed.Border.Width = 5;
-            date.StateTracking.Back.Color1 = Color.Brown;
-            date.StateTracking.Back.Color2 = Color.Brown;
-            date.TabIndex = 28;
-            date.UseMnemonic = false;
-            date.Values.DropDownArrowColor = Color.Empty;
-            date.Values.ImageTransparentColor = Color.White;
+            logo.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            logo.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            logo.ForeColor = SystemColors.ButtonHighlight;
+            logo.Location = new Point(390, 0);
+            logo.Name = "logo";
+            logo.Size = new Size(163, 109);
+            logo.TabIndex = 0;
+            logo.Text = "Exami";
+            logo.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // content
+            // panel2
             // 
-            content.AllowDrop = true;
-            content.AutoSize = true;
-            content.Controls.Add(name);
-            content.Controls.Add(d);
-            content.Controls.Add(du);
-            content.Controls.Add(view);
-            content.Location = new Point(73, 283);
-            content.Name = "content";
-            content.Size = new Size(753, 59);
-            content.TabIndex = 45;
-            content.WrapContents = false;
+            panel2.BackColor = Color.Snow;
+            panel2.Controls.Add(help_link);
+            panel2.Controls.Add(contactlink);
+            panel2.Dock = DockStyle.Bottom;
+            panel2.Location = new Point(0, 666);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(1000, 101);
+            panel2.TabIndex = 47;
             // 
-            // name
+            // splitContainer1
             // 
-            name.AccessibleRole = AccessibleRole.Grouping;
-            name.BackColor = Color.Brown;
-            name.BorderStyle = BorderStyle.Fixed3D;
-            name.FlatStyle = FlatStyle.Popup;
-            content.SetFlowBreak(name, true);
-            name.ForeColor = Color.White;
-            name.Location = new Point(5, 5);
-            name.Margin = new Padding(5);
-            name.Name = "name";
-            name.Padding = new Padding(10);
-            name.Size = new Size(181, 47);
-            name.TabIndex = 0;
-            name.Text = "name";
-            name.TextAlign = ContentAlignment.MiddleCenter;
+            splitContainer1.Location = new Point(54, 138);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Orientation = Orientation.Horizontal;
             // 
-            // d
+            // splitContainer1.Panel1
             // 
-            d.AccessibleRole = AccessibleRole.Grouping;
-            d.BackColor = Color.Brown;
-            d.BorderStyle = BorderStyle.Fixed3D;
-            d.FlatStyle = FlatStyle.Popup;
-            content.SetFlowBreak(d, true);
-            d.ForeColor = Color.White;
-            d.Location = new Point(196, 5);
-            d.Margin = new Padding(5);
-            d.Name = "d";
-            d.Padding = new Padding(10);
-            d.Size = new Size(181, 47);
-            d.TabIndex = 1;
-            d.Text = "duration";
-            d.TextAlign = ContentAlignment.MiddleCenter;
+            splitContainer1.Panel1.Controls.Add(allexams_btn);
+            splitContainer1.Panel1.Controls.Add(inqueue_btn);
+            splitContainer1.Panel1.Controls.Add(done_btn);
             // 
-            // du
+            // splitContainer1.Panel2
             // 
-            du.AccessibleRole = AccessibleRole.Grouping;
-            du.BackColor = Color.Brown;
-            du.BorderStyle = BorderStyle.Fixed3D;
-            du.FlatStyle = FlatStyle.Popup;
-            content.SetFlowBreak(du, true);
-            du.ForeColor = Color.White;
-            du.Location = new Point(387, 5);
-            du.Margin = new Padding(5);
-            du.Name = "du";
-            du.Padding = new Padding(10);
-            du.Size = new Size(181, 47);
-            du.TabIndex = 2;
-            du.Text = "date";
-            du.TextAlign = ContentAlignment.MiddleCenter;
+            splitContainer1.Panel2.AutoScroll = true;
+            splitContainer1.Size = new Size(882, 509);
+            splitContainer1.SplitterDistance = 97;
+            splitContainer1.TabIndex = 48;
             // 
-            // view
-            // 
-            view.Location = new Point(578, 5);
-            view.Margin = new Padding(5);
-            view.Name = "view";
-            view.OverrideDefault.Back.Color1 = Color.Brown;
-            view.OverrideDefault.Back.Color2 = Color.Brown;
-            view.OverrideFocus.Back.Color1 = Color.Brown;
-            view.OverrideFocus.Back.Color2 = Color.Brown;
-            view.Size = new Size(170, 47);
-            view.StateCommon.Back.Color1 = Color.Brown;
-            view.StateCommon.Back.Color2 = Color.Brown;
-            view.StateCommon.Back.ColorAngle = 1F;
-            view.StateCommon.Border.Color1 = Color.FromArgb(64, 64, 64);
-            view.StateCommon.Border.Color2 = Color.FromArgb(64, 64, 64);
-            view.StateCommon.Border.ColorAngle = 1F;
-            view.StateCommon.Border.Rounding = 3F;
-            view.StateCommon.Border.Width = 2;
-            view.StateCommon.Content.LongText.Color1 = Color.FromArgb(224, 224, 224);
-            view.StateCommon.Content.LongText.Color2 = Color.White;
-            view.StateCommon.Content.ShortText.Color1 = Color.White;
-            view.StateCommon.Content.ShortText.Color2 = Color.White;
-            view.StateCommon.Content.ShortText.Font = new Font("Tahoma", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            view.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            view.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            view.StateDisabled.Back.Color1 = Color.Brown;
-            view.StateDisabled.Back.Color2 = Color.Brown;
-            view.StateDisabled.Border.Rounding = 3F;
-            view.StateDisabled.Border.Width = 2;
-            view.StateNormal.Back.Color1 = Color.Brown;
-            view.StateNormal.Back.Color2 = Color.Brown;
-            view.StatePressed.Back.Color1 = Color.Maroon;
-            view.StatePressed.Back.Color2 = Color.Maroon;
-            view.StatePressed.Border.Rounding = 3F;
-            view.StatePressed.Border.Width = 5;
-            view.StateTracking.Back.Color1 = Color.Brown;
-            view.StateTracking.Back.Color2 = Color.Brown;
-            view.TabIndex = 45;
-            view.UseMnemonic = false;
-            view.Values.DropDownArrowColor = Color.Empty;
-            view.Values.ImageTransparentColor = Color.White;
-            view.Values.Text = "view";
-            view.Click += view_Click;
-            // 
-            // st_main
+            // StudentMainForm
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(893, 722);
-            Controls.Add(content);
-            Controls.Add(done_btn);
-            Controls.Add(inqueue_btn);
-            Controls.Add(allexams_btn);
-            Controls.Add(help_link);
-            Controls.Add(contactlink);
+            CausesValidation = false;
+            ClientSize = new Size(1000, 767);
+            Controls.Add(splitContainer1);
+            Controls.Add(panel2);
             Controls.Add(header);
             HelpButton = true;
-            Name = "st_main";
+            Name = "StudentMainForm";
             ShowIcon = false;
-            Load += st_main_Load;
-            content.ResumeLayout(false);
+            header.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            splitContainer1.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private Krypton.Toolkit.KryptonTextBox header;
+       
         private Krypton.Toolkit.KryptonLinkLabel contactlink;
         private Krypton.Toolkit.KryptonLinkLabel help_link;
         private Krypton.Toolkit.KryptonButton done_btn;
         private Krypton.Toolkit.KryptonButton inqueue_btn;
         private Krypton.Toolkit.KryptonButton allexams_btn;
-        private Krypton.Toolkit.KryptonButton view;
         private Krypton.Toolkit.KryptonButton examname;
         private Krypton.Toolkit.KryptonButton duration;
         private Krypton.Toolkit.KryptonButton date;
         private Krypton.Toolkit.KryptonButton view_btn;
-        private FlowLayoutPanel content;
-        private Label name;
-        private Label d;
-        private Label du;
-        private Label label3;
+        private Panel header;
+        private Label logo;
+        private Panel panel2;
+        private Label sd_name;
+        private PictureBox pictureBox1;
+        private SplitContainer splitContainer1;
     }
 }

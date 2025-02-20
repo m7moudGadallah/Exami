@@ -1,11 +1,18 @@
 
+using Presentation.Helpers;
+using Entities;
 using Services.DTOs;
+using Services.Services;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 namespace Presentation
 {
     public partial class ExamForm : Form
     {
+        private readonly int studentId = UserSession.LoggedInUser.Id;
+        private readonly int examId = ExamSession.SelectedExam;
         int currentQuestionIndex = 0;
         List<Question> questionlist = new List<Question>();
+        List<string> answerlist = new List<string>();
         //private int timeLeft = 600;
 
 
@@ -15,6 +22,107 @@ namespace Presentation
             //InitializeTimer();
 
         }
+        //public void LoadExam()
+        //{
+        //    var examDto = new GetAllQuestionInputDto(new Dictionary<string, object>
+        //    {
+        //        { "StudentId", studentId },
+        //        { "ExamId", examId }
+        //    });
+
+        //    var questionsFromService = QuestionService.GetAllQuestions(examDto);
+
+
+        //    questionlist = questionsFromService.Select(q => new Question(
+        //     q.Id,
+        //     q.Marks,
+        //     q.Body,
+        //     q.QuestionType,
+        //     q.SubjectId
+        //    )).ToList();
+        //    ;
+
+        //    foreach (var question in questionlist)
+        //    {
+        //        var answersFromService = AnswerService.GetAllAnswers(new GetAllAnswersInputDto(new Dictionary<string, object>
+        //    {
+        //        { "QuestionId", question.Id }
+        //    }));
+        //        answerlist = answersFromService.Select(a => a.AnswerText).ToList();
+        //    }
+        //}
+
+        //private void DisplayQuestion()
+        //{
+        //    if (questionlist == null || questionlist.Count == 0) return;
+
+        //    var question = questionlist[currentQuestionIndex];
+        //    qbody.Controls.Clear();
+
+        //    Label qh = new Label
+        //    {
+        //        Anchor = AnchorStyles.Left | AnchorStyles.Right,
+        //        AutoSize = true,
+        //        BackColor = Color.Transparent,
+        //        Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point),
+        //        ForeColor = SystemColors.ActiveCaptionText,
+        //        Location = new Point(12, 20),
+        //        Name = "qh",
+        //        Size = new Size(106, 29),
+        //        TabIndex = 50,
+        //        Text = question.Body, 
+        //        TextAlign = ContentAlignment.MiddleCenter
+        //    };
+        //    qbody.Controls.Add(qh);
+
+        //    int yOffset = 60;
+
+        //    foreach (var answer in answerlist)
+        //    {
+        //        RadioButton choice = new RadioButton
+        //        {
+        //            Anchor = AnchorStyles.Left | AnchorStyles.Right,
+        //            BackColor = Color.Transparent,
+        //            Font = new Font("Tahoma", 14F, FontStyle.Regular, GraphicsUnit.Point),
+        //            ForeColor = SystemColors.ActiveCaptionText,
+        //            AutoSize = true,
+        //            Location = new Point(14, yOffset),
+        //            Name = "choice_" + yOffset,
+        //            Size = new Size(128, 27),
+        //            TabIndex = 50,
+        //            TabStop = true,
+        //            Text = answer, 
+        //            UseVisualStyleBackColor = true
+        //        };
+        //        qbody.Controls.Add(choice);
+        //        yOffset += 40;
+        //    }
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //private void InitializeTimer()
         //{
 
@@ -40,65 +148,27 @@ namespace Presentation
         //    }
         //}
 
-        private void exam_Load(object sender, EventArgs e)
-        {
-            LoadQuestions();
-            if (questionlist.Count > 0)
-            {
-                DisplayQuestion();
-            }
-            else
-            {
-                MessageBox.Show("No questions found in the database.");
-            }
-        }
 
+        //private void exam_Load(object sender, EventArgs e)
+        //{
+        //    LoadExam();
+        //    if (questionlist.Count > 0)
+        //    {
+        //        DisplayQuestion();
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("No questions found in the database.");
+        //    }
+        //}
 
-
-        private void DisplayQuestion()
-        {
-            if (questionlist.Count == 0) return;
-            var question = questionlist[currentQuestionIndex];
-            headsection.Controls.Clear();
-            answersection.Controls.Clear();
-
-            Label questionLabel = new Label
-            {
-                Text = question.Body,
-                AutoSize = true,
-                Location = new Point(29, 48)
-            };
-
-            headsection.Controls.Add(questionLabel);
-
-
-            int yOffset = 67;
-            foreach (var answer in question.AnswerList)
-            {
-                RadioButton choice = new RadioButton
-                {
-                    Text = answer,
-                    Location = new Point(29, yOffset),
-                    AutoSize = true
-                };
-                answersection.Controls.Add(choice);
-                yOffset += 30;
-            }
-        }
-
-
-        private void LoadQuestions()
-        {
-            questionlist.Clear();
-            GetStudentExamInputDto dto = new GetStudentExamInputDto(1);
-        }
 
         private void nxt_btn_Click(object sender, EventArgs e)
         {
             if (currentQuestionIndex < questionlist.Count - 1)
             {
                 currentQuestionIndex++;
-                DisplayQuestion();
+                //DisplayQuestion();
             }
         }
 
@@ -107,53 +177,8 @@ namespace Presentation
             if (currentQuestionIndex > 0)
             {
                 currentQuestionIndex--;
-                DisplayQuestion();
+                //DisplayQuestion();
             }
-        }
-
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void splitContainer2_Panel2_Paint(object sender, PaintEventArgs e)
-        {
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-        private void kryptonGroup1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void groupBox4_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        public class Question
-        {
-            public int Id { get; set; }
-            public string Body { get; set; }
-            public List<string> AnswerList { get; set; }
-        }
-
-        private void timer_Tick(object sender, EventArgs e)
-        {
-
         }
     }
 }
