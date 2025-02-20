@@ -14,39 +14,58 @@ namespace Services.Services;
 public static class QuestionService
 {
     /// <summary>
-    /// Retrieves a list of questions based on the provided filters.
+    /// Retrieves a list of questions from the database based on the provided filters, ordering, and pagination parameters.
     /// </summary>
-    /// <param name="dto">A <see cref="GetAllQuestionInputDto"/> object containing key-value pairs of filters to apply.</param>
-    /// <returns>A list of <see cref="Question"/> objects that match the specified filters.</returns>
+    /// <param name="dto">An optional <see cref="GetAllQuestionInputDto"/> object containing filtering, ordering, and pagination parameters.</param>
+    /// <returns>
+    /// A list of <see cref="Question"/> objects that match the specified filters and ordering criteria.
+    /// If no filters are provided, all questions are returned.
+    /// </returns>
     /// <exception cref="AppException">
-    /// Thrown if an error occurs during the database operation or if invalid filters are provided.
+    /// Thrown if:
+    /// <list type="bullet">
+    ///     <item>An error occurs during the database operation.</item>
+    ///     <item>Invalid or unsupported filters are provided in the <paramref name="dto"/>.</item>
+    ///     <item>Pagination parameters (<see cref="GetAllQuestionInputDto.Skip"/>, <see cref="GetAllQuestionInputDto.Take"/>) are invalid (e.g., negative values).</item>
+    /// </list>
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
     /// </exception>
-    public static List<Question> GetAllQuestions(GetAllQuestionInputDto dto)
+    /// <remarks>
+    /// This method dynamically constructs a SQL query using the provided filters, ordering, and pagination parameters.
+    /// It uses a predefined SQL view named <c>QuestionFullView</c> to fetch the data.
+    /// </remarks>
+    public static List<Question> GetAllQuestions(GetAllQuestionInputDto? dto)
     {
         try
         {
-            var sql = new StringBuilder(@"
+            var sql = @"
                 SELECT *
-                FROM [Question]
-                WHERE 1=1");
+                FROM [QuestionFullView]
+                WHERE 1=1";
 
-
-            DBCommandParams cmdParams = new(sql.ToString(), CommandType.Text, new() { });
+            SqlQueryBuilder queryBuilder = new(new(sql, CommandType.Text, new() { }));
 
             // Add filters dynamically
-            foreach (var filter in dto.Filters)
+            if (dto?.Filters != null)
             {
-                string columnName = filter.Key;
-                object value = filter.Value;
-
-                if (value != null)
-                {
-                    sql.Append($" AND {columnName} = @{columnName}");
-                    cmdParams.Parameters.Add($"@{columnName}", value);
-                }
+                queryBuilder.ApplyFilters(dto.Filters);
             }
 
-            var quesetions = new QuestionMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams with { Sql = sql.ToString() }));
+            // Add ordering
+            if (dto?.OrderBy == null || dto.OrderBy.Count == 0)
+            {
+                dto.OrderBy = new() { ["Id"] = 1 };
+            }
+
+            queryBuilder.ApplyOrderBy(dto.OrderBy);
+
+            // Add pagination
+            if (dto?.Skip != null && dto?.Take != null && dto.Skip >= 0 && dto.Take > 0)
+            {
+                queryBuilder.ApplyPagination(dto.Take.Value, dto.Skip.Value);
+            }
+
+            var quesetions = new QuestionMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(queryBuilder.CmdParams));
 
             return quesetions;
         }
