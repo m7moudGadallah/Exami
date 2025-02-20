@@ -83,6 +83,49 @@ public static class ExamService
         }
     }
 
+    public static Exam UpdateExam(Exam exam)
+    {
+        try
+        {
+            var sql = @"
+            UPDATE [Exam]
+            SET Name = @Name,
+                StartTime = @StartTime,
+                EndTime = @EndTime,
+                ExamType = @ExamType,
+                SubjectId = @SubjectId,
+                Instructions = @Instructions
+            WHERE Id = @Id
+            SELECT *
+            FROM [Exam]
+            WHERE Id = @Id";
+
+            DBCommandParams cmdParams = new(sql, CommandType.Text, new()
+            {
+                ["@Id"] = exam.Id,
+                ["@Name"] = exam.Name,
+                ["@StartTime"] = exam.StartTime,
+                ["@EndTime"] = exam.EndTime,
+                ["@ExamType"] = exam.ExamType.ToString(),
+                ["@SubjectId"] = (exam.SubjectId == null) ? DBNull.Value : exam.SubjectId,
+                ["@Instructions"] = (exam?.Instructions == null) ? DBNull.Value : exam.Instructions,
+            });
+
+            var exams = new ExamMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams));
+
+            if (exams.Count == 0)
+            {
+                throw new AppException($"Cant find exam with [Id = {exam.Id}]", ExceptionStatus.Error);
+            }
+
+            return exams[0];
+        }
+        catch (Exception ex)
+        {
+            if (ex is AppException) throw;
+            throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
+        }
+    }
 
     public static bool DeleteExam(DeleteExamInputDto dto)
     {
