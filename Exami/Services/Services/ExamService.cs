@@ -62,6 +62,27 @@ public static class ExamService
         }
     }
 
+    public static Exam CreateExam(CreateExamInputDto dto)
+    {
+        try
+        {
+            var sql = @"
+                INSERT INTO [Exam] (Name, StartTime, EndTime, ExamType, Instructions, SubjectId)
+                OUTPUT INSERTED.*
+                VALUES (@Name, @StartTime, @EndTime, @ExamType, @Instructions, @SubjectId);";
+
+            DBCommandParams cmdParams = new(sql, CommandType.Text, new() { ["@Name"] = dto.Name, ["@StartTime"] = dto.StartTime, ["@EndTime"] = dto.EndTime, ["@ExamType"] = dto.ExamType.ToString(), ["@Instructions"] = dto?.Instructions == null ? DBNull.Value : dto.Instructions, ["@SubjectId"] = dto?.SubjectId == null ? DBNull.Value : dto.SubjectId });
+
+            var exam = new ExamMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams))[0];
+
+            return exam;
+        }
+        catch (Exception ex)
+        {
+            throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
+        }
+    }
+
     /// <summary>
     /// Retrieves an exam by its unique identifier.
     /// </summary>
