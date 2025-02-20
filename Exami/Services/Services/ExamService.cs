@@ -9,18 +9,23 @@ using System.Text;
 namespace Services.Services;
 
 /// <summary>
-/// Provides methods to manage exams, including retrieving exam details by ID.
+/// Provides methods to manage exams, including retrieving, creating, updating, and deleting exam records.
 /// </summary>
 public static class ExamService
 {
     /// <summary>
-    /// Retrieves a list of exams based on the provided filters.
+    /// Retrieves a list of exams based on the provided filters, ordering, and pagination parameters.
     /// </summary>
-    /// <param name="dto">A <see cref="GetAllExamsInputDto"/> object containing key-value pairs of filters to apply.</param>
-    /// <returns>A list of <see cref="Exam"/> objects that match the specified filters.</returns>
+    /// <param name="dto">A <see cref="GetAllExamsInputDto"/> object containing filtering, ordering, and pagination parameters.</param>
+    /// <returns>A list of <see cref="Exam"/> objects that match the specified filters and ordering criteria.</returns>
     /// <exception cref="AppException">
     /// Thrown if an error occurs during the database operation.
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
     /// </exception>
+    /// <remarks>
+    /// This method dynamically constructs a SQL query using the provided filters, ordering, and pagination parameters.
+    /// It uses a predefined SQL view named <c>ExamFullView</c> to fetch the data.
+    /// </remarks>
     public static List<Exam> GetAllExams(GetAllExamsInputDto dto)
     {
         try
@@ -62,6 +67,15 @@ public static class ExamService
         }
     }
 
+    /// <summary>
+    /// Creates a new exam record in the database.
+    /// </summary>
+    /// <param name="dto">A <see cref="CreateExamInputDto"/> object containing the details of the exam to create.</param>
+    /// <returns>A <see cref="Exam"/> object representing the newly created exam.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if an error occurs during the database operation.
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
+    /// </exception>
     public static Exam CreateExam(CreateExamInputDto dto)
     {
         try
@@ -83,6 +97,19 @@ public static class ExamService
         }
     }
 
+    /// <summary>
+    /// Updates an existing exam record in the database.
+    /// </summary>
+    /// <param name="exam">A <see cref="Exam"/> object containing the updated details of the exam.</param>
+    /// <returns>A <see cref="Exam"/> object representing the updated exam.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if:
+    /// <list type="bullet">
+    ///     <item>The exam with the specified ID does not exist.</item>
+    ///     <item>An error occurs during the database operation.</item>
+    /// </list>
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
+    /// </exception>
     public static Exam UpdateExam(Exam exam)
     {
         try
@@ -127,6 +154,15 @@ public static class ExamService
         }
     }
 
+    /// <summary>
+    /// Deletes an exam record from the database.
+    /// </summary>
+    /// <param name="dto">A <see cref="DeleteExamInputDto"/> object containing the ID of the exam to delete.</param>
+    /// <returns><c>true</c> if the exam was successfully deleted; otherwise, <c>false</c>.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if an error occurs during the database operation.
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
+    /// </exception>
     public static bool DeleteExam(DeleteExamInputDto dto)
     {
         try
