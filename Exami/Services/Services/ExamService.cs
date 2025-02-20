@@ -25,28 +25,34 @@ public static class ExamService
     {
         try
         {
-            var sql = new StringBuilder(@"
+            var sql = @"
                 SELECT *
-                FROM [Exam]
-                WHERE 1=1");
+                FROM [ExamFullView]
+                WHERE 1=1";
 
-
-            DBCommandParams cmdParams = new(sql.ToString(), CommandType.Text, new() { });
+            SqlQueryBuilder queryBuilder = new(new(sql, CommandType.Text, new() { }));
 
             // Add filters dynamically
-            foreach (var filter in dto.Filters)
+            if (dto?.Filters != null)
             {
-                string columnName = filter.Key;
-                object value = filter.Value;
-
-                if (value != null)
-                {
-                    sql.Append($" AND {columnName} = @{columnName}");
-                    cmdParams.Parameters.Add($"@{columnName}", value);
-                }
+                queryBuilder.ApplyFilters(dto.Filters);
             }
 
-            var exams = new ExamMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams with { Sql = sql.ToString() }));
+            // Add ordering
+            if (dto?.OrderBy == null || dto.OrderBy.Count == 0)
+            {
+                dto.OrderBy = new() { ["Id"] = 1 };
+            }
+
+            queryBuilder.ApplyOrderBy(dto.OrderBy);
+
+            // Add pagination
+            if (dto?.Skip != null && dto?.Take != null && dto.Skip >= 0 && dto.Take > 0)
+            {
+                queryBuilder.ApplyPagination(dto.Take.Value, dto.Skip.Value);
+            }
+
+            var exams = new ExamMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(queryBuilder.CmdParams));
 
             return exams;
         }
