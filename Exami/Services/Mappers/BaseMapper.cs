@@ -21,7 +21,7 @@ public abstract class BaseMapper<T> where T : class
 
     public abstract T MapFromDataRow(DataRow row, Dictionary<string, string> columnNameMapping = null);
 
-    public List<T> MapFromDataTable(DataTable table)
+    public virtual List<T> MapFromDataTable(DataTable table)
     {
         var result = new List<T>();
         foreach (DataRow row in table.Rows)

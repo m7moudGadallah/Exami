@@ -6,4 +6,7 @@ public record Question(
    string Body,
    QuestionType QuestionType,
    int? SubjectId
-   );
+   )
+{
+    public List<Answer> Answers { get; set; }
+}
