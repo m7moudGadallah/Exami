@@ -116,3 +116,26 @@ FROM
     [Question] q
 LEFT JOIN 
     [Answer] a ON q.Id = a.QuestionId;
+
+    CREATE VIEW [ExamFullView] AS
+SELECT
+	e.Id,
+	e.Name,
+	e.StartTime,
+	e.EndTime,
+	e.ExamType,
+	e.Instructions,
+	e.SubjectId,
+	s.Name AS SubjectName,
+	s.TeacherId,
+	t.FirstName,
+	t.LastName,
+	t.Role,
+	t.Email,
+	t.Password
+FROM 
+	[Exam] e
+LEFT JOIN
+	[Subject] s ON e.SubjectId = s.Id
+LEFT JOIN 
+	[User] t ON s.TeacherId = t.Id;
