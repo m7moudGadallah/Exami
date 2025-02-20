@@ -1,6 +1,5 @@
 ﻿using Database;
 using System.Data;
-using System.Text;
 using Entities;
 using Services.DTOs;
 using Services.Mappers;
@@ -9,7 +8,7 @@ using Utilities.Exceptoins;
 namespace Services.Services;
 
 /// <summary>
-/// Provides methods to manage questions, including retrieving a list of questions based on filters.
+/// Provides methods to manage questions, including retrieving, creating, updating, and deleting questions.
 /// </summary>
 public static class QuestionService
 {
@@ -75,6 +74,15 @@ public static class QuestionService
         }
     }
 
+    /// <summary>
+    /// Creates a new question in the database.
+    /// </summary>
+    /// <param name="dto">A <see cref="CreateQuestionDto"/> object containing the details of the question to create.</param>
+    /// <returns>A <see cref="Question"/> object representing the newly created question.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if an error occurs during the database operation.
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
+    /// </exception>
     public static Question CreateQuestion(CreateQuestionDto dto)
     {
         try
@@ -96,6 +104,19 @@ public static class QuestionService
         }
     }
 
+    /// <summary>
+    /// Updates an existing question in the database.
+    /// </summary>
+    /// <param name="question">A <see cref="Question"/> object containing the updated details of the question.</param>
+    /// <returns>A <see cref="Question"/> object representing the updated question.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if:
+    /// <list type="bullet">
+    ///     <item>The question with the specified ID does not exist.</item>
+    ///     <item>An error occurs during the database operation.</item>
+    /// </list>
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
+    /// </exception>
     public static Question UpdateQuestion(Question question)
     {
         try
@@ -136,6 +157,15 @@ public static class QuestionService
         }
     }
 
+    /// <summary>
+    /// Deletes a question from the database.
+    /// </summary>
+    /// <param name="dto">A <see cref="DeleteQuestionDto"/> object containing the ID of the question to delete.</param>
+    /// <returns><c>true</c> if the question was successfully deleted; otherwise, <c>false</c>.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if an error occurs during the database operation.
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
+    /// </exception>
     public static bool DeleteQuestion(DeleteQuestionDto dto)
     {
         try
