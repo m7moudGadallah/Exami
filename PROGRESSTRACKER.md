@@ -35,7 +35,9 @@
 ### ExamService
 
 - `GetAllExams`
-- `GetExam`
+- `CreateExam`
+- `UpdateExam`
+- `DeleteExam`
 
 ### StudentExamService
 
@@ -45,6 +47,9 @@
 ### QuestionService
 
 - `GetAllQuestions`
+- `CreateQuestion`
+- `UpdateQuestion`
+- `DeleteQuestion`
 
 ### AnswerService
 
