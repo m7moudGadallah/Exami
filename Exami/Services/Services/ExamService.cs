@@ -82,4 +82,26 @@ public static class ExamService
             throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
         }
     }
+
+
+    public static bool DeleteExam(DeleteExamInputDto dto)
+    {
+        try
+        {
+            var @sql = @"
+                DELETE [Exam]
+                WHERE Id = @Id";
+
+
+            DBCommandParams cmdParams = new(sql, CommandType.Text, new() { ["@Id"] = dto.Id });
+
+            int rowsAffected = DatabaseManager.ExecuteNonQuery(cmdParams);
+
+            return rowsAffected > 0;
+        }
+        catch (Exception ex)
+        {
+            throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
+        }
+    }
 }
