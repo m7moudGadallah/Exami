@@ -96,6 +96,46 @@ public static class QuestionService
         }
     }
 
+    public static Question UpdateQuestion(Question question)
+    {
+        try
+        {
+            var sql = @"
+            UPDATE [Question]
+            SET Marks = @Marks,
+                Body = @Body,
+                QuestionType = @QuestionType,
+                SubjectId = @SubjectId
+            WHERE Id = @Id
+            SELECT *
+            FROM [Question]
+            WHERE Id = @Id";
+
+            DBCommandParams cmdParams = new(sql, CommandType.Text, new()
+            {
+                ["@Id"] = question.Id,
+                ["@Body"] = question.Body,
+                ["@Marks"] = question.Marks,
+                ["@QuestionType"] = question.QuestionType.ToString(),
+                ["@SubjectId"] = (question.SubjectId == null) ? DBNull.Value : question.SubjectId,
+            });
+
+            var questions = new QuestionMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams));
+
+            if (questions.Count == 0)
+            {
+                throw new AppException($"Cant find question with [Id = {question.Id}]", ExceptionStatus.Error);
+            }
+
+            return questions[0];
+        }
+        catch (Exception ex)
+        {
+            if (ex is AppException) throw;
+            throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
+        }
+    }
+
     public static bool DeleteQuestion(DeleteQuestionDto dto)
     {
         try
