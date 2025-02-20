@@ -51,7 +51,7 @@ namespace Presentation
 
             int yOffset = splitContainer1.Panel2.Controls.Count * 130 + 20; // Start after existing cards
 
-            foreach (var exam in e) // Use the parameter 'e' instead of '_exams'
+            foreach (var exam in e)
             {
                 string examId = exam.Id.ToString();
                 var examinfo = new MaterialSkin.Controls.MaterialCard();
@@ -63,14 +63,14 @@ namespace Presentation
                 examinfo.SuspendLayout();
 
                 // Exam Card
-                examinfo.BackColor = Color.FromArgb(255, 255, 255);
+                examinfo.BackColor = Color.White;
                 examinfo.BorderStyle = BorderStyle.Fixed3D;
                 examinfo.Controls.Add(eview);
                 examinfo.Controls.Add(eduration);
                 examinfo.Controls.Add(edate);
                 examinfo.Controls.Add(ename);
                 examinfo.Depth = 0;
-                examinfo.ForeColor = Color.FromArgb(222, 0, 0, 0);
+                examinfo.ForeColor = Color.Black;
                 examinfo.Location = new Point(60, yOffset);
                 examinfo.Margin = new Padding(14);
                 examinfo.MouseState = MouseState.HOVER;
@@ -92,24 +92,22 @@ namespace Presentation
                 eview.Values.Text = "View";
                 eview.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
                 eview.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
-                eview.StateDisabled.Back.Color1 = Color.Brown;
-                eview.StateDisabled.Back.Color2 = Color.Brown;
-                eview.StateCommon.Border.Rounding = 3F;
-                eview.StateCommon.Border.Width = 2;
                 eview.StateNormal.Back.Color1 = Color.Brown;
                 eview.StateNormal.Back.Color2 = Color.Brown;
                 eview.StatePressed.Back.Color1 = Color.Maroon;
                 eview.StatePressed.Back.Color2 = Color.Maroon;
-                eview.StateCommon.Border.Rounding = 3F;
-                eview.StateCommon.Border.Width = 2;
                 eview.StateTracking.Back.Color1 = Color.Brown;
                 eview.StateTracking.Back.Color2 = Color.Brown;
+
+                // Attach Click Event Handler (IMPORTANT)
+                eview.Click += (sender, args) => eview_click(sender, args, exam);
+
                 // Duration Label
                 eduration.BackColor = Color.Brown;
                 eduration.Font = new Font("Tahoma", 18F);
                 eduration.ForeColor = SystemColors.ButtonHighlight;
                 eduration.Location = new Point(407, 37);
-                eduration.Name = $"eduration_{examId}"; // Unique name
+                eduration.Name = $"eduration_{examId}";
                 eduration.Size = new Size(143, 50);
                 eduration.TabIndex = 51;
                 eduration.Text = $"{exam.EndTime - exam.StartTime}";
@@ -120,7 +118,7 @@ namespace Presentation
                 edate.Font = new Font("Tahoma", 18F);
                 edate.ForeColor = SystemColors.ButtonHighlight;
                 edate.Location = new Point(209, 37);
-                edate.Name = $"edate_{examId}"; // Unique name
+                edate.Name = $"edate_{examId}";
                 edate.Size = new Size(143, 50);
                 edate.TabIndex = 51;
                 edate.Text = $"{exam.StartTime}";
@@ -131,7 +129,7 @@ namespace Presentation
                 ename.Font = new Font("Tahoma", 18F);
                 ename.ForeColor = SystemColors.ButtonHighlight;
                 ename.Location = new Point(19, 37);
-                ename.Name = $"ename_{examId}"; // Unique name
+                ename.Name = $"ename_{examId}";
                 ename.Size = new Size(143, 50);
                 ename.TabIndex = 50;
                 ename.Text = $"{exam.Name}";

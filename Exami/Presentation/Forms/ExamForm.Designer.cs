@@ -333,6 +333,7 @@
             prev_btn.Values.DropDownArrowColor = Color.Empty;
             prev_btn.Values.ImageTransparentColor = Color.White;
             prev_btn.Values.Text = "Prev";
+            prev_btn.Click += prev_btn_Click;
             // 
             // submit_btn
             // 
@@ -387,6 +388,7 @@
             Controls.Add(header);
             Name = "ExamForm";
             ShowIcon = false;
+            Load += ExamForm_Load;
             header.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             main.Panel1.ResumeLayout(false);

@@ -18,86 +18,93 @@ namespace Presentation
 
         public ExamForm()
         {
+            //this.Load += new EventHandler(ExamForm_Load);
+            //sd_name.Text = $"{UserSession.LoggedInUser.FirstName} {UserSession.LoggedInUser.LastName}";
+
             InitializeComponent();
             //InitializeTimer();
 
         }
-        //public void LoadExam()
-        //{
-        //    var examDto = new GetAllQuestionInputDto(new Dictionary<string, object>
-        //    {
-        //        { "StudentId", studentId },
-        //        { "ExamId", examId }
-        //    });
+        public void LoadExam()
+        {
+            var examDto = new GetAllQuestionInputDto
+            {
+                Filters = new Dictionary<string, object>
+    {
+        { "StudentId", studentId },
+        { "ExamId", examId }
+    }
+            };
 
-        //    var questionsFromService = QuestionService.GetAllQuestions(examDto);
+
+            var questionsFromService = QuestionService.GetAllQuestions(examDto);
 
 
-        //    questionlist = questionsFromService.Select(q => new Question(
-        //     q.Id,
-        //     q.Marks,
-        //     q.Body,
-        //     q.QuestionType,
-        //     q.SubjectId
-        //    )).ToList();
-        //    ;
+            questionlist = questionsFromService.Select(q => new Question(
+             q.Id,
+             q.Marks,
+             q.Body,
+             q.QuestionType,
+             q.SubjectId
+            )).ToList();
 
-        //    foreach (var question in questionlist)
-        //    {
-        //        var answersFromService = AnswerService.GetAllAnswers(new GetAllAnswersInputDto(new Dictionary<string, object>
-        //    {
-        //        { "QuestionId", question.Id }
-        //    }));
-        //        answerlist = answersFromService.Select(a => a.AnswerText).ToList();
-        //    }
-        //}
 
-        //private void DisplayQuestion()
-        //{
-        //    if (questionlist == null || questionlist.Count == 0) return;
+            foreach (var question in questionlist)
+            {
+                var answersFromService = AnswerService.GetAllAnswers(new GetAllAnswersInputDto(new Dictionary<string, object>
+            {
+                { "QuestionId", question.Id }
+            }));
+                question.Answers = answersFromService.ToList();
+            }
+        }
 
-        //    var question = questionlist[currentQuestionIndex];
-        //    qbody.Controls.Clear();
+        private void DisplayQuestion()
+        {
+            if (questionlist == null || questionlist.Count == 0) return;
 
-        //    Label qh = new Label
-        //    {
-        //        Anchor = AnchorStyles.Left | AnchorStyles.Right,
-        //        AutoSize = true,
-        //        BackColor = Color.Transparent,
-        //        Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point),
-        //        ForeColor = SystemColors.ActiveCaptionText,
-        //        Location = new Point(12, 20),
-        //        Name = "qh",
-        //        Size = new Size(106, 29),
-        //        TabIndex = 50,
-        //        Text = question.Body, 
-        //        TextAlign = ContentAlignment.MiddleCenter
-        //    };
-        //    qbody.Controls.Add(qh);
+            var question = questionlist[currentQuestionIndex];
+            qbody.Controls.Clear();
 
-        //    int yOffset = 60;
+            Label qh = new Label
+            {
+                Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                AutoSize = true,
+                BackColor = Color.Transparent,
+                Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point),
+                ForeColor = SystemColors.ActiveCaptionText,
+                Location = new Point(12, 20),
+                Name = "qh",
+                Size = new Size(106, 29),
+                TabIndex = 50,
+                Text = question.Body,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            qbody.Controls.Add(qh);
 
-        //    foreach (var answer in answerlist)
-        //    {
-        //        RadioButton choice = new RadioButton
-        //        {
-        //            Anchor = AnchorStyles.Left | AnchorStyles.Right,
-        //            BackColor = Color.Transparent,
-        //            Font = new Font("Tahoma", 14F, FontStyle.Regular, GraphicsUnit.Point),
-        //            ForeColor = SystemColors.ActiveCaptionText,
-        //            AutoSize = true,
-        //            Location = new Point(14, yOffset),
-        //            Name = "choice_" + yOffset,
-        //            Size = new Size(128, 27),
-        //            TabIndex = 50,
-        //            TabStop = true,
-        //            Text = answer, 
-        //            UseVisualStyleBackColor = true
-        //        };
-        //        qbody.Controls.Add(choice);
-        //        yOffset += 40;
-        //    }
-        //}
+            int yOffset = 60;
+
+            foreach (var answer in answerlist)
+            {
+                RadioButton choice = new RadioButton
+                {
+                    Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                    BackColor = Color.Transparent,
+                    Font = new Font("Tahoma", 14F, FontStyle.Regular, GraphicsUnit.Point),
+                    ForeColor = SystemColors.ActiveCaptionText,
+                    AutoSize = true,
+                    Location = new Point(14, yOffset),
+                    Name = "choice_" + yOffset,
+                    Size = new Size(128, 27),
+                    TabIndex = 50,
+                    TabStop = true,
+                    Text = answer,
+                    UseVisualStyleBackColor = true
+                };
+                qbody.Controls.Add(choice);
+                yOffset += 40;
+            }
+        }
 
 
 
@@ -149,26 +156,13 @@ namespace Presentation
         //}
 
 
-        //private void exam_Load(object sender, EventArgs e)
-        //{
-        //    LoadExam();
-        //    if (questionlist.Count > 0)
-        //    {
-        //        DisplayQuestion();
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("No questions found in the database.");
-        //    }
-        //}
-
 
         private void nxt_btn_Click(object sender, EventArgs e)
         {
             if (currentQuestionIndex < questionlist.Count - 1)
             {
                 currentQuestionIndex++;
-                //DisplayQuestion();
+                DisplayQuestion();
             }
         }
 
@@ -177,8 +171,16 @@ namespace Presentation
             if (currentQuestionIndex > 0)
             {
                 currentQuestionIndex--;
-                //DisplayQuestion();
+                DisplayQuestion();
             }
         }
+
+        private void ExamForm_Load(object sender, EventArgs e)
+        {
+            LoadExam();
+            DisplayQuestion();
+        }
+
+     
     }
 }

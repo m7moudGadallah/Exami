@@ -276,7 +276,7 @@ namespace Presentation.Forms
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Please enter both email and password.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter both email and password.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -287,7 +287,7 @@ namespace Presentation.Forms
                 User user = AuthService.Login(loginDto);
                 if (user == null)
                 {
-                    MessageBox.Show("Invalid email or password.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Invalid email or password.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -310,7 +310,7 @@ namespace Presentation.Forms
                         break;
 
                     default:
-                        MessageBox.Show("Invalid Role", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Invalid Role", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                 }
 
@@ -318,7 +318,7 @@ namespace Presentation.Forms
             }
             catch (AppException ex)
             {
-                MessageBox.Show(ex.Message, "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {

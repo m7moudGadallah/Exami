@@ -3,6 +3,7 @@ using Entities;
 using Services.DTOs;
 using Services.Services;
 using Presentation.Helpers;
+using Presentation.Forms;
 
 namespace Presentation
 {
@@ -80,19 +81,37 @@ namespace Presentation
             DisplayExams(_exams);
         }
 
-        private void eview_click(object sender, EventArgs e)
+        private void eview_click(object sender, EventArgs e, Exam exam)
         {
-            if (selectedExamId == null)
+            if (exam == null)
             {
-                MessageBox.Show("Selected exam not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Selected exam not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            //var examdto = new GetExamInputDto(selectedExamId);
-            //var exam = ExamService.GetExam(examdto);
-            //ExamSession.SetSession(studentId, selectedExamId);
-            //MessageBox.Show($"Session started for {studentId} on exam {exam.Name}.");
-            //Form examForm = Exam(exam);
+
+            selectedExamId = exam.Id;  // Store selected exam ID
+            var examDto = new GetExamInputDto(selectedExamId);
+            var fetchedExam = ExamService.GetExam(examDto);
+
+            if (fetchedExam == null)
+            {
+                MessageBox.Show("Exam not found in database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Ensure Session is being set
+            ExamSession.SetSession(studentId, selectedExamId);
+            var examForm = FormsRepo.GetForm<ExamForm>();
+
+            if (examForm == null)
+            {
+                MessageBox.Show("Error: Exam form could not be retrieved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            examForm.Show();
         }
+
 
         //private void LoadExams()
         //{
