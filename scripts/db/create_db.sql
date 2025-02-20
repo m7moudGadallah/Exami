@@ -114,5 +114,5 @@ SELECT
 	a.IsCorrect
 FROM 
     [Question] q
-INNER JOIN 
+LEFT JOIN 
     [Answer] a ON q.Id = a.QuestionId;
