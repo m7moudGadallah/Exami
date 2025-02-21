@@ -32,6 +32,13 @@
 
 - `Login`
 
+### UserService
+
+- `GetAllUsers`
+- `CreateUser`
+- `UpdateUser`
+- `DeleteUser`
+
 ### ExamService
 
 - `GetAllExams`
