@@ -2,4 +2,4 @@
 
 namespace Database;
 
-public record DBCommandParams(string Sql, CommandType CommandType = CommandType.Text, Dictionary<string, object> Parameters = null);
+public record DbCommandParams(string Sql, CommandType CommandType = CommandType.Text, Dictionary<string, object> Parameters = null);
