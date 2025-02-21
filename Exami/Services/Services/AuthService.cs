@@ -10,7 +10,7 @@ namespace Services.Services;
 /// <summary>
 /// Provides authentication-related services, such as user login functionality.
 /// </summary>
-public static class AuthService
+public class AuthService : Service
 {
     /// <summary>
     /// Authenticates a user by verifying their email and password.
@@ -20,15 +20,18 @@ public static class AuthService
     /// <exception cref="AppException">
     /// Thrown if the provided email or password is invalid.
     /// </exception>
-    public static User Login(LoginInputDto dto)
+    public User Login(LoginInputDto dto)
     {
         var sql = @"
             SELECT *
             FROM [User]
             WHERE Email =  @Email";
 
-        DBCommandParams cmdParams = new(sql, CommandType.Text, new Dictionary<string, object>() { ["@Email"] = dto.Email });
-        var users = new UserMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams));
+        DbCommandParams cmdParams = new(sql, CommandType.Text, new()
+        {
+            ["@Email"] = dto.Email
+        });
+        var users = new UserMapper().MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams));
 
         if (users.Count == 0 || users[0]?.Password != dto.Password)
         {
