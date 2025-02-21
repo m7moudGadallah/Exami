@@ -9,7 +9,7 @@ namespace Presentation
 {
     public partial class StudentMainForm : Form
     {
-        private List<Exam> _exams = new List<Exam>();
+        private List<StudentExam> _exams = new List<StudentExam>();
         private readonly int studentId = UserSession.LoggedInUser.Id;
         private int selectedExamId;
 
@@ -26,24 +26,27 @@ namespace Presentation
             };
 
             var studentExams = StudentExamService.GetAllStudentExams(examsDto);
-            _exams = studentExams.Select(se => new Exam
-            (
-                se.Exam.Id,
-                se.Exam.Name,
-                se.Exam.SubjectId,
-                se.Exam.StartTime,
-                se.Exam.EndTime,
-                se.Exam.ExamType,
-                se.Exam.Instructions
-            )).ToList();
+            _exams = studentExams.Select(se => new StudentExam
+ (
+     se.Id,
+     se.ExamId,
+     se.StudentId,
+     se.SubmissionTime,
+     se.CreatedAt,
+     se.UpdatedAt,
+     se.Student,
+     se.Exam
+ )).ToList();
         }
+
+
 
         private void inqueue_btn_Click(object sender, EventArgs e)
         {
             panel2.Controls.Clear();
             DateTime today = DateTime.Today;
 
-            List<Exam> upcomingExams = _exams.Where(exam => exam.StartTime > today).ToList();
+            List<StudentExam> upcomingExams = _exams.Where(exam => exam.Exam.StartTime == today).ToList();
 
             if (upcomingExams.Count > 0)
             {
@@ -51,7 +54,7 @@ namespace Presentation
             }
             else
             {
-                MessageBox.Show("No upcoming exams found.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Messages.ShowSnackbarError("No upcoming exams found.");
             }
         }
 
@@ -60,29 +63,31 @@ namespace Presentation
             panel2.Controls.Clear();
             DateTime today = DateTime.Today;
 
-            List<Exam> pastExams = _exams.Where(exam => exam.EndTime < today).ToList();
+            List<StudentExam> pastExams = _exams.Where(exam => exam.SubmissionTime < today).ToList();
 
             if (pastExams.Count > 0)
             {
                 DisplayExams(pastExams);
+                //eview.hide();
+
             }
             else
             {
-                MessageBox.Show("No past exams found.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Messages.ShowSnackbarError("No past exams found.");
             }
         }
 
-        private void allexams_btn_Click(object sender, EventArgs e)
-        {
-            panel2.Controls.Clear();
-            DisplayExams(_exams);
-        }
+        //private void allexams_btn_Click(object sender, EventArgs e)
+        //{
+        //    panel2.Controls.Clear();
+        //    DisplayExams(_exams);
+        //}
 
         private void eview_click(object sender, EventArgs e, Exam exam)
         {
             if (exam == null)
             {
-                MessageBox.Show("Selected exam not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Messages.ShowSnackbarError("Selected exam not found.");
                 return;
             }
 
@@ -99,7 +104,7 @@ namespace Presentation
             var fetchedExam = ExamService.GetAllExams(examsDto) ?? new List<Exam>();
             if (fetchedExam == null)
             {
-                MessageBox.Show("Exam not found in database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Messages.ShowSnackbarError("Exam not found in database.");
                 return;
             }
 
@@ -109,7 +114,7 @@ namespace Presentation
 
             if (examForm == null)
             {
-                MessageBox.Show("Error: Exam form could not be retrieved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Messages.ShowSnackbarError("Error: Exam form could not be retrieved.");
                 return;
             }
 
@@ -119,7 +124,7 @@ namespace Presentation
         //private void LoadExams()
         //{
         //    var dto = new GetAllExamsInputDto(new Dictionary<string, object>());
-        //    _exams = ExamService.GetAllExams(dto) ?? new List<Exam>(); // ✅ Prevent null reference issues
+        //    _exams = ExamService.GetAllExams(dto) ?? new List<Exam>(); 
         //}
 
         private void StudentMainForm_FormClosing(object sender, FormClosingEventArgs e)

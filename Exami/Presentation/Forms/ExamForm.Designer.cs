@@ -1,4 +1,6 @@
-﻿namespace Presentation
+﻿using System.Drawing.Drawing2D;
+
+namespace Presentation
 {
     partial class ExamForm
     {
@@ -20,57 +22,6 @@
             base.Dispose(disposing);
         }
 
-        private void DisplayQuestion()
-        {
-            if (questionlist == null || questionlist.Count == 0) return;
-
-            var question = questionlist[currentQuestionIndex];
-            qhead.Controls.Clear();
-
-            var answers = question.Answers;
-
-            Label qh = new Label
-            {
-                Anchor = AnchorStyles.Left | AnchorStyles.Right,
-                AutoSize = true,
-                BackColor = Color.Transparent,
-                Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point),
-                ForeColor = SystemColors.ActiveCaptionText,
-                Location = new Point(12, 57),
-                Name = "qh",
-                Size = new Size(106, 29),
-                TabIndex = 50,
-                Text = question.Body,
-                TextAlign = ContentAlignment.MiddleCenter
-            };
-            qhead.Controls.Add(qh);
-
-            int yOffset = 60;
-
-            foreach (var answer in answers)
-            {
-                RadioButton choice = new RadioButton
-                {
-                    Anchor = AnchorStyles.Left | AnchorStyles.Right,
-                    BackColor = Color.Transparent,
-                    Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point),
-                    ForeColor = SystemColors.ActiveCaptionText,
-                    AutoSize = true,
-                    Location = new Point(14, yOffset),
-                    Name = "choice_" + yOffset,
-                    Size = new Size(128, 27),
-                    TabIndex = 50,
-                    TabStop = true,
-                    Text = answer.AnswerText,
-                    UseVisualStyleBackColor = true
-
-                };
-                choice.BringToFront();
-                qbody.Controls.Add(choice);
-                yOffset += 40;
-            }
-        }
-
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -80,7 +31,6 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            materialScrollBar1 = new MaterialSkin.Controls.MaterialScrollBar();
             timer = new System.Windows.Forms.Timer(components);
             header = new Panel();
             timer_label = new Label();
@@ -89,14 +39,12 @@
             pictureBox1 = new PictureBox();
             main = new SplitContainer();
             qnav = new Panel();
-            kryptonButton1 = new Krypton.Toolkit.KryptonButton();
-            qnum = new Label();
             qbody = new Panel();
             qhead = new Panel();
             qh = new Label();
             footer = new Panel();
-            next_btn = new Krypton.Toolkit.KryptonButton();
-            prev_btn = new Krypton.Toolkit.KryptonButton();
+            pre_btn = new Krypton.Toolkit.KryptonButton();
+            nxt_btn = new Krypton.Toolkit.KryptonButton();
             submit_btn = new Krypton.Toolkit.KryptonButton();
             header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -104,20 +52,9 @@
             main.Panel1.SuspendLayout();
             main.Panel2.SuspendLayout();
             main.SuspendLayout();
-            qnav.SuspendLayout();
             qhead.SuspendLayout();
             footer.SuspendLayout();
             SuspendLayout();
-            // 
-            // materialScrollBar1
-            // 
-            materialScrollBar1.Depth = 0;
-            materialScrollBar1.Location = new Point(0, 0);
-            materialScrollBar1.MouseState = MaterialSkin.MouseState.HOVER;
-            materialScrollBar1.Name = "materialScrollBar1";
-            materialScrollBar1.Orientation = MaterialSkin.Controls.MaterialScrollOrientation.Vertical;
-            materialScrollBar1.Size = new Size(10, 200);
-            materialScrollBar1.TabIndex = 0;
             // 
             // timer
             // 
@@ -153,7 +90,7 @@
             // 
             sd_name.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             sd_name.BackColor = Color.Transparent;
-            sd_name.Font = new Font("Tahoma", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            sd_name.Font = new Font("Tahoma", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
             sd_name.ForeColor = SystemColors.ButtonHighlight;
             sd_name.Location = new Point(843, 0);
             sd_name.Name = "sd_name";
@@ -206,53 +143,10 @@
             // qnav
             // 
             qnav.BorderStyle = BorderStyle.Fixed3D;
-            qnav.Controls.Add(kryptonButton1);
-            qnav.Controls.Add(qnum);
             qnav.Location = new Point(10, 3);
             qnav.Name = "qnav";
             qnav.Size = new Size(163, 491);
             qnav.TabIndex = 1;
-            // 
-            // kryptonButton1
-            // 
-            kryptonButton1.Location = new Point(107, 57);
-            kryptonButton1.Name = "kryptonButton1";
-            kryptonButton1.OverrideDefault.Back.Color1 = Color.Firebrick;
-            kryptonButton1.OverrideDefault.Back.Color2 = Color.Firebrick;
-            kryptonButton1.OverrideDefault.Border.Color1 = Color.Black;
-            kryptonButton1.OverrideDefault.Border.Color2 = Color.Black;
-            kryptonButton1.OverrideDefault.Border.Rounding = 100F;
-            kryptonButton1.OverrideFocus.Back.Color1 = Color.Red;
-            kryptonButton1.OverrideFocus.Back.Color2 = Color.Red;
-            kryptonButton1.OverrideFocus.Border.Rounding = 100F;
-            kryptonButton1.Size = new Size(29, 29);
-            kryptonButton1.StateCommon.Back.Color1 = Color.Firebrick;
-            kryptonButton1.StateCommon.Back.Color2 = Color.Firebrick;
-            kryptonButton1.StateCommon.Border.Color1 = Color.DimGray;
-            kryptonButton1.StateCommon.Border.Color2 = Color.Black;
-            kryptonButton1.StateCommon.Border.Rounding = 100F;
-            kryptonButton1.StateCommon.Border.Width = 1;
-            kryptonButton1.StateDisabled.Border.Rounding = 100F;
-            kryptonButton1.StateNormal.Border.Rounding = 100F;
-            kryptonButton1.StatePressed.Border.Width = 100;
-            kryptonButton1.StateTracking.Border.Rounding = 100F;
-            kryptonButton1.TabIndex = 52;
-            kryptonButton1.Values.DropDownArrowColor = Color.Empty;
-            kryptonButton1.Values.Text = "";
-            // 
-            // qnum
-            // 
-            qnum.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            qnum.AutoSize = true;
-            qnum.BackColor = Color.Transparent;
-            qnum.Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            qnum.ForeColor = SystemColors.ActiveCaptionText;
-            qnum.Location = new Point(23, 57);
-            qnum.Name = "qnum";
-            qnum.Size = new Size(43, 29);
-            qnum.TabIndex = 51;
-            qnum.Text = "Q1";
-            qnum.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // qbody
             // 
@@ -288,8 +182,8 @@
             // footer
             // 
             footer.BackColor = Color.Snow;
-            footer.Controls.Add(next_btn);
-            footer.Controls.Add(prev_btn);
+            footer.Controls.Add(pre_btn);
+            footer.Controls.Add(nxt_btn);
             footer.Controls.Add(submit_btn);
             footer.Dock = DockStyle.Bottom;
             footer.Location = new Point(0, 619);
@@ -297,90 +191,91 @@
             footer.Size = new Size(1180, 101);
             footer.TabIndex = 49;
             // 
-            // next_btn
+            // pre_btn
             // 
-            next_btn.Location = new Point(643, 24);
-            next_btn.Name = "next_btn";
-            next_btn.OverrideDefault.Back.Color1 = Color.Brown;
-            next_btn.OverrideDefault.Back.Color2 = Color.Brown;
-            next_btn.OverrideFocus.Back.Color1 = Color.Brown;
-            next_btn.OverrideFocus.Back.Color2 = Color.Brown;
-            next_btn.Size = new Size(73, 47);
-            next_btn.StateCommon.Back.Color1 = Color.Brown;
-            next_btn.StateCommon.Back.Color2 = Color.Brown;
-            next_btn.StateCommon.Back.ColorAngle = 1F;
-            next_btn.StateCommon.Border.Color1 = Color.FromArgb(64, 64, 64);
-            next_btn.StateCommon.Border.Color2 = Color.FromArgb(64, 64, 64);
-            next_btn.StateCommon.Border.ColorAngle = 1F;
-            next_btn.StateCommon.Border.Rounding = 3F;
-            next_btn.StateCommon.Border.Width = 2;
-            next_btn.StateCommon.Content.LongText.Color1 = Color.FromArgb(224, 224, 224);
-            next_btn.StateCommon.Content.LongText.Color2 = Color.White;
-            next_btn.StateCommon.Content.ShortText.Color1 = Color.White;
-            next_btn.StateCommon.Content.ShortText.Color2 = Color.White;
-            next_btn.StateCommon.Content.ShortText.Font = new Font("Tahoma", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            next_btn.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            next_btn.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            next_btn.StateDisabled.Back.Color1 = Color.Brown;
-            next_btn.StateDisabled.Back.Color2 = Color.Brown;
-            next_btn.StateDisabled.Border.Rounding = 3F;
-            next_btn.StateDisabled.Border.Width = 2;
-            next_btn.StateNormal.Back.Color1 = Color.Brown;
-            next_btn.StateNormal.Back.Color2 = Color.Brown;
-            next_btn.StatePressed.Back.Color1 = Color.Maroon;
-            next_btn.StatePressed.Back.Color2 = Color.Maroon;
-            next_btn.StatePressed.Border.Rounding = 3F;
-            next_btn.StatePressed.Border.Width = 5;
-            next_btn.StateTracking.Back.Color1 = Color.Brown;
-            next_btn.StateTracking.Back.Color2 = Color.Brown;
-            next_btn.TabIndex = 45;
-            next_btn.Values.DropDownArrowColor = Color.Empty;
-            next_btn.Values.ImageTransparentColor = Color.White;
-            next_btn.Values.Text = "Next";
-            next_btn.Click += next_btn_Click;
+            pre_btn.Location = new Point(488, 24);
+            pre_btn.Name = "pre_btn";
+            pre_btn.OverrideDefault.Back.Color1 = Color.Brown;
+            pre_btn.OverrideDefault.Back.Color2 = Color.Brown;
+            pre_btn.OverrideFocus.Back.Color1 = Color.Brown;
+            pre_btn.OverrideFocus.Back.Color2 = Color.Brown;
+            pre_btn.Size = new Size(81, 47);
+            pre_btn.StateCommon.Back.Color1 = Color.Brown;
+            pre_btn.StateCommon.Back.Color2 = Color.Brown;
+            pre_btn.StateCommon.Back.ColorAngle = 1F;
+            pre_btn.StateCommon.Border.Color1 = Color.FromArgb(64, 64, 64);
+            pre_btn.StateCommon.Border.Color2 = Color.FromArgb(64, 64, 64);
+            pre_btn.StateCommon.Border.ColorAngle = 1F;
+            pre_btn.StateCommon.Border.Rounding = 3F;
+            pre_btn.StateCommon.Border.Width = 2;
+            pre_btn.StateCommon.Content.LongText.Color1 = Color.FromArgb(224, 224, 224);
+            pre_btn.StateCommon.Content.LongText.Color2 = Color.White;
+            pre_btn.StateCommon.Content.ShortText.Color1 = Color.White;
+            pre_btn.StateCommon.Content.ShortText.Color2 = Color.White;
+            pre_btn.StateCommon.Content.ShortText.Font = new Font("Tahoma", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pre_btn.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
+            pre_btn.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
+            pre_btn.StateDisabled.Back.Color1 = Color.Brown;
+            pre_btn.StateDisabled.Back.Color2 = Color.Brown;
+            pre_btn.StateDisabled.Border.Rounding = 3F;
+            pre_btn.StateDisabled.Border.Width = 2;
+            pre_btn.StateNormal.Back.Color1 = Color.Brown;
+            pre_btn.StateNormal.Back.Color2 = Color.Brown;
+            pre_btn.StatePressed.Back.Color1 = Color.Maroon;
+            pre_btn.StatePressed.Back.Color2 = Color.Maroon;
+            pre_btn.StatePressed.Border.Rounding = 3F;
+            pre_btn.StatePressed.Border.Width = 5;
+            pre_btn.StateTracking.Back.Color1 = Color.Brown;
+            pre_btn.StateTracking.Back.Color2 = Color.Brown;
+            pre_btn.TabIndex = 50;
+            pre_btn.UseMnemonic = false;
+            pre_btn.Values.DropDownArrowColor = Color.Empty;
+            pre_btn.Values.ImageTransparentColor = Color.White;
+            pre_btn.Values.Text = "Prev";
+            pre_btn.Click += pre_btn_Click;
             // 
-            // prev_btn
+            // nxt_btn
             // 
-            prev_btn.Location = new Point(566, 24);
-            prev_btn.Name = "prev_btn";
-            prev_btn.OverrideDefault.Back.Color1 = Color.Brown;
-            prev_btn.OverrideDefault.Back.Color2 = Color.Brown;
-            prev_btn.OverrideFocus.Back.Color1 = Color.Brown;
-            prev_btn.OverrideFocus.Back.Color2 = Color.Brown;
-            prev_btn.Size = new Size(71, 47);
-            prev_btn.StateCommon.Back.Color1 = Color.Brown;
-            prev_btn.StateCommon.Back.Color2 = Color.Brown;
-            prev_btn.StateCommon.Back.ColorAngle = 1F;
-            prev_btn.StateCommon.Border.Color1 = Color.FromArgb(64, 64, 64);
-            prev_btn.StateCommon.Border.Color2 = Color.FromArgb(64, 64, 64);
-            prev_btn.StateCommon.Border.ColorAngle = 1F;
-            prev_btn.StateCommon.Border.Rounding = 3F;
-            prev_btn.StateCommon.Border.Width = 2;
-            prev_btn.StateCommon.Content.LongText.Color1 = Color.FromArgb(224, 224, 224);
-            prev_btn.StateCommon.Content.LongText.Color2 = Color.White;
-            prev_btn.StateCommon.Content.ShortText.Color1 = Color.White;
-            prev_btn.StateCommon.Content.ShortText.Color2 = Color.White;
-            prev_btn.StateCommon.Content.ShortText.Font = new Font("Tahoma", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            prev_btn.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            prev_btn.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            prev_btn.StateDisabled.Back.Color1 = Color.Brown;
-            prev_btn.StateDisabled.Back.Color2 = Color.Brown;
-            prev_btn.StateDisabled.Border.Rounding = 3F;
-            prev_btn.StateDisabled.Border.Width = 2;
-            prev_btn.StateNormal.Back.Color1 = Color.Brown;
-            prev_btn.StateNormal.Back.Color2 = Color.Brown;
-            prev_btn.StatePressed.Back.Color1 = Color.Maroon;
-            prev_btn.StatePressed.Back.Color2 = Color.Maroon;
-            prev_btn.StatePressed.Border.Rounding = 3F;
-            prev_btn.StatePressed.Border.Width = 5;
-            prev_btn.StateTracking.Back.Color1 = Color.Brown;
-            prev_btn.StateTracking.Back.Color2 = Color.Brown;
-            prev_btn.TabIndex = 44;
-            prev_btn.UseMnemonic = false;
-            prev_btn.Values.DropDownArrowColor = Color.Empty;
-            prev_btn.Values.ImageTransparentColor = Color.White;
-            prev_btn.Values.Text = "Prev";
-            prev_btn.Click += prev_btn_Click;
+            nxt_btn.Location = new Point(605, 24);
+            nxt_btn.Name = "nxt_btn";
+            nxt_btn.OverrideDefault.Back.Color1 = Color.Brown;
+            nxt_btn.OverrideDefault.Back.Color2 = Color.Brown;
+            nxt_btn.OverrideFocus.Back.Color1 = Color.Brown;
+            nxt_btn.OverrideFocus.Back.Color2 = Color.Brown;
+            nxt_btn.Size = new Size(81, 47);
+            nxt_btn.StateCommon.Back.Color1 = Color.Brown;
+            nxt_btn.StateCommon.Back.Color2 = Color.Brown;
+            nxt_btn.StateCommon.Back.ColorAngle = 1F;
+            nxt_btn.StateCommon.Border.Color1 = Color.FromArgb(64, 64, 64);
+            nxt_btn.StateCommon.Border.Color2 = Color.FromArgb(64, 64, 64);
+            nxt_btn.StateCommon.Border.ColorAngle = 1F;
+            nxt_btn.StateCommon.Border.Rounding = 3F;
+            nxt_btn.StateCommon.Border.Width = 2;
+            nxt_btn.StateCommon.Content.LongText.Color1 = Color.FromArgb(224, 224, 224);
+            nxt_btn.StateCommon.Content.LongText.Color2 = Color.White;
+            nxt_btn.StateCommon.Content.ShortText.Color1 = Color.White;
+            nxt_btn.StateCommon.Content.ShortText.Color2 = Color.White;
+            nxt_btn.StateCommon.Content.ShortText.Font = new Font("Tahoma", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            nxt_btn.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
+            nxt_btn.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
+            nxt_btn.StateDisabled.Back.Color1 = Color.Brown;
+            nxt_btn.StateDisabled.Back.Color2 = Color.Brown;
+            nxt_btn.StateDisabled.Border.Rounding = 3F;
+            nxt_btn.StateDisabled.Border.Width = 2;
+            nxt_btn.StateNormal.Back.Color1 = Color.Brown;
+            nxt_btn.StateNormal.Back.Color2 = Color.Brown;
+            nxt_btn.StatePressed.Back.Color1 = Color.Maroon;
+            nxt_btn.StatePressed.Back.Color2 = Color.Maroon;
+            nxt_btn.StatePressed.Border.Rounding = 3F;
+            nxt_btn.StatePressed.Border.Width = 5;
+            nxt_btn.StateTracking.Back.Color1 = Color.Brown;
+            nxt_btn.StateTracking.Back.Color2 = Color.Brown;
+            nxt_btn.TabIndex = 50;
+            nxt_btn.UseMnemonic = false;
+            nxt_btn.Values.DropDownArrowColor = Color.Empty;
+            nxt_btn.Values.ImageTransparentColor = Color.White;
+            nxt_btn.Values.Text = "Next";
+            nxt_btn.Click += nxt_btn_Click;
             // 
             // submit_btn
             // 
@@ -423,6 +318,7 @@
             submit_btn.Values.DropDownArrowColor = Color.Empty;
             submit_btn.Values.ImageTransparentColor = Color.White;
             submit_btn.Values.Text = "Submit";
+            submit_btn.Click += submit_btn_Click;
             // 
             // ExamForm
             // 
@@ -442,8 +338,6 @@
             main.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)main).EndInit();
             main.ResumeLayout(false);
-            qnav.ResumeLayout(false);
-            qnav.PerformLayout();
             qhead.ResumeLayout(false);
             qhead.PerformLayout();
             footer.ResumeLayout(false);
@@ -451,7 +345,6 @@
         }
 
         #endregion
-        private MaterialSkin.Controls.MaterialScrollBar materialScrollBar1;
         private System.Windows.Forms.Timer timer;
         private Panel header;
         private Label sd_name;
@@ -462,12 +355,10 @@
         private Panel qhead;
         private Panel footer;
         private Panel qbody;
-        private Krypton.Toolkit.KryptonButton next_btn;
-        private Krypton.Toolkit.KryptonButton prev_btn;
         private Krypton.Toolkit.KryptonButton submit_btn;
-        private Label qnum;
         private Label qh;
-        private Krypton.Toolkit.KryptonButton kryptonButton1;
         private Label timer_label;
+        private Krypton.Toolkit.KryptonButton pre_btn;
+        private Krypton.Toolkit.KryptonButton nxt_btn;
     }
 }

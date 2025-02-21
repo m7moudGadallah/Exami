@@ -8,6 +8,7 @@ namespace Presentation.Forms
 {
     public partial class LoginForm : Form
     {
+        #region  UI Components
         #region componnents intialzation
         public LoginForm()
         {
@@ -267,7 +268,20 @@ namespace Presentation.Forms
         #endregion
         #region controls
         #endregion
+        private MaterialSkin.Controls.MaterialCard materialCard1;
+        private Krypton.Toolkit.KryptonTextBox email_txt_box;
+        private Krypton.Toolkit.KryptonTextBox pass_txt;
+        private Krypton.Toolkit.KryptonButton login_btn;
+        private MaterialSkin.Controls.MaterialLabel pass_txt_box;
+        private Panel panel1;
+        private Panel panel2;
+        private Label logo;
+        private Krypton.Toolkit.KryptonLinkLabel help_link;
+        private Krypton.Toolkit.KryptonLinkLabel contactlink;
+        private MaterialSkin.Controls.MaterialLabel email_label;
 
+        #endregion
+        
         #region Login Button Click Event
         private void login_btn_Click(object sender, EventArgs e)
         {
@@ -276,7 +290,7 @@ namespace Presentation.Forms
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Please enter both email and password.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Messages.ShowSnackbarError("Please enter both email and password.");
                 return;
             }
 
@@ -287,7 +301,7 @@ namespace Presentation.Forms
                 User user = AuthService.Login(loginDto);
                 if (user == null)
                 {
-                    MessageBox.Show("Invalid email or password.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Messages.ShowSnackbarError("Invalid email or password.");
                     return;
                 }
 
@@ -310,7 +324,7 @@ namespace Presentation.Forms
                         break;
 
                     default:
-                        MessageBox.Show("Invalid Role", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Messages.ShowSnackbarError("Invalid Role");
                         return;
                 }
 
@@ -318,27 +332,15 @@ namespace Presentation.Forms
             }
             catch (AppException ex)
             {
-                MessageBox.Show(ex.Message, "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Messages.ShowSnackbarError(ex.Message);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An unexpected error occurred. Please try again later.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Debug.WriteLine($"Unexpected error: {ex.Message}\n{ex}");
+                Messages.ShowSnackbarError(ex.Message);
             }
         }
         #endregion
 
-        private MaterialSkin.Controls.MaterialCard materialCard1;
-        private Krypton.Toolkit.KryptonTextBox email_txt_box;
-        private Krypton.Toolkit.KryptonTextBox pass_txt;
-        private Krypton.Toolkit.KryptonButton login_btn;
-        private MaterialSkin.Controls.MaterialLabel pass_txt_box;
-        private Panel panel1;
-        private Panel panel2;
-        private Label logo;
-        private Krypton.Toolkit.KryptonLinkLabel help_link;
-        private Krypton.Toolkit.KryptonLinkLabel contactlink;
-        private MaterialSkin.Controls.MaterialLabel email_label;
     }
 
 }

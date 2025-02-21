@@ -37,10 +37,10 @@ namespace Presentation
         private void StudentMainForm_Load(object sender, EventArgs e)
         {
             LoadExams();
-            DisplayExams(_exams);
+            inqueue_btn.PerformClick();
         }
 
-        private void DisplayExams(List<Exam> e)
+        private void DisplayExams(List<StudentExam> e)
         {
             panel2.Controls.Clear();
             if (e == null || e.Count == 0)
@@ -100,7 +100,7 @@ namespace Presentation
                 eview.StateTracking.Back.Color2 = Color.Brown;
 
                 // Attach Click Event Handler (IMPORTANT)
-                eview.Click += (sender, args) => eview_click(sender, args, exam);
+                eview.Click += (sender, args) => eview_click(sender, args, exam.Exam);
 
                 // Duration Label
                 eduration.BackColor = Color.Brown;
@@ -110,7 +110,7 @@ namespace Presentation
                 eduration.Name = $"eduration_{examId}";
                 eduration.Size = new Size(143, 50);
                 eduration.TabIndex = 51;
-                eduration.Text = $"{exam.EndTime - exam.StartTime}";
+                eduration.Text = $"{exam.Exam.EndTime - exam.Exam.StartTime}";
                 eduration.TextAlign = ContentAlignment.MiddleCenter;
 
                 // Date Label
@@ -121,7 +121,7 @@ namespace Presentation
                 edate.Name = $"edate_{examId}";
                 edate.Size = new Size(143, 50);
                 edate.TabIndex = 51;
-                edate.Text = $"{exam.StartTime}";
+                edate.Text = $"{exam.Exam.StartTime}";
                 edate.TextAlign = ContentAlignment.MiddleCenter;
 
                 // Name Label
@@ -132,7 +132,7 @@ namespace Presentation
                 ename.Name = $"ename_{examId}";
                 ename.Size = new Size(143, 50);
                 ename.TabIndex = 50;
-                ename.Text = $"{exam.Name}";
+                ename.Text = $"{exam.Exam.Name}";
                 ename.TextAlign = ContentAlignment.MiddleCenter;
 
                 // Add card to panel
@@ -346,7 +346,7 @@ namespace Presentation
             allexams_btn.Values.DropDownArrowColor = Color.Empty;
             allexams_btn.Values.ImageTransparentColor = Color.White;
             allexams_btn.Values.Text = "All Exams";
-            allexams_btn.Click += allexams_btn_Click;
+            //allexams_btn.Click += allexams_btn_Click;
             // 
             // header
             // 
