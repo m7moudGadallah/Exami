@@ -24,16 +24,15 @@ public class ExamMapper : BaseMapper<Exam>
 
 
         // Convert the DataRow into an Exam object
-        return new Exam(
-           Id: row[columnNameMapping["Id"]] == DBNull.Value ? 0 : Convert.ToInt32(row[columnNameMapping["Id"]]),
-           Name: row[columnNameMapping["Name"]].ToString(),
-           SubjectId: row[columnNameMapping["SubjectId"]] == DBNull.Value ? (int?)null : Convert.ToInt32(row[columnNameMapping["SubjectId"]]),
-           StartTime: Convert.ToDateTime(row[columnNameMapping["StartTime"]]),
-           EndTime: Convert.ToDateTime(row[columnNameMapping["EndTime"]]),
-           ExamType: ParseExamType(row[columnNameMapping["ExamType"]].ToString()),
-           Instructions: row[columnNameMapping["Instructions"]] == DBNull.Value ? null : row[columnNameMapping["Instructions"]].ToString()
-       )
+        return new Exam()
         {
+            Id = row[columnNameMapping["Id"]] == DBNull.Value ? 0 : Convert.ToInt32(row[columnNameMapping["Id"]]),
+            Name = row[columnNameMapping["Name"]].ToString(),
+            SubjectId = row[columnNameMapping["SubjectId"]] == DBNull.Value ? (int?)null : Convert.ToInt32(row[columnNameMapping["SubjectId"]]),
+            StartTime = Convert.ToDateTime(row[columnNameMapping["StartTime"]]),
+            EndTime = Convert.ToDateTime(row[columnNameMapping["EndTime"]]),
+            ExamType = ParseExamType(row[columnNameMapping["ExamType"]].ToString()),
+            Instructions = row[columnNameMapping["Instructions"]] == DBNull.Value ? null : row[columnNameMapping["Instructions"]].ToString(),
             Subject = subject
         };
     }

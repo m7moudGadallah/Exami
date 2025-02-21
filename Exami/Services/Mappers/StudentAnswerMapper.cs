@@ -14,10 +14,11 @@ public class StudentAnswerMapper : BaseMapper<StudentAnswer>
         if (columnNameMapping == null) columnNameMapping = new Dictionary<string, string>();
 
         // Convert the DataRow into a StudentAnswer object
-        return new StudentAnswer(
-            StudentExamId: Convert.ToInt32(row[columnNameMapping["StudentExamId"]]),
-            AnswerId: Convert.ToInt32(row[columnNameMapping["AnswerId"]]),
-            CreatedAt: (row[columnNameMapping["CreatedAt"]] == DBNull.Value) ? null : Convert.ToDateTime(row[columnNameMapping["CreatedAt"]])
-        );
+        return new()
+        {
+            StudentExamId = Convert.ToInt32(row[columnNameMapping["StudentExamId"]]),
+            AnswerId = Convert.ToInt32(row[columnNameMapping["AnswerId"]]),
+            CreatedAt = (row[columnNameMapping["CreatedAt"]] == DBNull.Value) ? null : Convert.ToDateTime(row[columnNameMapping["CreatedAt"]])
+        };
     }
 }

@@ -15,11 +15,12 @@ public class AnswerMapper : BaseMapper<Answer>
 
         InitializeColumnNameMapping(Columns, columnNameMapping);
 
-        return new Answer(
-            Id: Convert.ToInt32(row[columnNameMapping["Id"]]),
-            QuestionId: row[columnNameMapping["QuestionId"]] == DBNull.Value ? null : Convert.ToInt32(row[columnNameMapping["QuestionId"]]),
-            AnswerText: row[columnNameMapping["AnswerText"]].ToString(),
-            IsCorrect: Convert.ToBoolean(row[columnNameMapping["IsCorrect"]])
-       );
+        return new Answer()
+        {
+            Id = Convert.ToInt32(row[columnNameMapping["Id"]]),
+            QuestionId = row[columnNameMapping["QuestionId"]] == DBNull.Value ? null : Convert.ToInt32(row[columnNameMapping["QuestionId"]]),
+            AnswerText = row[columnNameMapping["AnswerText"]].ToString(),
+            IsCorrect = Convert.ToBoolean(row[columnNameMapping["IsCorrect"]])
+        };
     }
 }

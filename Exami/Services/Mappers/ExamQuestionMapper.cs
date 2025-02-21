@@ -17,10 +17,11 @@ public class ExamQuestionMapper : BaseMapper<ExamQuestion>
         {
             if (row == null) return null;
 
-            return new(
-                ExamId: Convert.ToInt32(row[columnNameMapping["ExamId"]]),
-                QuestionId: Convert.ToInt32(row[columnNameMapping["QuestionId"]])
-            );
+            return new()
+            {
+                ExamId = Convert.ToInt32(row[columnNameMapping["ExamId"]]),
+                QuestionId = Convert.ToInt32(row[columnNameMapping["QuestionId"]])
+            };
         }
     }
 }

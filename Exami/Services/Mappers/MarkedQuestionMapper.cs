@@ -13,9 +13,10 @@ public class MarkedQuestionMapper : BaseMapper<MarkedQuestion>
 
         if (columnNameMapping == null) columnNameMapping = new Dictionary<string, string>();
 
-        return new(
-            StudentExamID: Convert.ToInt32(row[columnNameMapping["StudentExamID"]]),
-            QuestionId: Convert.ToInt32(row[columnNameMapping["QuestionId"]])
-            );
+        return new()
+        {
+            StudentExamID = Convert.ToInt32(row[columnNameMapping["StudentExamID"]]),
+            QuestionId = Convert.ToInt32(row[columnNameMapping["QuestionId"]])
+        };
     }
 }

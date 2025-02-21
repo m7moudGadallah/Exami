@@ -22,14 +22,15 @@ namespace Services.Mappers
                 answers.Add(new AnswerMapper().MapFromDataRow(row, new() { ["Id"] = "AnswerId", ["QuestionId"] = "Id" }));
             }
 
-            return new Question(
-                Id: Convert.ToInt32(row[columnNameMapping["Id"]]),
-                Marks: Convert.ToDouble(row[columnNameMapping["Marks"]]),
-                Body: row[columnNameMapping["Body"]].ToString(),
-                QuestionType: ParseQuetionType(row[columnNameMapping["QuestionType"]].ToString()),
-                SubjectId: row[columnNameMapping["SubjectId"]] == DBNull.Value ? null : Convert.ToInt32(row[columnNameMapping["SubjectId"]])
-            )
-            { Answers = answers };
+            return new()
+            {
+                Id = Convert.ToInt32(row[columnNameMapping["Id"]]),
+                Marks = Convert.ToDouble(row[columnNameMapping["Marks"]]),
+                Body = row[columnNameMapping["Body"]].ToString(),
+                QuestionType = ParseQuetionType(row[columnNameMapping["QuestionType"]].ToString()),
+                SubjectId = row[columnNameMapping["SubjectId"]] == DBNull.Value ? null : Convert.ToInt32(row[columnNameMapping["SubjectId"]]),
+                Answers = answers
+            };
         }
 
         public override List<Question> MapFromDataTable(DataTable table)

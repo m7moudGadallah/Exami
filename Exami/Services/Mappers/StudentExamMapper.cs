@@ -16,16 +16,17 @@ public class StudentExamMapper : BaseMapper<StudentExam>
         InitializeColumnNameMapping(Columns, columnNameMapping);
 
         // Convert the DataRow into a StudentExam object
-        return new StudentExam(
-            Id: Convert.ToInt32(row[columnNameMapping["Id"]]),
-            ExamId: Convert.ToInt32(row[columnNameMapping["ExamId"]]),
-            StudentId: Convert.ToInt32(row[columnNameMapping["StudentId"]]),
-            SubmissionTime: row[columnNameMapping["SubmissionTime"]] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row[columnNameMapping["SubmissionTime"]]),
-            CreatedAt: Convert.ToDateTime(row[columnNameMapping["CreatedAt"]]),
-            UpdatedAt: Convert.ToDateTime(row[columnNameMapping["UpdatedAt"]]),
-            Student: new UserMapper().MapFromDataRow(row, new() { ["Id"] = "StudentId" }),
-            Exam: new ExamMapper().MapFromDataRow(row, new() { ["Id"] = "ExamId" })
-        );
+        return new()
+        {
+            Id = Convert.ToInt32(row[columnNameMapping["Id"]]),
+            ExamId = Convert.ToInt32(row[columnNameMapping["ExamId"]]),
+            StudentId = Convert.ToInt32(row[columnNameMapping["StudentId"]]),
+            SubmissionTime = row[columnNameMapping["SubmissionTime"]] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row[columnNameMapping["SubmissionTime"]]),
+            CreatedAt = Convert.ToDateTime(row[columnNameMapping["CreatedAt"]]),
+            UpdatedAt = Convert.ToDateTime(row[columnNameMapping["UpdatedAt"]]),
+            Student = new UserMapper().MapFromDataRow(row, new() { ["Id"] = "StudentId" }),
+            Exam = new ExamMapper().MapFromDataRow(row, new() { ["Id"] = "ExamId" })
+        };
     }
 
 }

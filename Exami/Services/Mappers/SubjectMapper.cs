@@ -22,12 +22,11 @@ public class SubjectMapper : BaseMapper<Subject>
             teacher = new UserMapper().MapFromDataRow(row, new() { ["Id"] = "TeacherId" });
         }
 
-        return new Subject(
-            Id: Convert.ToInt32(row[columnNameMapping["Id"]]),
-            Name: row[columnNameMapping["Name"]].ToString(),
-            TeacherId: (row["TeacherId"] == DBNull.Value) ? null : Convert.ToInt32(row[columnNameMapping["TeacherId"]])
-        )
+        return new()
         {
+            Id = Convert.ToInt32(row[columnNameMapping["Id"]]),
+            Name = row[columnNameMapping["Name"]].ToString(),
+            TeacherId = (row["TeacherId"] == DBNull.Value) ? null : Convert.ToInt32(row[columnNameMapping["TeacherId"]]),
             Teacher = teacher
         };
     }

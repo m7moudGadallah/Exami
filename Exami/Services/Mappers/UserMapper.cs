@@ -15,14 +15,15 @@ public class UserMapper : BaseMapper<User>
         InitializeColumnNameMapping(Columns, columnNameMapping);
 
         // Convert the DataRow into a User object
-        return new User(
-            Id: Convert.ToInt32(row[columnNameMapping["Id"]]),
-            FirstName: row[columnNameMapping["FirstName"]] as string,
-            LastName: row[columnNameMapping["LastName"]] as string,
-            Role: ParseUserRole(row[columnNameMapping["Role"]].ToString()),
-            Email: row[columnNameMapping["Email"]].ToString(),
-            Password: row[columnNameMapping["Password"]].ToString()
-        );
+        return new()
+        {
+            Id = Convert.ToInt32(row[columnNameMapping["Id"]]),
+            FirstName = row[columnNameMapping["FirstName"]] as string,
+            LastName = row[columnNameMapping["LastName"]] as string,
+            Role = ParseUserRole(row[columnNameMapping["Role"]].ToString()),
+            Email = row[columnNameMapping["Email"]].ToString(),
+            Password = row[columnNameMapping["Password"]].ToString()
+        };
     }
 
     private UserRole ParseUserRole(string roleString)
