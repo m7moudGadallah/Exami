@@ -1,17 +1,17 @@
-﻿
-using Entities;
+﻿using Entities;
+using Presentation.Forms;
+using Presentation.Helpers;
 using Services.DTOs;
 using Services.Services;
-using Presentation.Helpers;
-using Presentation.Forms;
 
 namespace Presentation
 {
-    public partial class StudentMainForm : Form
+    internal partial class StudentMainForm : Form
     {
-        private List<StudentExam> _exams = new List<StudentExam>();
-        private readonly int studentId = UserSession.LoggedInUser.Id;
-        private int selectedExamId;
+
+         static List<StudentExam> _exams = new List<StudentExam>();
+         readonly int studentId = UserSession.LoggedInUser.Id;
+         int selectedExamId;
 
         private void LoadExams()
         {
@@ -20,26 +20,24 @@ namespace Presentation
             var examsDto = new GetAllStudentExamsInputDto()
             {
                 Filters = new Dictionary<string, object>
-        {
-            {"StudentId", studentId }
-        }
+                {
+                    {"StudentId", studentId }
+                }
             };
 
             var studentExams = StudentExamService.GetAllStudentExams(examsDto);
             _exams = studentExams.Select(se => new StudentExam
- (
-     se.Id,
-     se.ExamId,
-     se.StudentId,
-     se.SubmissionTime,
-     se.CreatedAt,
-     se.UpdatedAt,
-     se.Student,
-     se.Exam
- )).ToList();
+            (
+                se.Id,
+                se.ExamId,
+                se.StudentId,
+                se.SubmissionTime,
+                se.CreatedAt,
+                se.UpdatedAt,
+                se.Student,
+                se.Exam
+            )).ToList();
         }
-
-
 
         private void inqueue_btn_Click(object sender, EventArgs e)
         {
@@ -54,7 +52,7 @@ namespace Presentation
             }
             else
             {
-                Messages.ShowSnackbarError("No upcoming exams found.");
+                Messages.ShowSnackbarNotification("No upcoming exams found.");
             }
         }
 
@@ -69,19 +67,12 @@ namespace Presentation
             {
                 DisplayExams(pastExams);
                 //eview.hide();
-
             }
             else
             {
                 Messages.ShowSnackbarError("No past exams found.");
             }
         }
-
-        //private void allexams_btn_Click(object sender, EventArgs e)
-        //{
-        //    panel2.Controls.Clear();
-        //    DisplayExams(_exams);
-        //}
 
         private void eview_click(object sender, EventArgs e, Exam exam)
         {
@@ -91,14 +82,14 @@ namespace Presentation
                 return;
             }
 
-            selectedExamId = exam.Id; 
+            selectedExamId = exam.Id;
 
             var examsDto = new GetAllExamsInputDto()
             {
                 Filters = new Dictionary<string, object>
-        {
-            { "Id", selectedExamId }
-        }
+                {
+                    { "Id", selectedExamId }
+                }
             };
 
             var fetchedExam = ExamService.GetAllExams(examsDto) ?? new List<Exam>();
@@ -108,24 +99,9 @@ namespace Presentation
                 return;
             }
 
-            // Ensure Session is being set
-            ExamSession.SetSession(studentId, selectedExamId);
-            var examForm = FormsRepo.GetForm<ExamForm>();
-
-            if (examForm == null)
-            {
-                Messages.ShowSnackbarError("Error: Exam form could not be retrieved.");
-                return;
-            }
-
-            examForm.Show();
+            var insForm = new Instruction(exam);
+            insForm.Show();
         }
-
-        //private void LoadExams()
-        //{
-        //    var dto = new GetAllExamsInputDto(new Dictionary<string, object>());
-        //    _exams = ExamService.GetAllExams(dto) ?? new List<Exam>(); 
-        //}
 
         private void StudentMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
