@@ -7,24 +7,24 @@ namespace Database;
 /// </summary>
 /// <remarks>
 /// This class allows you to construct SQL queries step-by-step by applying filters, ordering, and pagination.
-/// It maintains a <see cref="DBCommandParams"/> object that contains the SQL query string and parameters.
+/// It maintains a <see cref="DbCommandParams"/> object that contains the SQL query string and parameters.
 /// </remarks>
 public class SqlQueryBuilder
 {
-    public SqlQueryBuilder(DBCommandParams cmdParams)
+    public SqlQueryBuilder(DbCommandParams cmdParams)
     {
         this._sql = new StringBuilder(cmdParams.Sql);
         this._cmdParams = cmdParams;
     }
 
     private StringBuilder _sql;
-    private DBCommandParams _cmdParams;
+    private DbCommandParams _cmdParams;
 
     /// <summary>
-    /// Gets the current <see cref="DBCommandParams"/> object, including the updated SQL query string and parameters.
+    /// Gets the current <see cref="DbCommandParams"/> object, including the updated SQL query string and parameters.
     /// </summary>
-    /// <returns>A <see cref="DBCommandParams"/> object containing the final SQL query and parameters.</returns>
-    public DBCommandParams CmdParams { get => _cmdParams with { Sql = _sql.ToString() }; }
+    /// <returns>A <see cref="DbCommandParams"/> object containing the final SQL query and parameters.</returns>
+    public DbCommandParams CmdParams { get => _cmdParams with { Sql = _sql.ToString() }; }
 
     /// <summary>
     /// Applies filters to the SQL query based on the provided key-value pairs.

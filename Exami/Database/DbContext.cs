@@ -5,25 +5,32 @@ using Utilities.Config;
 
 namespace Database;
 
-public static class DatabaseManager
+public class DbContext
 {
-    private static readonly string ConnectionString = AppConfig.ConnectionString;
+    private static DbContext _instance = null;
+    private readonly string _connectionString = AppConfig.ConnectionString;
 
-    /// <summary>
-    /// Ensures that the ConnectionString property has been initialized.
-    /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
-    static DatabaseManager()
+    DbContext()
     {
-        if (string.IsNullOrEmpty(ConnectionString))
+        if (string.IsNullOrEmpty(_connectionString))
         {
             throw new InvalidOperationException("The ConnectionString property has not been initialized.");
         }
     }
+
+    public static DbContext GetInstance()
+    {
+        if (_instance == null)
+        {
+            _instance = new DbContext();
+        }
+        return _instance;
+    }
+
     /// <summary>
     /// Executes a non-query command (e.g., INSERT, UPDATE, DELETE).
     /// </summary>
-    public static int ExecuteNonQuery(DBCommandParams cmdParams)
+    public int ExecuteNonQuery(DbCommandParams cmdParams)
     {
         return ExecuteCommand(cmdParams, cmd => cmd.ExecuteNonQuery());
     }
@@ -31,7 +38,7 @@ public static class DatabaseManager
     /// <summary>
     /// Executes a scalar query (e.g., SELECT COUNT(*)) and returns the first column of the first row.
     /// </summary>
-    public static object ExecuteScalar(DBCommandParams cmdParams)
+    public object ExecuteScalar(DbCommandParams cmdParams)
     {
         return ExecuteCommand(cmdParams, cmd => cmd.ExecuteScalar());
     }
@@ -39,7 +46,7 @@ public static class DatabaseManager
     /// <summary>
     /// Executes a query and returns the results as a DataTable.
     /// </summary>
-    public static DataTable ExecuteDataTable(DBCommandParams cmdParams)
+    public DataTable ExecuteDataTable(DbCommandParams cmdParams)
     {
         return ExecuteCommand(cmdParams, cmd =>
         {
@@ -55,9 +62,9 @@ public static class DatabaseManager
     /// <summary>
     /// Generic method to execute a command and return a result.
     /// </summary>
-    private static T ExecuteCommand<T>(DBCommandParams cmdParams, Func<SqlCommand, T> action)
+    private T ExecuteCommand<T>(DbCommandParams cmdParams, Func<SqlCommand, T> action)
     {
-        using (var connection = new SqlConnection(ConnectionString))
+        using (var connection = new SqlConnection(_connectionString))
         using (var command = new SqlCommand(cmdParams.Sql, connection) { CommandType = cmdParams.CommandType })
         {
             if (cmdParams?.Parameters != null)
@@ -84,7 +91,7 @@ public static class DatabaseManager
     /// <summary>
     /// Logs errors to a proper logging system (replace with a real logger in production).
     /// </summary>
-    private static void LogError(string message, Exception exception)
+    private void LogError(string message, Exception exception)
     {
         // Replace this with a proper logging framework (e.g., Serilog, NLog)
         Debug.WriteLine($"{message}\n{exception}");
