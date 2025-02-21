@@ -49,4 +49,33 @@ public static class UserService
             throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
         }
     }
+
+    public static User CreateUser(CreateUserInputDto dto)
+    {
+        try
+        {
+            var sql = @"
+                INSERT INTO [User] (FirstName, LastName, Role, Email, Password)
+                OUTPUT INSERTED.*
+                VALUES (@FirstName, @LastName, @Role, @Email, @Password);";
+
+            DBCommandParams cmdParams = new(sql, CommandType.Text, new()
+            {
+                ["@FirstName"] = dto?.FirstName == null ? DBNull.Value : dto.FirstName,
+                ["@LastName"] = dto?.LastName == null ? DBNull.Value : dto.LastName,
+                ["Role"] = dto.Role.ToString(),
+                ["@Email"] = dto.Email,
+                ["@Password"] = dto.Password
+            });
+
+            var user = new UserMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams))[0];
+
+            return user;
+        }
+        catch (Exception ex)
+        {
+            throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
+        }
+    }
+
 }
