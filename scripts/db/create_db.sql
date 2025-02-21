@@ -154,3 +154,18 @@ FROM
 	[Subject] s
 LEFT JOIN 
 	[User] t ON s.TeacherId = t.Id;
+
+CREATE VIEW [ExamQuestionFullView] AS
+SELECT
+	eq.*,
+	eq.QuestionId AS Id,
+	q.Body,
+	q.Marks,
+	q.QuestionType,
+	q.SubjectId,
+	q.AnswerId,
+	q.AnswerText,
+	q.IsCorrect
+FROM ExamQuestion eq
+LEFT JOIN
+	[QuestionFullView]  q on eq.QuestionId = q.Id;
