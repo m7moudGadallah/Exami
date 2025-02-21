@@ -7,8 +7,24 @@ using Utilities.Exceptoins;
 
 namespace Services.Services;
 
+/// <summary>
+/// Provides methods to manage user records, including retrieving, creating, updating, and deleting users.
+/// </summary>
 public static class UserService
 {
+    /// <summary>
+    /// Retrieves a list of users based on the provided filters, ordering, and pagination parameters.
+    /// </summary>
+    /// <param name="dto">An optional <see cref="GetAllUsersInputDto"/> object containing filtering, ordering, and pagination parameters.</param>
+    /// <returns>A list of <see cref="User"/> objects that match the specified filters and ordering criteria.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if an error occurs during the database operation.
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
+    /// </exception>
+    /// <remarks>
+    /// This method dynamically constructs a SQL query using the provided filters, ordering, and pagination parameters.
+    /// It queries the <c>User</c> table to fetch the data.
+    /// </remarks>
     public static List<User> GetAllUsers(GetAllUsersInputDto? dto)
     {
         try
@@ -50,6 +66,15 @@ public static class UserService
         }
     }
 
+    /// <summary>
+    /// Creates a new user record in the database.
+    /// </summary>
+    /// <param name="dto">A <see cref="CreateUserInputDto"/> object containing the details of the user to create.</param>
+    /// <returns>A <see cref="User"/> object representing the newly created user.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if an error occurs during the database operation.
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
+    /// </exception>
     public static User CreateUser(CreateUserInputDto dto)
     {
         try
@@ -78,6 +103,19 @@ public static class UserService
         }
     }
 
+    /// <summary>
+    /// Updates an existing user record in the database.
+    /// </summary>
+    /// <param name="user">A <see cref="User"/> object containing the updated details of the user.</param>
+    /// <returns>A <see cref="User"/> object representing the updated user.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if:
+    /// <list type="bullet">
+    ///     <item>The user with the specified ID does not exist.</item>
+    ///     <item>An error occurs during the database operation.</item>
+    /// </list>
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
+    /// </exception>
     public static User UpdateUser(User user)
     {
         try
@@ -120,7 +158,15 @@ public static class UserService
         }
     }
 
-
+    /// <summary>
+    /// Deletes a user record from the database.
+    /// </summary>
+    /// <param name="dto">A <see cref="DeleteUserInputDto"/> object containing the ID of the user to delete.</param>
+    /// <returns><c>true</c> if the user was successfully deleted; otherwise, <c>false</c>.</returns>
+    /// <exception cref="AppException">
+    /// Thrown if an error occurs during the database operation.
+    /// The exception includes a descriptive message and an inner exception for debugging purposes.
+    /// </exception>
     public static bool DeleteUser(DeleteUserInputDto dto)
     {
         try
