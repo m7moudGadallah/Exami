@@ -27,7 +27,6 @@
         <ProjectReference Include="..\Database\Database.csproj" />
         <ProjectReference Include="..\Entities\Entities.csproj" />
         <ProjectReference Include="..\Services\Services.csproj" />
-        <ProjectReference Include="..\Test\Test.csproj" />
         <ProjectReference Include="..\Utilities\Utilities.csproj" />
     </ItemGroup>
 

@@ -28,215 +28,162 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
-            textBox1 = new TextBox();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
-            label5 = new Label();
-            label6 = new Label();
-            comboBox1 = new ComboBox();
-            comboBox2 = new ComboBox();
-            comboBox3 = new ComboBox();
-            comboBox4 = new ComboBox();
+            name_lbl = new Label();
+            Name_Box = new TextBox();
+            subject_lbl = new Label();
+            type_lbl = new Label();
+            duration_lbl = new Label();
+            instructions_lbl = new Label();
+            Subject_Box = new ComboBox();
+            Type_Box = new ComboBox();
             label8 = new Label();
-            Questions = new ListBox();
-            button1 = new Button();
-            richTextBox1 = new RichTextBox();
-            comboBox5 = new ComboBox();
-            button2 = new Button();
-            button3 = new Button();
+            Create_Button = new Button();
+            Instructions_Box = new RichTextBox();
+            startDatePicker = new DateTimePicker();
+            endDatePicker = new DateTimePicker();
             SuspendLayout();
             // 
-            // label1
+            // name_lbl
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.Brown;
-            label1.Location = new Point(79, 53);
-            label1.Name = "label1";
-            label1.Size = new Size(119, 48);
-            label1.TabIndex = 0;
-            label1.Text = "Name";
-            label1.Click += label1_Click_1;
+            name_lbl.AutoSize = true;
+            name_lbl.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            name_lbl.ForeColor = Color.Brown;
+            name_lbl.Location = new Point(79, 53);
+            name_lbl.Name = "name_lbl";
+            name_lbl.Size = new Size(119, 48);
+            name_lbl.TabIndex = 0;
+            name_lbl.Text = "Name";
+            name_lbl.Click += label1_Click_1;
             // 
-            // textBox1
+            // Name_Box
             // 
-            textBox1.ForeColor = Color.FromArgb(64, 64, 64);
-            textBox1.Location = new Point(311, 53);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(1181, 55);
-            textBox1.TabIndex = 1;
+            Name_Box.ForeColor = Color.FromArgb(64, 64, 64);
+            Name_Box.Location = new Point(311, 53);
+            Name_Box.Name = "Name_Box";
+            Name_Box.Size = new Size(1276, 55);
+            Name_Box.TabIndex = 1;
             // 
-            // label2
+            // subject_lbl
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.ForeColor = Color.Brown;
-            label2.Location = new Point(79, 225);
-            label2.Name = "label2";
-            label2.Size = new Size(144, 48);
-            label2.TabIndex = 2;
-            label2.Text = "Subject";
+            subject_lbl.AutoSize = true;
+            subject_lbl.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            subject_lbl.ForeColor = Color.Brown;
+            subject_lbl.Location = new Point(79, 241);
+            subject_lbl.Name = "subject_lbl";
+            subject_lbl.Size = new Size(144, 48);
+            subject_lbl.TabIndex = 2;
+            subject_lbl.Text = "Subject";
             // 
-            // label3
+            // type_lbl
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.ForeColor = Color.Brown;
-            label3.Location = new Point(79, 141);
-            label3.Name = "label3";
-            label3.Size = new Size(99, 48);
-            label3.TabIndex = 4;
-            label3.Text = "Type";
+            type_lbl.AutoSize = true;
+            type_lbl.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            type_lbl.ForeColor = Color.Brown;
+            type_lbl.Location = new Point(79, 153);
+            type_lbl.Name = "type_lbl";
+            type_lbl.Size = new Size(99, 48);
+            type_lbl.TabIndex = 4;
+            type_lbl.Text = "Type";
             // 
-            // label4
+            // duration_lbl
             // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.ForeColor = Color.Brown;
-            label4.Location = new Point(79, 490);
-            label4.Name = "label4";
-            label4.Size = new Size(170, 48);
-            label4.TabIndex = 6;
-            label4.Text = "Duration";
+            duration_lbl.AutoSize = true;
+            duration_lbl.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            duration_lbl.ForeColor = Color.Brown;
+            duration_lbl.Location = new Point(80, 328);
+            duration_lbl.Name = "duration_lbl";
+            duration_lbl.Size = new Size(170, 48);
+            duration_lbl.TabIndex = 6;
+            duration_lbl.Text = "Duration";
             // 
-            // label5
+            // instructions_lbl
             // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label5.ForeColor = Color.Brown;
-            label5.Location = new Point(79, 354);
-            label5.Name = "label5";
-            label5.Size = new Size(188, 48);
-            label5.TabIndex = 8;
-            label5.Text = "Questions";
-            label5.Click += label5_Click;
+            instructions_lbl.AutoSize = true;
+            instructions_lbl.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            instructions_lbl.ForeColor = Color.Brown;
+            instructions_lbl.Location = new Point(80, 440);
+            instructions_lbl.Name = "instructions_lbl";
+            instructions_lbl.Size = new Size(220, 48);
+            instructions_lbl.TabIndex = 10;
+            instructions_lbl.Text = "Instructions";
+            instructions_lbl.Click += label6_Click;
             // 
-            // label6
+            // Subject_Box
             // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label6.ForeColor = Color.Brown;
-            label6.Location = new Point(79, 592);
-            label6.Name = "label6";
-            label6.Size = new Size(220, 48);
-            label6.TabIndex = 10;
-            label6.Text = "Instructions";
+            Subject_Box.ForeColor = Color.FromArgb(64, 64, 64);
+            Subject_Box.FormattingEnabled = true;
+            Subject_Box.Location = new Point(311, 233);
+            Subject_Box.Name = "Subject_Box";
+            Subject_Box.Size = new Size(576, 56);
+            Subject_Box.TabIndex = 12;
+            Subject_Box.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
-            // comboBox1
+            // Type_Box
             // 
-            comboBox1.ForeColor = Color.FromArgb(64, 64, 64);
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(311, 217);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(549, 56);
-            comboBox1.TabIndex = 12;
-            // 
-            // comboBox2
-            // 
-            comboBox2.ForeColor = Color.FromArgb(64, 64, 64);
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(311, 133);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(549, 56);
-            comboBox2.TabIndex = 13;
-            // 
-            // comboBox3
-            // 
-            comboBox3.ForeColor = Color.FromArgb(64, 64, 64);
-            comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(310, 487);
-            comboBox3.Name = "comboBox3";
-            comboBox3.Size = new Size(550, 56);
-            comboBox3.TabIndex = 14;
-            comboBox3.Text = "From";
-            comboBox3.SelectedIndexChanged += comboBox3_SelectedIndexChanged;
-            // 
-            // comboBox4
-            // 
-            comboBox4.ForeColor = Color.FromArgb(64, 64, 64);
-            comboBox4.FormattingEnabled = true;
-            comboBox4.Location = new Point(965, 487);
-            comboBox4.Name = "comboBox4";
-            comboBox4.Size = new Size(526, 56);
-            comboBox4.TabIndex = 15;
-            comboBox4.Text = "To";
-            comboBox4.SelectedIndexChanged += comboBox4_SelectedIndexChanged;
+            Type_Box.ForeColor = Color.FromArgb(64, 64, 64);
+            Type_Box.FormattingEnabled = true;
+            Type_Box.Items.AddRange(new object[] { "Practice", "Final" });
+            Type_Box.Location = new Point(311, 145);
+            Type_Box.Name = "Type_Box";
+            Type_Box.Size = new Size(576, 56);
+            Type_Box.TabIndex = 13;
+            Type_Box.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(900, 489);
+            label8.Location = new Point(930, 327);
             label8.Name = "label8";
             label8.Size = new Size(28, 48);
             label8.TabIndex = 17;
             label8.Text = ":";
             label8.Click += label8_Click;
             // 
-            // Questions
+            // Create_Button
             // 
-            Questions.ForeColor = Color.FromArgb(64, 64, 64);
-            Questions.FormattingEnabled = true;
-            Questions.Location = new Point(965, 306);
-            Questions.Name = "Questions";
-            Questions.Size = new Size(527, 148);
-            Questions.TabIndex = 18;
-            Questions.SelectedIndexChanged += listBox1_SelectedIndexChanged_1;
+            Create_Button.BackColor = Color.Brown;
+            Create_Button.CausesValidation = false;
+            Create_Button.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Create_Button.ForeColor = Color.White;
+            Create_Button.Location = new Point(678, 657);
+            Create_Button.Name = "Create_Button";
+            Create_Button.Size = new Size(374, 88);
+            Create_Button.TabIndex = 19;
+            Create_Button.Text = "Create";
+            Create_Button.UseVisualStyleBackColor = false;
+            Create_Button.Click += button1_Click;
             // 
-            // button1
+            // Instructions_Box
             // 
-            button1.BackColor = Color.Brown;
-            button1.CausesValidation = false;
-            button1.ForeColor = Color.White;
-            button1.Location = new Point(699, 687);
-            button1.Name = "button1";
-            button1.Size = new Size(355, 74);
-            button1.TabIndex = 19;
-            button1.Text = "Create";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            Instructions_Box.BorderStyle = BorderStyle.None;
+            Instructions_Box.ForeColor = Color.FromArgb(64, 64, 64);
+            Instructions_Box.Location = new Point(311, 427);
+            Instructions_Box.Name = "Instructions_Box";
+            Instructions_Box.Size = new Size(1276, 197);
+            Instructions_Box.TabIndex = 20;
+            Instructions_Box.Text = "";
+            Instructions_Box.TextChanged += richTextBox1_TextChanged;
             // 
-            // richTextBox1
+            // startDatePicker
             // 
-            richTextBox1.BorderStyle = BorderStyle.None;
-            richTextBox1.ForeColor = Color.FromArgb(64, 64, 64);
-            richTextBox1.Location = new Point(310, 579);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(1181, 79);
-            richTextBox1.TabIndex = 20;
-            richTextBox1.Text = "";
-            richTextBox1.TextChanged += richTextBox1_TextChanged;
+            startDatePicker.Format = DateTimePickerFormat.Custom;
+            startDatePicker.Location = new Point(311, 326);
+            startDatePicker.Name = "startDatePicker";
+            startDatePicker.Size = new Size(576, 55);
+            startDatePicker.TabIndex = 21;
+            startDatePicker.Value = new DateTime(2029, 11, 22, 0, 0, 0, 0);
+            startDatePicker.ValueChanged += startDatePicker_ValueChanged;
             // 
-            // comboBox5
+            // endDatePicker
             // 
-            comboBox5.ForeColor = Color.FromArgb(64, 64, 64);
-            comboBox5.FormattingEnabled = true;
-            comboBox5.Location = new Point(310, 354);
-            comboBox5.Name = "comboBox5";
-            comboBox5.Size = new Size(549, 56);
-            comboBox5.TabIndex = 21;
-            // 
-            // button2
-            // 
-            button2.BackColor = Color.White;
-            button2.Location = new Point(887, 321);
-            button2.Name = "button2";
-            button2.Size = new Size(52, 57);
-            button2.TabIndex = 22;
-            button2.Text = "+";
-            button2.UseVisualStyleBackColor = false;
-            // 
-            // button3
-            // 
-            button3.BackColor = Color.Brown;
-            button3.ForeColor = Color.White;
-            button3.Location = new Point(887, 384);
-            button3.Name = "button3";
-            button3.Size = new Size(52, 57);
-            button3.TabIndex = 23;
-            button3.Text = "-";
-            button3.UseVisualStyleBackColor = false;
+            endDatePicker.CustomFormat = "";
+            endDatePicker.Format = DateTimePickerFormat.Custom;
+            endDatePicker.Location = new Point(1011, 327);
+            endDatePicker.Name = "endDatePicker";
+            endDatePicker.Size = new Size(576, 55);
+            endDatePicker.TabIndex = 22;
+            endDatePicker.Value = new DateTime(2025, 2, 18, 0, 0, 0, 0);
+            endDatePicker.ValueChanged += dateTimePicker2_ValueChanged;
             // 
             // CreateExamForm
             // 
@@ -244,24 +191,19 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Snow;
             ClientSize = new Size(1656, 783);
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(comboBox5);
-            Controls.Add(richTextBox1);
-            Controls.Add(button1);
-            Controls.Add(Questions);
+            Controls.Add(endDatePicker);
+            Controls.Add(startDatePicker);
+            Controls.Add(Instructions_Box);
+            Controls.Add(Create_Button);
             Controls.Add(label8);
-            Controls.Add(comboBox4);
-            Controls.Add(comboBox3);
-            Controls.Add(comboBox2);
-            Controls.Add(comboBox1);
-            Controls.Add(label6);
-            Controls.Add(label5);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(textBox1);
-            Controls.Add(label1);
+            Controls.Add(Type_Box);
+            Controls.Add(Subject_Box);
+            Controls.Add(instructions_lbl);
+            Controls.Add(duration_lbl);
+            Controls.Add(type_lbl);
+            Controls.Add(subject_lbl);
+            Controls.Add(Name_Box);
+            Controls.Add(name_lbl);
             Name = "CreateExamForm";
             Text = "CreateExamForm";
             Load += CreateExamForm_Load;
@@ -271,23 +213,18 @@
 
         #endregion
 
-        private Label label1;
-        private TextBox textBox1;
-        private Label label2;
-        private Label label3;
-        private Label label4;
-        private Label label5;
-        private Label label6;
-        private ComboBox comboBox1;
-        private ComboBox comboBox2;
-        private ComboBox comboBox3;
-        private ComboBox comboBox4;
+        private Label name_lbl;
+        private TextBox Name_Box;
+        private Label subject_lbl;
+        private Label type_lbl;
+        private Label duration_lbl;
+        private Label instructions_lbl;
+        private ComboBox Subject_Box;
+        private ComboBox Type_Box;
         private Label label8;
-        private ListBox Questions;
-        private Button button1;
-        private RichTextBox richTextBox1;
-        private ComboBox comboBox5;
-        private Button button2;
-        private Button button3;
+        private Button Create_Button;
+        private RichTextBox Instructions_Box;
+        private DateTimePicker startDatePicker;
+        private DateTimePicker endDatePicker;
     }
 }

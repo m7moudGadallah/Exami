@@ -15,6 +15,12 @@ namespace Presentation.Forms
         public CreateExamForm()
         {
             InitializeComponent();
+            SetupDatePickers();
+
+
+
+
+
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -95,6 +101,47 @@ namespace Presentation.Forms
         private void button2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void kryptonDateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void startDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SetupDatePickers()
+        {
+            // Configure the Start Date Picker
+            startDatePicker.Format = DateTimePickerFormat.Custom;
+            startDatePicker.CustomFormat = "dd/MM/yyyy HH:mm";  // Customize the format
+
+            // Configure the End Date Picker
+            endDatePicker.Format = DateTimePickerFormat.Custom;
+            endDatePicker.CustomFormat = "dd/MM/yyyy HH:mm";  // Customize the format
         }
     }
 }
