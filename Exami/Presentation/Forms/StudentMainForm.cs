@@ -10,7 +10,6 @@ namespace Presentation
     public partial class StudentMainForm : Form
     {
         private List<Exam> _exams = new List<Exam>();
-        private readonly HashSet<int> _loadedExamIds = new HashSet<int>();
         private readonly int studentId = UserSession.LoggedInUser.Id;
         private int selectedExamId;
 
@@ -18,27 +17,25 @@ namespace Presentation
         {
             if (UserSession.LoggedInUser == null) return;
 
-
             var examsDto = new GetAllStudentExamsInputDto()
             {
                 Filters = new Dictionary<string, object>
-                {
-                    { "StudentId", studentId }
-                }
+        {
+            {"StudentId", studentId }
+        }
             };
+
             var studentExams = StudentExamService.GetAllStudentExams(examsDto);
-
-            foreach (var examRecord in studentExams)
-            {
-                if (_loadedExamIds.Contains(examRecord.ExamId)) continue;
-
-                var exam = ExamService.GetExam(new GetExamInputDto(examRecord.ExamId));
-                if (exam != null)
-                {
-                    _exams.Add(exam);
-                    _loadedExamIds.Add(exam.Id);
-                }
-            }
+            _exams = studentExams.Select(se => new Exam
+            (
+                se.Exam.Id,
+                se.Exam.Name,
+                se.Exam.SubjectId,
+                se.Exam.StartTime,
+                se.Exam.EndTime,
+                se.Exam.ExamType,
+                se.Exam.Instructions
+            )).ToList();
         }
 
         private void inqueue_btn_Click(object sender, EventArgs e)
@@ -89,10 +86,17 @@ namespace Presentation
                 return;
             }
 
-            selectedExamId = exam.Id;  // Store selected exam ID
-            var examDto = new GetExamInputDto(selectedExamId);
-            var fetchedExam = ExamService.GetExam(examDto);
+            selectedExamId = exam.Id; 
 
+            var examsDto = new GetAllExamsInputDto()
+            {
+                Filters = new Dictionary<string, object>
+        {
+            { "Id", selectedExamId }
+        }
+            };
+
+            var fetchedExam = ExamService.GetAllExams(examsDto) ?? new List<Exam>();
             if (fetchedExam == null)
             {
                 MessageBox.Show("Exam not found in database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -111,7 +115,6 @@ namespace Presentation
 
             examForm.Show();
         }
-
 
         //private void LoadExams()
         //{

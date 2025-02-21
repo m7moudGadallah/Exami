@@ -20,6 +20,57 @@
             base.Dispose(disposing);
         }
 
+        private void DisplayQuestion()
+        {
+            if (questionlist == null || questionlist.Count == 0) return;
+
+            var question = questionlist[currentQuestionIndex];
+            qhead.Controls.Clear();
+
+            var answers = question.Answers;
+
+            Label qh = new Label
+            {
+                Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                AutoSize = true,
+                BackColor = Color.Transparent,
+                Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point),
+                ForeColor = SystemColors.ActiveCaptionText,
+                Location = new Point(12, 57),
+                Name = "qh",
+                Size = new Size(106, 29),
+                TabIndex = 50,
+                Text = question.Body,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            qhead.Controls.Add(qh);
+
+            int yOffset = 60;
+
+            foreach (var answer in answers)
+            {
+                RadioButton choice = new RadioButton
+                {
+                    Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                    BackColor = Color.Transparent,
+                    Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point),
+                    ForeColor = SystemColors.ActiveCaptionText,
+                    AutoSize = true,
+                    Location = new Point(14, yOffset),
+                    Name = "choice_" + yOffset,
+                    Size = new Size(128, 27),
+                    TabIndex = 50,
+                    TabStop = true,
+                    Text = answer.AnswerText,
+                    UseVisualStyleBackColor = true
+
+                };
+                choice.BringToFront();
+                qbody.Controls.Add(choice);
+                yOffset += 40;
+            }
+        }
+
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -32,6 +83,7 @@
             materialScrollBar1 = new MaterialSkin.Controls.MaterialScrollBar();
             timer = new System.Windows.Forms.Timer(components);
             header = new Panel();
+            timer_label = new Label();
             sd_name = new Label();
             logo = new Label();
             pictureBox1 = new PictureBox();
@@ -40,7 +92,6 @@
             kryptonButton1 = new Krypton.Toolkit.KryptonButton();
             qnum = new Label();
             qbody = new Panel();
-            choice = new RadioButton();
             qhead = new Panel();
             qh = new Label();
             footer = new Panel();
@@ -54,7 +105,6 @@
             main.Panel2.SuspendLayout();
             main.SuspendLayout();
             qnav.SuspendLayout();
-            qbody.SuspendLayout();
             qhead.SuspendLayout();
             footer.SuspendLayout();
             SuspendLayout();
@@ -77,6 +127,7 @@
             // header
             // 
             header.BackColor = Color.Brown;
+            header.Controls.Add(timer_label);
             header.Controls.Add(sd_name);
             header.Controls.Add(logo);
             header.Controls.Add(pictureBox1);
@@ -85,6 +136,18 @@
             header.Name = "header";
             header.Size = new Size(1180, 109);
             header.TabIndex = 47;
+            // 
+            // timer_label
+            // 
+            timer_label.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            timer_label.BackColor = Color.Transparent;
+            timer_label.Font = new Font("Tahoma", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            timer_label.ForeColor = SystemColors.ButtonHighlight;
+            timer_label.Location = new Point(0, 0);
+            timer_label.Name = "timer_label";
+            timer_label.Size = new Size(203, 109);
+            timer_label.TabIndex = 50;
+            timer_label.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // sd_name
             // 
@@ -194,26 +257,10 @@
             // qbody
             // 
             qbody.BorderStyle = BorderStyle.Fixed3D;
-            qbody.Controls.Add(choice);
             qbody.Location = new Point(7, 134);
             qbody.Name = "qbody";
             qbody.Size = new Size(975, 360);
             qbody.TabIndex = 3;
-            // 
-            // choice
-            // 
-            choice.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            choice.AutoSize = true;
-            choice.BackColor = Color.Transparent;
-            choice.Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            choice.ForeColor = SystemColors.ActiveCaptionText;
-            choice.Location = new Point(14, 70);
-            choice.Name = "choice";
-            choice.Size = new Size(100, 33);
-            choice.TabIndex = 50;
-            choice.TabStop = true;
-            choice.Text = "Choice";
-            choice.UseVisualStyleBackColor = true;
             // 
             // qhead
             // 
@@ -287,10 +334,10 @@
             next_btn.StateTracking.Back.Color1 = Color.Brown;
             next_btn.StateTracking.Back.Color2 = Color.Brown;
             next_btn.TabIndex = 45;
-            next_btn.UseMnemonic = false;
             next_btn.Values.DropDownArrowColor = Color.Empty;
             next_btn.Values.ImageTransparentColor = Color.White;
             next_btn.Values.Text = "Next";
+            next_btn.Click += next_btn_Click;
             // 
             // prev_btn
             // 
@@ -375,7 +422,7 @@
             submit_btn.UseMnemonic = false;
             submit_btn.Values.DropDownArrowColor = Color.Empty;
             submit_btn.Values.ImageTransparentColor = Color.White;
-            submit_btn.Values.Text = "All Exams";
+            submit_btn.Values.Text = "Submit";
             // 
             // ExamForm
             // 
@@ -397,8 +444,6 @@
             main.ResumeLayout(false);
             qnav.ResumeLayout(false);
             qnav.PerformLayout();
-            qbody.ResumeLayout(false);
-            qbody.PerformLayout();
             qhead.ResumeLayout(false);
             qhead.PerformLayout();
             footer.ResumeLayout(false);
@@ -423,6 +468,6 @@
         private Label qnum;
         private Label qh;
         private Krypton.Toolkit.KryptonButton kryptonButton1;
-        private RadioButton choice;
+        private Label timer_label;
     }
 }
