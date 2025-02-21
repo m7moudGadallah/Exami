@@ -173,12 +173,12 @@ namespace Presentation
             // contactlink
             // 
             contactlink.LinkBehavior = Krypton.Toolkit.KryptonLinkBehavior.HoverUnderline;
-            contactlink.Location = new Point(30, 38);
+            contactlink.Location = new Point(27, 33);
             contactlink.Name = "contactlink";
             contactlink.OverrideFocus.Padding = new Padding(3);
             contactlink.OverrideFocus.ShortText.Color1 = Color.FromArgb(64, 64, 64);
             contactlink.OverrideFocus.ShortText.Color2 = Color.FromArgb(64, 64, 64);
-            contactlink.Size = new Size(170, 27);
+            contactlink.Size = new Size(211, 32);
             contactlink.StateCommon.Padding = new Padding(3);
             contactlink.StateCommon.ShortText.Color1 = Color.FromArgb(64, 64, 64);
             contactlink.StateCommon.ShortText.Color2 = Color.FromArgb(64, 64, 64);
@@ -198,12 +198,12 @@ namespace Presentation
             // help_link
             // 
             help_link.LinkBehavior = Krypton.Toolkit.KryptonLinkBehavior.HoverUnderline;
-            help_link.Location = new Point(776, 38);
+            help_link.Location = new Point(690, 33);
             help_link.Name = "help_link";
             help_link.OverrideFocus.Padding = new Padding(3);
             help_link.OverrideFocus.ShortText.Color1 = Color.FromArgb(64, 64, 64);
             help_link.OverrideFocus.ShortText.Color2 = Color.FromArgb(64, 64, 64);
-            help_link.Size = new Size(100, 27);
+            help_link.Size = new Size(123, 32);
             help_link.StateCommon.Padding = new Padding(3);
             help_link.StateCommon.ShortText.Color1 = Color.FromArgb(64, 64, 64);
             help_link.StateCommon.ShortText.Color2 = Color.FromArgb(64, 64, 64);
@@ -220,13 +220,13 @@ namespace Presentation
             // 
             // done_btn
             // 
-            done_btn.Location = new Point(672, 21);
+            done_btn.Location = new Point(597, 18);
             done_btn.Name = "done_btn";
             done_btn.OverrideDefault.Back.Color1 = Color.Brown;
             done_btn.OverrideDefault.Back.Color2 = Color.Brown;
             done_btn.OverrideFocus.Back.Color1 = Color.Brown;
             done_btn.OverrideFocus.Back.Color2 = Color.Brown;
-            done_btn.Size = new Size(138, 47);
+            done_btn.Size = new Size(123, 41);
             done_btn.StateCommon.Back.Color1 = Color.Brown;
             done_btn.StateCommon.Back.Color2 = Color.Brown;
             done_btn.StateCommon.Back.ColorAngle = 1F;
@@ -260,17 +260,16 @@ namespace Presentation
             done_btn.Values.ImageTransparentColor = Color.White;
             done_btn.Values.Text = "Done";
             done_btn.Click += done_btn_Click;
-
             // 
             // inqueue_btn
             // 
-            inqueue_btn.Location = new Point(60, 21);
+            inqueue_btn.Location = new Point(53, 18);
             inqueue_btn.Name = "inqueue_btn";
             inqueue_btn.OverrideDefault.Back.Color1 = Color.Brown;
             inqueue_btn.OverrideDefault.Back.Color2 = Color.Brown;
             inqueue_btn.OverrideFocus.Back.Color1 = Color.Brown;
             inqueue_btn.OverrideFocus.Back.Color2 = Color.Brown;
-            inqueue_btn.Size = new Size(138, 47);
+            inqueue_btn.Size = new Size(123, 41);
             inqueue_btn.StateCommon.Back.Color1 = Color.Brown;
             inqueue_btn.StateCommon.Back.Color2 = Color.Brown;
             inqueue_btn.StateCommon.Back.ColorAngle = 1F;
@@ -307,13 +306,13 @@ namespace Presentation
             // 
             // allexams_btn
             // 
-            allexams_btn.Location = new Point(361, 21);
+            allexams_btn.Location = new Point(321, 18);
             allexams_btn.Name = "allexams_btn";
             allexams_btn.OverrideDefault.Back.Color1 = Color.Brown;
             allexams_btn.OverrideDefault.Back.Color2 = Color.Brown;
             allexams_btn.OverrideFocus.Back.Color1 = Color.Brown;
             allexams_btn.OverrideFocus.Back.Color2 = Color.Brown;
-            allexams_btn.Size = new Size(138, 47);
+            allexams_btn.Size = new Size(123, 41);
             allexams_btn.StateCommon.Back.Color1 = Color.Brown;
             allexams_btn.StateCommon.Back.Color2 = Color.Brown;
             allexams_btn.StateCommon.Back.ColorAngle = 1F;
@@ -346,7 +345,6 @@ namespace Presentation
             allexams_btn.Values.DropDownArrowColor = Color.Empty;
             allexams_btn.Values.ImageTransparentColor = Color.White;
             allexams_btn.Values.Text = "All Exams";
-            //allexams_btn.Click += allexams_btn_Click;
             // 
             // header
             // 
@@ -357,7 +355,7 @@ namespace Presentation
             header.Dock = DockStyle.Top;
             header.Location = new Point(0, 0);
             header.Name = "header";
-            header.Size = new Size(1000, 109);
+            header.Size = new Size(889, 95);
             header.TabIndex = 46;
             // 
             // sd_name
@@ -365,9 +363,9 @@ namespace Presentation
             sd_name.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             sd_name.Font = new Font("Tahoma", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
             sd_name.ForeColor = SystemColors.ButtonHighlight;
-            sd_name.Location = new Point(641, 0);
+            sd_name.Location = new Point(570, 0);
             sd_name.Name = "sd_name";
-            sd_name.Size = new Size(235, 109);
+            sd_name.Size = new Size(209, 95);
             sd_name.TabIndex = 49;
             sd_name.TextAlign = ContentAlignment.MiddleCenter;
             // 
@@ -375,9 +373,9 @@ namespace Presentation
             // 
             pictureBox1.BackColor = Color.White;
             pictureBox1.BorderStyle = BorderStyle.Fixed3D;
-            pictureBox1.Location = new Point(872, 0);
+            pictureBox1.Location = new Point(775, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(128, 109);
+            pictureBox1.Size = new Size(114, 95);
             pictureBox1.TabIndex = 48;
             pictureBox1.TabStop = false;
             // 
@@ -386,9 +384,9 @@ namespace Presentation
             logo.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             logo.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             logo.ForeColor = SystemColors.ButtonHighlight;
-            logo.Location = new Point(390, 0);
+            logo.Location = new Point(347, 0);
             logo.Name = "logo";
-            logo.Size = new Size(163, 109);
+            logo.Size = new Size(145, 95);
             logo.TabIndex = 0;
             logo.Text = "Exami";
             logo.TextAlign = ContentAlignment.MiddleCenter;
@@ -399,14 +397,14 @@ namespace Presentation
             panel2.Controls.Add(help_link);
             panel2.Controls.Add(contactlink);
             panel2.Dock = DockStyle.Bottom;
-            panel2.Location = new Point(0, 666);
+            panel2.Location = new Point(0, 579);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1000, 101);
+            panel2.Size = new Size(889, 88);
             panel2.TabIndex = 47;
             // 
             // splitContainer1
             // 
-            splitContainer1.Location = new Point(54, 138);
+            splitContainer1.Location = new Point(48, 120);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
             // 
@@ -419,23 +417,25 @@ namespace Presentation
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.AutoScroll = true;
-            splitContainer1.Size = new Size(882, 509);
-            splitContainer1.SplitterDistance = 97;
+            splitContainer1.Size = new Size(784, 443);
+            splitContainer1.SplitterDistance = 84;
+            splitContainer1.SplitterWidth = 3;
             splitContainer1.TabIndex = 48;
             // 
             // StudentMainForm
             // 
-            AutoScaleDimensions = new SizeF(9F, 23F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             CausesValidation = false;
-            ClientSize = new Size(1000, 767);
+            ClientSize = new Size(889, 667);
             Controls.Add(splitContainer1);
             Controls.Add(panel2);
             Controls.Add(header);
             HelpButton = true;
             Name = "StudentMainForm";
             ShowIcon = false;
+            Load += StudentMainForm_Load_1;
             header.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
@@ -447,7 +447,7 @@ namespace Presentation
         }
 
         #endregion
-       
+
         private Krypton.Toolkit.KryptonLinkLabel contactlink;
         private Krypton.Toolkit.KryptonLinkLabel help_link;
         private Krypton.Toolkit.KryptonButton done_btn;

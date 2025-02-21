@@ -9,34 +9,24 @@ namespace Presentation
 {
     public partial class StudentMainForm : Form
     {
-        private List<StudentExam> _exams = new List<StudentExam>();
-        private readonly int studentId = UserSession.LoggedInUser.Id;
-        private int selectedExamId;
+        private List<StudentExam> _stdExams = new List<StudentExam>();
+        private readonly int _studentId = UserSession.LoggedInUser.Id;
+        private int _selectedExamId;
+        readonly StudentExamService _stdExamSerivce = ServicesRepo.GetService<StudentExamService>();
 
         private void LoadExams()
         {
             if (UserSession.LoggedInUser == null) return;
 
-            var examsDto = new GetAllStudentExamsInputDto()
+            var examsDto = new GetAllDto
             {
-                Filters = new Dictionary<string, object>
-        {
-            {"StudentId", studentId }
-        }
+                Filters = new()
+                {
+                    ["StudentId"] = _studentId,
+                }
             };
 
-            var studentExams = StudentExamService.GetAllStudentExams(examsDto);
-            _exams = studentExams.Select(se => new StudentExam
- (
-     se.Id,
-     se.ExamId,
-     se.StudentId,
-     se.SubmissionTime,
-     se.CreatedAt,
-     se.UpdatedAt,
-     se.Student,
-     se.Exam
- )).ToList();
+            _stdExams = _stdExamSerivce.GetAll(examsDto);
         }
 
 
@@ -46,7 +36,7 @@ namespace Presentation
             panel2.Controls.Clear();
             DateTime today = DateTime.Today;
 
-            List<StudentExam> upcomingExams = _exams.Where(exam => exam.Exam.StartTime == today).ToList();
+            List<StudentExam> upcomingExams = _stdExams.Where(exam => exam.Exam.StartTime == today).ToList();
 
             if (upcomingExams.Count > 0)
             {
@@ -63,7 +53,7 @@ namespace Presentation
             panel2.Controls.Clear();
             DateTime today = DateTime.Today;
 
-            List<StudentExam> pastExams = _exams.Where(exam => exam.SubmissionTime < today).ToList();
+            List<StudentExam> pastExams = _stdExams.Where(exam => exam.SubmissionTime < today).ToList();
 
             if (pastExams.Count > 0)
             {
@@ -91,25 +81,10 @@ namespace Presentation
                 return;
             }
 
-            selectedExamId = exam.Id; 
-
-            var examsDto = new GetAllExamsInputDto()
-            {
-                Filters = new Dictionary<string, object>
-        {
-            { "Id", selectedExamId }
-        }
-            };
-
-            var fetchedExam = ExamService.GetAllExams(examsDto) ?? new List<Exam>();
-            if (fetchedExam == null)
-            {
-                Messages.ShowSnackbarError("Exam not found in database.");
-                return;
-            }
+            _selectedExamId = exam.Id;
 
             // Ensure Session is being set
-            ExamSession.SetSession(studentId, selectedExamId);
+            ExamSession.SetSession(_studentId, _selectedExamId);
             var examForm = FormsRepo.GetForm<ExamForm>();
 
             if (examForm == null)
@@ -131,6 +106,11 @@ namespace Presentation
         {
             Application.ExitThread(); // Forcefully exits all running threads
             Environment.Exit(0); // Ensures full shutdown
+        }
+
+        private void StudentMainForm_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

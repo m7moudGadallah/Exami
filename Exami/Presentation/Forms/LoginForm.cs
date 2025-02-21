@@ -8,6 +8,7 @@ namespace Presentation.Forms
 {
     public partial class LoginForm : Form
     {
+        readonly AuthService _authService = ServicesRepo.GetService<AuthService>();
         #region  UI Components
         #region componnents intialzation
         public LoginForm()
@@ -57,7 +58,7 @@ namespace Presentation.Forms
             email_txt_box.Location = new Point(112, 106);
             email_txt_box.MaxLength = 32;
             email_txt_box.Name = "email_txt_box";
-            email_txt_box.Size = new Size(293, 29);
+            email_txt_box.Size = new Size(293, 34);
             email_txt_box.StateActive.Border.Color1 = Color.Black;
             email_txt_box.StateActive.Border.Color2 = Color.Black;
             email_txt_box.StateActive.Border.Width = 1;
@@ -75,7 +76,7 @@ namespace Presentation.Forms
             pass_txt.MaxLength = 16;
             pass_txt.Name = "pass_txt";
             pass_txt.PasswordChar = '*';
-            pass_txt.Size = new Size(293, 29);
+            pass_txt.Size = new Size(293, 34);
             pass_txt.StateActive.Border.Color1 = Color.Black;
             pass_txt.StateActive.Border.Color2 = Color.Black;
             pass_txt.StateActive.Border.Width = 1;
@@ -202,7 +203,7 @@ namespace Presentation.Forms
             help_link.OverrideFocus.Padding = new Padding(3);
             help_link.OverrideFocus.ShortText.Color1 = Color.FromArgb(64, 64, 64);
             help_link.OverrideFocus.ShortText.Color2 = Color.FromArgb(64, 64, 64);
-            help_link.Size = new Size(100, 27);
+            help_link.Size = new Size(123, 32);
             help_link.StateCommon.Padding = new Padding(3);
             help_link.StateCommon.ShortText.Color1 = Color.FromArgb(64, 64, 64);
             help_link.StateCommon.ShortText.Color2 = Color.FromArgb(64, 64, 64);
@@ -225,7 +226,7 @@ namespace Presentation.Forms
             contactlink.OverrideFocus.Padding = new Padding(3);
             contactlink.OverrideFocus.ShortText.Color1 = Color.FromArgb(64, 64, 64);
             contactlink.OverrideFocus.ShortText.Color2 = Color.FromArgb(64, 64, 64);
-            contactlink.Size = new Size(170, 27);
+            contactlink.Size = new Size(211, 32);
             contactlink.StateCommon.Padding = new Padding(3);
             contactlink.StateCommon.ShortText.Color1 = Color.Black;
             contactlink.StateCommon.ShortText.Color2 = Color.Black;
@@ -257,6 +258,7 @@ namespace Presentation.Forms
             Name = "LoginForm";
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
+            Load += LoginForm_Load;
             materialCard1.ResumeLayout(false);
             materialCard1.PerformLayout();
             panel1.ResumeLayout(false);
@@ -281,7 +283,7 @@ namespace Presentation.Forms
         private MaterialSkin.Controls.MaterialLabel email_label;
 
         #endregion
-        
+
         #region Login Button Click Event
         private void login_btn_Click(object sender, EventArgs e)
         {
@@ -298,7 +300,7 @@ namespace Presentation.Forms
 
             try
             {
-                User user = AuthService.Login(loginDto);
+                User user = _authService.Login(loginDto);
                 if (user == null)
                 {
                     Messages.ShowSnackbarError("Invalid email or password.");
@@ -341,6 +343,10 @@ namespace Presentation.Forms
         }
         #endregion
 
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

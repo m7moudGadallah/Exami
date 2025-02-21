@@ -1,25 +1,29 @@
 
 using Presentation.Helpers;
 using Entities;
-using Services.DTOs;
 using Services.Services;
 using System.Drawing.Drawing2D;
 using Presentation.Forms;
-using MaterialSkin.Controls;
+using Services.DTOs;
 namespace Presentation
 {
     public partial class ExamForm : Form
     {
-        private readonly int examId = ExamSession.SelectedExam;
-        private readonly int StudentExamId = ExamSession.LoggedInUser;
-        List<Question> questionlist = new List<Question>();
-        int currentQuestionIndex = 0;
         public ExamForm()
         {
             InitializeComponent();
             sd_name.Text = $"{UserSession.LoggedInUser.FirstName} {UserSession.LoggedInUser.LastName}";
             InitializeTimer();
         }
+
+        readonly ExamQuestionService _examQuestionService = ServicesRepo.GetService<ExamQuestionService>();
+        readonly StudentExamService _stdExamService = ServicesRepo.GetService<StudentExamService>();
+        readonly StudentAnswerService _stdAnswerService = ServicesRepo.GetService<StudentAnswerService>();
+        readonly int _examId = ExamSession.SelectedExam;
+        StudentExam _stdExam;
+        List<Question> _questionlist = new();
+        int _currentQuestionIndex = 0;
+
         private void ExamForm_Load(object sender, EventArgs e)
         {
             LoadExam();
@@ -27,57 +31,41 @@ namespace Presentation
             DisplayQuestion();
         }
 
-        //load all exam questions yastaaaa
+
         public void LoadExam()
         {
-            var examDto = new GetAllQuestionInputDto
+            var getExamdto = new GetAllDto
             {
-                Filters = new Dictionary<string, object>
-                        {
-                  { "Id", examId }
-                    }
+                Filters = new()
+                {
+                    ["Id"] = _examId,
+                }
             };
 
-            var questionsFromService = QuestionService.GetAllQuestions(examDto);
+            _stdExam = _stdExamService.GetAll(getExamdto).FirstOrDefault();
 
-            // Debugging: Check how many questions are returned from the service
-            //MessageBox.Show($"Questions fetched: {questionsFromService.Count}");
 
-            if (questionsFromService.Count == 0)
+            var getExamQuestions = new GetAllDto
+            {
+                Filters = new()
+                {
+                    ["ExamId"] = _examId,
+                }
+            };
+
+            _questionlist = _examQuestionService.GetAll(getExamdto).Select(q => q.Question).ToList();
+
+            if (_questionlist.Count == 0)
             {
                 MessageBox.Show("No questions were retrieved. Check if examId is correct.");
                 return;
             }
-
-            questionlist = questionsFromService.Select(q => new Question(
-                q.Id,
-                q.Marks,
-                q.Body,
-                q.QuestionType,
-                q.SubjectId
-            )).ToList();
-
-            // Debugging: Check how many questions are in questionlist after conversion
-            //MessageBox.Show($"Questions in list after conversion: {questionlist.Count}");
-
-            foreach (var question in questionlist)
-            {
-                var answersFromService = AnswerService.GetAllAnswers(new GetAllAnswersInputDto(new Dictionary<string, object>
-        {
-            { "QuestionId", question.Id }
-        }));
-
-                question.Answers = answersFromService.ToList();
-
-                // Debugging: Check how many answers were loaded for each question
-                //MessageBox.Show($"Question {question.Id}: '{question.Body}' has {question.Answers.Count} answers.");
-            }
         }
         private void DisplayQuestion()
         {
-            if (questionlist == null || questionlist.Count == 0) return;
+            if (_questionlist.Count == 0) return;
 
-            var question = questionlist[currentQuestionIndex];
+            var question = _questionlist[_currentQuestionIndex];
 
             qhead.Controls.Clear();
             qbody.Controls.Clear();
@@ -108,7 +96,8 @@ namespace Presentation
                     Name = "choice_" + yOffset,
                     Text = answer.AnswerText,
                     UseVisualStyleBackColor = true,
-                    TabIndex = tabIndex++
+                    TabIndex = tabIndex++,
+                    Tag = answer.Id
                 };
 
                 choice.CheckedChanged += (s, e) => UpdateFlagColors(); // Update button when answer changes
@@ -118,11 +107,11 @@ namespace Presentation
             }
 
             UpdateFlagColors();
-            if (currentQuestionIndex == questionlist.Count - 1)
+            if (_currentQuestionIndex == _questionlist.Count - 1)
             {
                 nxt_btn.Hide();
             }
-            if (currentQuestionIndex == 0)
+            if (_currentQuestionIndex == 0)
             {
                 pre_btn.Hide();
             }
@@ -140,24 +129,9 @@ namespace Presentation
         }
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            var exam = ExamService.GetAllExams(new GetAllExamsInputDto
-            {
-                Filters = new Dictionary<string, object>
-        {
-            { "Id", examId }
-        }
-            }).FirstOrDefault();
+            var duration = _stdExam.Exam.EndTime - _stdExam.Exam.StartTime;
 
-            if (exam == null)
-            {
-                timer.Stop();
-                MessageBox.Show("Exam not found.");
-                return;
-            }
-
-            var duration = exam.EndTime - exam.StartTime;
-
-            var timeElapsed = DateTime.Now - exam.StartTime;
+            var timeElapsed = DateTime.Now - _stdExam.Exam.StartTime;
             var timeLeft = duration - timeElapsed;
 
             if (timeLeft.TotalSeconds > 0)
@@ -174,9 +148,9 @@ namespace Presentation
         }
         private void nxt_btn_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"Moving to question {currentQuestionIndex + 1} of {questionlist.Count}"); // Debugging
+            MessageBox.Show($"Moving to question {_currentQuestionIndex + 1} of {_questionlist.Count}"); // Debugging
 
-            if (currentQuestionIndex < questionlist.Count - 1)
+            if (_currentQuestionIndex < _questionlist.Count - 1)
             {
                 if (!IsAnswerSelected())
                 {
@@ -184,18 +158,18 @@ namespace Presentation
                     return;
                 }
 
-                currentQuestionIndex++;
+                _currentQuestionIndex++;
                 DisplayQuestion();
-                MessageBox.Show($"Moving to question {currentQuestionIndex + 1} of {questionlist.Count}"); // Debugging
+                MessageBox.Show($"Moving to question {_currentQuestionIndex + 1} of {_questionlist.Count}"); // Debugging
 
             }
         }
         private void pre_btn_Click(object sender, EventArgs e)
         {
 
-            if (currentQuestionIndex > 0)
+            if (_currentQuestionIndex > 0)
             {
-                currentQuestionIndex--;
+                _currentQuestionIndex--;
                 DisplayQuestion();
             }
         }
@@ -208,7 +182,7 @@ namespace Presentation
             int yOffset = 59;
             int x0 = 25;
             int y0 = 60;
-            for (int i = 0; i < questionlist.Count; i++)
+            for (int i = 0; i < _questionlist.Count; i++)
             {
                 Button flagButton = new Button
                 {
@@ -249,64 +223,65 @@ namespace Presentation
         }
         internal void submit_btn_Click(object sender, EventArgs e)
         {
-            Dictionary<int, string> userResponses = new Dictionary<int, string>(); 
+            List<int> responsedAnswers = new();
 
-            for (int i = 0; i < questionlist.Count; i++)
+            for (int i = 0; i < _questionlist.Count; i++)
             {
+                // TODO: enable multiple selection
                 var selectedAnswer = qbody.Controls
                     .OfType<RadioButton>()
                     .FirstOrDefault(rb => rb.Checked);
 
                 if (selectedAnswer != null)
                 {
-                    userResponses[questionlist[i].Id] = selectedAnswer.Text;
+                    responsedAnswers.Add(Convert.ToInt32(selectedAnswer.Tag));
                 }
             }
 
-            if (userResponses.Count < questionlist.Count)
+            if (responsedAnswers.Count < _questionlist.Count)
             {
                 Messages.ShowSnackbarError("Please answer all questions before submitting.");
                 return;
             }
 
-            SaveResponses(userResponses);
+            SaveResponses(responsedAnswers);
             Messages.ShowSnackbarNotification("Exam submitted successfully!");
             var studentForm = FormsRepo.GetForm<StudentMainForm>();
             studentForm.Show();
             this.Close();
         }
         //FIX it please ya ma7moud
-        internal void SaveResponses(Dictionary<int, string> responses)
+        internal void SaveResponses(List<int> responsedAnswers)
         {
-            foreach (var response in responses)
+            foreach (var answerId in responsedAnswers)
             {
-                var studentanswerdto = new CreateStudentAnswerInputDto(StudentExamId, response.Key);
-
                 try
                 {
-                    var studentanswer = StudentAnswerService.CreateStudentAnswer(studentanswerdto);
+                    _stdAnswerService.Create(new StudentAnswer() { StudentExamId = _stdExam.Id, AnswerId = answerId });
                 }
                 catch (Utilities.Exceptoins.AppException ex)
                 {
-                    if (ex.Message.Contains("Cannot insert duplicate key"))
-                    {
-                        Messages.ShowSnackbarError($"Duplicate answer detected for Question ID: {response.Key}. Please review your answers.");
-                        return;
-                    }
-                    else if (ex.Message.Contains("The given key 'StudentExamId' was not present in the dictionary"))
-                    {
-                        Messages.ShowSnackbarError($"The key 'StudentExamId' was not found for Question ID: {response.Key}.");
-                        return;
-                    }
-                    else if (ex.Message.Contains("The INSERT statement conflicted with the FOREIGN KEY constraint"))
-                    {
-                        Messages.ShowSnackbarError($"Foreign key constraint violation for Question ID: {response.Key}. Please ensure the StudentExamId is valid.");
-                        return;
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    //if (ex.Message.Contains("Cannot insert duplicate key"))
+                    //{
+                    //    Messages.ShowSnackbarError($"Duplicate answer detected for Question ID: {response.Key}. Please review your answers.");
+                    //    return;
+                    //}
+                    //else if (ex.Message.Contains("The given key 'StudentExamId' was not present in the dictionary"))
+                    //{
+                    //    Messages.ShowSnackbarError($"The key 'StudentExamId' was not found for Question ID: {response.Key}.");
+                    //    return;
+                    //}
+                    //else if (ex.Message.Contains("The INSERT statement conflicted with the FOREIGN KEY constraint"))
+                    //{
+                    //    Messages.ShowSnackbarError($"Foreign key constraint violation for Question ID: {response.Key}. Please ensure the StudentExamId is valid.");
+                    //    return;
+                    //}
+                    //else
+                    //{
+                    //    throw;
+                    //}
+                    Messages.ShowSnackbarError(ex.Message);
+                    return;
                 }
             }
         }
