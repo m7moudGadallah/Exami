@@ -1,12 +1,11 @@
 ﻿namespace Entities;
 
-public record Question(
-   int Id,
-   double Marks,
-   string Body,
-   QuestionType QuestionType,
-   int? SubjectId
-   )
+public record Question
 {
+    public int Id { get; set; }
+    public double Marks { get; set; }
+    public string Body { get; set; }
+    public QuestionType QuestionType { get; set; }
+    public int? SubjectId { get; set; }
     public List<Answer> Answers { get; set; }
 }

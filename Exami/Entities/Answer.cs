@@ -1,10 +1,9 @@
 ﻿namespace Entities;
 
 public record Answer
-(
-   int Id,
-   int? QuestionId,
-   string AnswerText,
-   bool IsCorrect
-
-);
+{
+    public int Id { get; set; }
+    public int? QuestionId { get; set; }
+    public string AnswerText { get; set; }
+    public bool IsCorrect { get; set; }
+}

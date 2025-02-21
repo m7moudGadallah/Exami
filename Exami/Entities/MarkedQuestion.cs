@@ -1,3 +1,7 @@
 ﻿namespace Entities;
 
-public record MarkedQuestion(int StudentExamID, int QuestionId);
+public record MarkedQuestion
+{
+    public int StudentExamID { get; set; }
+    public int QuestionId { get; set; }
+}
