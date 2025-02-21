@@ -18,12 +18,10 @@ namespace Presentation.Forms
         {
             InitializeComponent();
             SetupDatePickers();
-
-
-
-
-
         }
+
+        readonly ExamService _examService = ServicesRepo.GetService<ExamService>();
+        readonly SubjectService _subjectService = ServicesRepo.GetService<SubjectService>();
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -77,7 +75,7 @@ namespace Presentation.Forms
 
         private void CreateExamForm_Load(object sender, EventArgs e)
         {
-
+            LoadSubjects();
         }
 
         private void textBox6_TextChanged(object sender, EventArgs e)
@@ -151,8 +149,8 @@ namespace Presentation.Forms
             try
             {
                 // Retrieve all subjects from the database
-                GetAllSubjectsInputDto inputDto = new GetAllSubjectsInputDto();
-                List<Subject> subjects = SubjectService.GetAllSubjects(inputDto);
+
+                List<Subject> subjects = _subjectService.GetAll();
 
                 // Clear and populate the Subject ComboBox
                 Subject_Box.Items.Clear();
@@ -203,8 +201,7 @@ namespace Presentation.Forms
                 }
 
                 // Create DTO and call the CreateExam method
-                CreateExamInputDto examDto = new(examName, subjectId, startTime, endTime, examType, instructions);
-                Exam createdExam = ExamService.CreateExam(examDto);
+                Exam createdExam = _examService.Create(new Exam { Name = examName, SubjectId = subjectId, ExamType = examType, StartTime = startTime, EndTime = endTime });
 
                 // Display success message
                 MessageBox.Show($"Exam '{createdExam.Name}' created successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
