@@ -63,7 +63,7 @@ public static class UserService
             {
                 ["@FirstName"] = dto?.FirstName == null ? DBNull.Value : dto.FirstName,
                 ["@LastName"] = dto?.LastName == null ? DBNull.Value : dto.LastName,
-                ["Role"] = dto.Role.ToString(),
+                ["@Role"] = dto.Role.ToString(),
                 ["@Email"] = dto.Email,
                 ["@Password"] = dto.Password
             });
@@ -74,6 +74,48 @@ public static class UserService
         }
         catch (Exception ex)
         {
+            throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
+        }
+    }
+
+    public static User UpdateUser(User user)
+    {
+        try
+        {
+            var sql = @"
+            UPDATE [User]
+            SET FirstName = @FirstName,
+                LastName = @LastName,
+                Role = @Role,
+                Email = @Email,
+                Password = @Password
+            WHERE Id = @Id
+            SELECT *
+            FROM [User]
+            WHERE Id = @Id";
+
+            DBCommandParams cmdParams = new(sql, CommandType.Text, new()
+            {
+                ["@Id"] = user.Id,
+                ["@FirstName"] = user?.FirstName == null ? DBNull.Value : user.FirstName,
+                ["@LastName"] = user?.LastName == null ? DBNull.Value : user.LastName,
+                ["@Role"] = user.Role.ToString(),
+                ["@Email"] = user.Email,
+                ["@Password"] = user.Password
+            });
+
+            var users = new UserMapper().MapFromDataTable(DatabaseManager.ExecuteDataTable(cmdParams));
+
+            if (users.Count == 0)
+            {
+                throw new AppException($"Cant find user with [Id = {user.Id}]", ExceptionStatus.Error);
+            }
+
+            return users[0];
+        }
+        catch (Exception ex)
+        {
+            if (ex is AppException) throw;
             throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
         }
     }
