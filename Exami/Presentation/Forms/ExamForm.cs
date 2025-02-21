@@ -14,7 +14,7 @@ namespace Presentation
         private readonly int StudentExamId = ExamSession.LoggedInUser;
         List<Question> questionlist = new List<Question>();
         int currentQuestionIndex = 0;
-        public ExamForm()
+        public ExamForm(Exam exam)
         {
             InitializeComponent();
             sd_name.Text = $"{UserSession.LoggedInUser.FirstName} {UserSession.LoggedInUser.LastName}";
