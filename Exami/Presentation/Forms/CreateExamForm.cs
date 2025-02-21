@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Entities;
+using Services.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -143,5 +145,78 @@ namespace Presentation.Forms
             endDatePicker.Format = DateTimePickerFormat.Custom;
             endDatePicker.CustomFormat = "dd/MM/yyyy HH:mm";  // Customize the format
         }
+
+        private void LoadSubjects()
+        {
+            try
+            {
+                // Retrieve all subjects from the database
+                GetAllSubjectsInputDto inputDto = new GetAllSubjectsInputDto();
+                List<Subject> subjects = SubjectService.GetAllSubjects(inputDto);
+
+                // Clear and populate the Subject ComboBox
+                Subject_Box.Items.Clear();
+                foreach (var subject in subjects)
+                {
+                    Subject_Box.Items.Add(subject);
+                }
+
+                // Set default selection
+                if (Subject_Box.Items.Count > 0)
+                {
+                    Subject_Box.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading subjects: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCreateExam_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Get inputs from form fields
+                string examName = Name_Box.Text.Trim();
+                int? subjectId = Subject_Box.SelectedItem is Subject selectedSubject ? selectedSubject.Id : null;
+                DateTime startTime = startDatePicker.Value;
+                DateTime endTime = endDatePicker.Value;
+                ExamType examType = (ExamType)Enum.Parse(typeof(ExamType), Type_Box.SelectedItem.ToString());
+                string instructions = string.IsNullOrWhiteSpace(Instructions_Box.Text) ? null : Instructions_Box.Text.Trim();
+
+                // Validate input
+                if (string.IsNullOrEmpty(examName))
+                {
+                    MessageBox.Show("Exam name is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (subjectId == null)
+                {
+                    MessageBox.Show("Please select a subject.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (endTime <= startTime)
+                {
+                    MessageBox.Show("End time must be after start time.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Create DTO and call the CreateExam method
+                CreateExamInputDto examDto = new(examName, subjectId, startTime, endTime, examType, instructions);
+                Exam createdExam = ExamService.CreateExam(examDto);
+
+                // Display success message
+                MessageBox.Show($"Exam '{createdExam.Name}' created successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Close form or reset fields
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error creating exam: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
     }
 }
