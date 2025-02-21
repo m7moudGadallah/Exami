@@ -75,17 +75,18 @@
             comboQuestion.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             comboQuestion.ForeColor = SystemColors.InfoText;
             comboQuestion.FormattingEnabled = true;
-            comboQuestion.Location = new Point(177, 133);
+            comboQuestion.Location = new Point(177, 126);
             comboQuestion.Name = "comboQuestion";
             comboQuestion.Size = new Size(386, 36);
             comboQuestion.TabIndex = 2;
+            comboQuestion.SelectedIndexChanged += comboQuestion_SelectedIndexChanged;
             // 
             // txtQuestion
             // 
             txtQuestion.AutoSize = true;
             txtQuestion.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtQuestion.ForeColor = Color.Brown;
-            txtQuestion.Location = new Point(503, 197);
+            txtQuestion.Location = new Point(503, 186);
             txtQuestion.Name = "txtQuestion";
             txtQuestion.Size = new Size(112, 25);
             txtQuestion.TabIndex = 3;
@@ -93,18 +94,19 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(177, 236);
+            textBox1.Location = new Point(177, 225);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(737, 40);
             textBox1.TabIndex = 4;
+            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.Brown;
-            label4.Location = new Point(177, 320);
+            label4.Location = new Point(177, 295);
             label4.Name = "label4";
             label4.Size = new Size(107, 25);
             label4.TabIndex = 5;
@@ -115,7 +117,7 @@
             label5.AutoSize = true;
             label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = Color.Brown;
-            label5.Location = new Point(650, 320);
+            label5.Location = new Point(650, 295);
             label5.Name = "label5";
             label5.Size = new Size(107, 25);
             label5.TabIndex = 6;
@@ -123,26 +125,26 @@
             // 
             // txtOption1
             // 
-            txtOption1.Location = new Point(177, 363);
+            txtOption1.Location = new Point(177, 336);
             txtOption1.Multiline = true;
             txtOption1.Name = "txtOption1";
-            txtOption1.Size = new Size(303, 50);
+            txtOption1.Size = new Size(303, 34);
             txtOption1.TabIndex = 7;
             // 
             // txtOption2
             // 
-            txtOption2.Location = new Point(650, 363);
+            txtOption2.Location = new Point(650, 336);
             txtOption2.Multiline = true;
             txtOption2.Name = "txtOption2";
-            txtOption2.Size = new Size(303, 50);
+            txtOption2.Size = new Size(303, 34);
             txtOption2.TabIndex = 8;
             // 
             // txtOption3
             // 
-            txtOption3.Location = new Point(177, 495);
+            txtOption3.Location = new Point(177, 437);
             txtOption3.Multiline = true;
             txtOption3.Name = "txtOption3";
-            txtOption3.Size = new Size(303, 50);
+            txtOption3.Size = new Size(303, 33);
             txtOption3.TabIndex = 10;
             // 
             // label6
@@ -150,7 +152,7 @@
             label6.AutoSize = true;
             label6.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.Brown;
-            label6.Location = new Point(177, 454);
+            label6.Location = new Point(177, 398);
             label6.Name = "label6";
             label6.Size = new Size(107, 25);
             label6.TabIndex = 9;
@@ -158,10 +160,10 @@
             // 
             // txtOption4
             // 
-            txtOption4.Location = new Point(650, 495);
+            txtOption4.Location = new Point(650, 438);
             txtOption4.Multiline = true;
             txtOption4.Name = "txtOption4";
-            txtOption4.Size = new Size(303, 50);
+            txtOption4.Size = new Size(303, 32);
             txtOption4.TabIndex = 12;
             // 
             // label7
@@ -169,7 +171,7 @@
             label7.AutoSize = true;
             label7.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label7.ForeColor = Color.Brown;
-            label7.Location = new Point(650, 454);
+            label7.Location = new Point(650, 398);
             label7.Name = "label7";
             label7.Size = new Size(107, 25);
             label7.TabIndex = 11;
@@ -177,10 +179,10 @@
             // 
             // txtAnswer
             // 
-            txtAnswer.Location = new Point(197, 599);
+            txtAnswer.Location = new Point(195, 540);
             txtAnswer.Multiline = true;
             txtAnswer.Name = "txtAnswer";
-            txtAnswer.Size = new Size(737, 70);
+            txtAnswer.Size = new Size(737, 43);
             txtAnswer.TabIndex = 14;
             // 
             // label8
@@ -188,7 +190,7 @@
             label8.AutoSize = true;
             label8.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label8.ForeColor = Color.Brown;
-            label8.Location = new Point(503, 571);
+            label8.Location = new Point(503, 500);
             label8.Name = "label8";
             label8.Size = new Size(97, 25);
             label8.TabIndex = 13;
@@ -199,7 +201,7 @@
             btnUpdate.BackColor = Color.Brown;
             btnUpdate.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnUpdate.ForeColor = SystemColors.Window;
-            btnUpdate.Location = new Point(360, 717);
+            btnUpdate.Location = new Point(370, 610);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(120, 40);
             btnUpdate.TabIndex = 15;
@@ -212,7 +214,7 @@
             btnReset.BackColor = Color.Brown;
             btnReset.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnReset.ForeColor = SystemColors.Window;
-            btnReset.Location = new Point(609, 717);
+            btnReset.Location = new Point(583, 610);
             btnReset.Name = "btnReset";
             btnReset.Size = new Size(120, 40);
             btnReset.TabIndex = 16;
@@ -223,7 +225,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
+            BackColor = Color.Snow;
             Controls.Add(btnReset);
             Controls.Add(btnUpdate);
             Controls.Add(txtAnswer);
@@ -243,7 +245,7 @@
             Controls.Add(label1);
             ForeColor = SystemColors.WindowText;
             Name = "UpdateQuestions";
-            Size = new Size(1090, 800);
+            Size = new Size(1000, 700);
             Load += UpdateQuestions_Load;
             ResumeLayout(false);
             PerformLayout();

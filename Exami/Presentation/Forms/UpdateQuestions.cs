@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Services.DTOs;
 
 namespace Presentation.Forms
 {
@@ -33,6 +34,17 @@ namespace Presentation.Forms
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboQuestion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetAllQuestionInputDto getQuestion = new GetAllQuestionInputDto();
+            getQuestion.Filters = new Dictionary<string, object>();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
