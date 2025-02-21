@@ -14,14 +14,25 @@ public class ExamQuestionMapper : BaseMapper<ExamQuestion>
         if (columnNameMapping == null) columnNameMapping = new Dictionary<string, string>();
 
         InitializeColumnNameMapping(Columns, columnNameMapping);
-        {
-            if (row == null) return null;
 
-            return new()
+        if (row == null) return null;
+
+        Question question = null;
+
+        if (row.Table.Columns.Contains("QuestionType"))
+        {
+            question = new QuestionMapper().MapFromDataRow(row, new()
             {
-                ExamId = Convert.ToInt32(row[columnNameMapping["ExamId"]]),
-                QuestionId = Convert.ToInt32(row[columnNameMapping["QuestionId"]])
-            };
+                ["Id"] = "QuestionId"
+            });
         }
+
+        return new()
+        {
+            ExamId = Convert.ToInt32(row[columnNameMapping["ExamId"]]),
+            QuestionId = Convert.ToInt32(row[columnNameMapping["QuestionId"]]),
+            Question = question
+        };
+
     }
 }
