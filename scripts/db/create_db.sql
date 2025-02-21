@@ -139,3 +139,18 @@ LEFT JOIN
 	[Subject] s ON e.SubjectId = s.Id
 LEFT JOIN 
 	[User] t ON s.TeacherId = t.Id;
+
+CREATE VIEW [SubjectFullView] AS
+SELECT
+	s.Id,
+	s.Name AS SubjectName,
+	s.TeacherId,
+	t.FirstName,
+	t.LastName,
+	t.Role,
+	t.Email,
+	t.Password
+FROM
+	[Subject] s
+LEFT JOIN 
+	[User] t ON s.TeacherId = t.Id;
