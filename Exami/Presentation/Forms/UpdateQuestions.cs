@@ -40,8 +40,6 @@ namespace Presentation.Forms
 
         private void comboQuestion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GetAllQuestionInputDto getQuestion = new GetAllQuestionInputDto();
-            getQuestion.Filters = new Dictionary<string, object>();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
