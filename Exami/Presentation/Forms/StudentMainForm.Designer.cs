@@ -5,7 +5,7 @@ using MaterialColorScheme = MaterialSkin.ColorScheme;
 
 namespace Presentation
 {
-    internal partial class StudentMainForm
+    public partial class StudentMainForm
     {
         /// <summary>
         /// Required designer variable.

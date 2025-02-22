@@ -6,7 +6,7 @@ using Services.Services;
 
 namespace Presentation
 {
-    internal partial class StudentMainForm : Form
+    public partial class StudentMainForm : Form
     {
 
          static List<StudentExam> _exams = new List<StudentExam>();

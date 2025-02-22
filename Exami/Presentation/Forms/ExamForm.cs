@@ -10,10 +10,10 @@ namespace Presentation
 {
     public partial class ExamForm : Form
     {
-        private readonly int examId = ExamSession.SelectedExam;
         private readonly int StudentExamId = ExamSession.LoggedInUser;
         List<Question> questionlist = new List<Question>();
         int currentQuestionIndex = 0;
+        private readonly int examId = ExamSession.SelectedExam;
         public ExamForm(Exam exam)
         {
             InitializeComponent();

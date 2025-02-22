@@ -1,0 +1,88 @@
+TABLE User {
+  Id INT [pk, increment]
+  FirstName VARCHAR(25)
+  LastName VARCHAR(25)
+  Role VARCHAR(20) [not null, note:"Check Role IN ('Admin', 'Teacher', 'Student')"]
+  Email VARCHAR(100) [not null, unique]
+  Password VARCHAR(30) [not null]
+}
+
+TABLE Subject {
+  Id INT [pk, increment]
+  Name VARCHAR(30) [not null]
+  TeacherId INT
+}
+
+TABLE Exam {
+    Id INT [pk, increment]
+    Name nvarchar(100) [not null]
+    SubjectId INT
+    StartTime DATETIME [not null]
+    EndTime DATETIME [not null]
+    ExamType NVARCHAR(20) [not null, note: "Check ExamType IN ('Practice', 'Final')"]
+    Instructions NVARCHAR(1000)
+}
+
+TABLE Question {
+  Id INT [pk, increment]
+  Body NVARCHAR(500) [not null]
+  Marks FLOAT [not null]
+  QuestionType VARCHAR(20) [not null, note: "Check QuestionType IN ('TrueOrFalse', 'ChooseOne', 'ChooseAll')"]
+  SubjectId INT
+}
+
+TABLE Answer {
+  Id INT [pk, increment]
+  QuestionId INT
+  AnswerText NVARCHAR(50) [not null]
+  IsCorrect BIT [not null]
+}
+
+TABLE ExamQuestion {
+    QuestionId INT [ref: > Question.Id, not null]
+    ExamId INT [ref: > Exam.Id, not null]
+    indexes {
+      (ExamId, QuestionId) [pk]
+    } // Composite primary key
+}
+
+TABLE StudentExam {
+    Id INT [pk, increment]
+    ExamId INT
+    StudentId  INT
+    SubmissionTime DATETIME
+    CreatedAt DATETIME [default: `now()`]
+    UpdatedAt DATETIME
+}
+
+TABLE MarkedQuestion {
+  StudentExamId INT [not null]
+  QuestionId INT [not null]
+
+  indexes {
+    (StudentExamId, QuestionId) [pk]
+  } // Composite primary key
+}
+
+TABLE StudentAnswer {
+    StudentExamId INT
+    AnswerId INT
+    CreatedAt DATETIME [default: `now()`]
+
+    indexes {
+      (StudentExamId, AnswerId) [pk]
+    } // Composite primary key
+}
+
+
+// Relationships
+REF: Subject.TeacherId > User.Id
+REF: Exam.SubjectId > Subject.Id
+REF: Question.SubjectId > Subject.Id
+REF: Answer.QuestionId > Question.Id
+REF: StudentExam.ExamId > Exam.Id
+REF: StudentExam.StudentId > User.Id
+REF: StudentAnswer.StudentExamId > Exam.Id
+REF: StudentAnswer.AnswerId > Answer.Id
+REF: MarkedQuestion.StudentExamId > StudentExam.Id
+REF: MarkedQuestion.QuestionId > Question.Id
