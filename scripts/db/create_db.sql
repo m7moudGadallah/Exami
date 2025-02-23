@@ -143,7 +143,7 @@ LEFT JOIN
 CREATE VIEW [SubjectFullView] AS
 SELECT
 	s.Id,
-	s.Name AS SubjectName,
+	s.Name,
 	s.TeacherId,
 	t.FirstName,
 	t.LastName,
