@@ -9,6 +9,9 @@ namespace Presentation.Forms
     public partial class LoginForm : Form
     {
         readonly AuthService _authService = ServicesRepo.GetService<AuthService>();
+        private string Email { get => email_txt_box.Text.Trim(); set => email_txt_box.Text = value.Trim(); }
+        private string Password { get => pass_txt.Text.Trim(); set => pass_txt.Text = value.Trim(); }
+
         #region  UI Components
         #region componnents intialzation
         public LoginForm()
@@ -287,16 +290,14 @@ namespace Presentation.Forms
         #region Login Button Click Event
         private void login_btn_Click(object sender, EventArgs e)
         {
-            string email = email_txt_box.Text.Trim();
-            string password = pass_txt.Text.Trim();
 
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
             {
                 Messages.ShowSnackbarError("Please enter both email and password.");
                 return;
             }
 
-            var loginDto = new LoginInputDto(email, password);
+            var loginDto = new LoginInputDto(Email, Password);
 
             try
             {
