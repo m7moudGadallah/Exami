@@ -1,6 +1,4 @@
-﻿using System.Drawing.Drawing2D;
-
-namespace Presentation
+﻿namespace WinFormsApp3
 {
     partial class ExamForm
     {
@@ -30,335 +28,244 @@ namespace Presentation
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            timer = new System.Windows.Forms.Timer(components);
-            header = new Panel();
-            timer_label = new Label();
-            sd_name = new Label();
-            logo = new Label();
-            pictureBox1 = new PictureBox();
-            main = new SplitContainer();
-            qnav = new Panel();
-            qbody = new Panel();
-            qhead = new Panel();
-            qh = new Label();
-            footer = new Panel();
-            pre_btn = new Krypton.Toolkit.KryptonButton();
-            nxt_btn = new Krypton.Toolkit.KryptonButton();
-            submit_btn = new Krypton.Toolkit.KryptonButton();
-            header.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)main).BeginInit();
-            main.Panel1.SuspendLayout();
-            main.Panel2.SuspendLayout();
-            main.SuspendLayout();
-            qhead.SuspendLayout();
-            footer.SuspendLayout();
+            navPanel = new Panel();
+            question1Button = new Button();
+            flagButton = new Button();
+            contentPanel = new Panel();
+            submitButton = new Button();
+            prevButton = new Button();
+            nextButton = new Button();
+            answerPanel = new Panel();
+            questionText = new Label();
+            userNameTextBox = new TextBox();
+            examNameTextBox = new TextBox();
+            examTimeLabel = new Label();
+            mainPanel = new Panel();
+            navPanel.SuspendLayout();
+            contentPanel.SuspendLayout();
+            answerPanel.SuspendLayout();
             SuspendLayout();
             // 
-            // timer
+            // navPanel
             // 
-            timer.Enabled = true;
-            timer.Interval = 1000;
+            navPanel.AutoSize = true;
+            navPanel.BackColor = Color.FromArgb(217, 234, 253);
+            navPanel.Controls.Add(question1Button);
+            navPanel.Controls.Add(flagButton);
+            navPanel.Location = new Point(0, 0);
+            navPanel.Margin = new Padding(4, 5, 4, 5);
+            navPanel.Name = "navPanel";
+            navPanel.Size = new Size(250, 920);
+            navPanel.TabIndex = 0;
             // 
-            // header
+            // question1Button
             // 
-            header.BackColor = Color.Brown;
-            header.Controls.Add(timer_label);
-            header.Controls.Add(sd_name);
-            header.Controls.Add(logo);
-            header.Controls.Add(pictureBox1);
-            header.Dock = DockStyle.Top;
-            header.Location = new Point(0, 0);
-            header.Name = "header";
-            header.Size = new Size(1180, 109);
-            header.TabIndex = 47;
+            question1Button.BackColor = Color.FromArgb(188, 204, 220);
+            question1Button.FlatAppearance.BorderSize = 0;
+            question1Button.FlatStyle = FlatStyle.Flat;
+            question1Button.Font = new Font("Segoe UI", 15.75F);
+            question1Button.ForeColor = Color.FromArgb(64, 64, 64);
+            question1Button.Location = new Point(21, 173);
+            question1Button.Name = "question1Button";
+            question1Button.Size = new Size(55, 41);
+            question1Button.TabIndex = 0;
+            question1Button.Text = "Q1";
+            question1Button.UseVisualStyleBackColor = false;
+            question1Button.Click += questionButton_Click;
             // 
-            // timer_label
+            // flagButton
             // 
-            timer_label.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            timer_label.BackColor = Color.Transparent;
-            timer_label.Font = new Font("Tahoma", 20.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            timer_label.ForeColor = SystemColors.ButtonHighlight;
-            timer_label.Location = new Point(0, 0);
-            timer_label.Name = "timer_label";
-            timer_label.Size = new Size(203, 109);
-            timer_label.TabIndex = 50;
-            timer_label.TextAlign = ContentAlignment.MiddleCenter;
+            flagButton.BackColor = Color.FromArgb(188, 204, 220);
+            flagButton.FlatAppearance.BorderSize = 0;
+            flagButton.FlatStyle = FlatStyle.Flat;
+            flagButton.Font = new Font("Segoe UI", 15.75F);
+            flagButton.ForeColor = Color.FromArgb(64, 64, 64);
+            flagButton.Location = new Point(93, 173);
+            flagButton.Name = "flagButton";
+            flagButton.Size = new Size(57, 41);
+            flagButton.TabIndex = 5;
+            flagButton.UseVisualStyleBackColor = false;
+            flagButton.Click += flagButton_Click;
             // 
-            // sd_name
+            // contentPanel
             // 
-            sd_name.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            sd_name.BackColor = Color.Transparent;
-            sd_name.Font = new Font("Tahoma", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            sd_name.ForeColor = SystemColors.ButtonHighlight;
-            sd_name.Location = new Point(843, 0);
-            sd_name.Name = "sd_name";
-            sd_name.Size = new Size(203, 109);
-            sd_name.TabIndex = 49;
-            sd_name.Text = "Name";
-            sd_name.TextAlign = ContentAlignment.MiddleCenter;
+            contentPanel.AutoSize = true;
+            contentPanel.BackColor = Color.FromArgb(248, 250, 252);
+            contentPanel.Controls.Add(submitButton);
+            contentPanel.Controls.Add(prevButton);
+            contentPanel.Controls.Add(nextButton);
+            contentPanel.Controls.Add(answerPanel);
+            contentPanel.Controls.Add(userNameTextBox);
+            contentPanel.Controls.Add(examNameTextBox);
+            contentPanel.Controls.Add(examTimeLabel);
+            contentPanel.Location = new Point(239, 0);
+            contentPanel.Margin = new Padding(4, 5, 4, 5);
+            contentPanel.Name = "contentPanel";
+            contentPanel.Size = new Size(1163, 920);
+            contentPanel.TabIndex = 0;
+            contentPanel.Paint += contentPanel_Paint;
             // 
-            // logo
+            // submitButton
             // 
-            logo.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            logo.Font = new Font("Tahoma", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            logo.ForeColor = SystemColors.ButtonHighlight;
-            logo.Location = new Point(402, 0);
-            logo.Name = "logo";
-            logo.Size = new Size(241, 109);
-            logo.TabIndex = 0;
-            logo.Text = "Exami";
-            logo.TextAlign = ContentAlignment.MiddleCenter;
+            submitButton.BackColor = Color.FromArgb(255, 107, 107);
+            submitButton.FlatAppearance.BorderSize = 0;
+            submitButton.FlatStyle = FlatStyle.Flat;
+            submitButton.Font = new Font("Segoe UI", 15.75F);
+            submitButton.ForeColor = Color.White;
+            submitButton.Location = new Point(511, 867);
+            submitButton.Name = "submitButton";
+            submitButton.Size = new Size(120, 50);
+            submitButton.TabIndex = 8;
+            submitButton.Text = "Submit";
+            submitButton.UseVisualStyleBackColor = false;
+            submitButton.Click += submitButton_Click;
             // 
-            // pictureBox1
+            // prevButton
             // 
-            pictureBox1.BackColor = Color.White;
-            pictureBox1.BorderStyle = BorderStyle.Fixed3D;
-            pictureBox1.Location = new Point(1052, 0);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(128, 109);
-            pictureBox1.TabIndex = 48;
-            pictureBox1.TabStop = false;
+            prevButton.BackColor = Color.FromArgb(128, 128, 128);
+            prevButton.FlatAppearance.BorderSize = 0;
+            prevButton.FlatStyle = FlatStyle.Flat;
+            prevButton.Font = new Font("Segoe UI", 15.75F);
+            prevButton.ForeColor = Color.White;
+            prevButton.Location = new Point(337, 819);
+            prevButton.Name = "prevButton";
+            prevButton.Size = new Size(122, 50);
+            prevButton.TabIndex = 6;
+            prevButton.Text = "< prev";
+            prevButton.UseVisualStyleBackColor = false;
+            prevButton.Click += prevButton_Click;
             // 
-            // main
+            // nextButton
             // 
-            main.BackColor = Color.White;
-            main.BorderStyle = BorderStyle.Fixed3D;
-            main.Location = new Point(0, 112);
-            main.Name = "main";
+            nextButton.BackColor = Color.FromArgb(128, 128, 128);
+            nextButton.FlatAppearance.BorderSize = 0;
+            nextButton.FlatStyle = FlatStyle.Flat;
+            nextButton.Font = new Font("Segoe UI", 15.75F);
+            nextButton.ForeColor = Color.White;
+            nextButton.Location = new Point(687, 819);
+            nextButton.Name = "nextButton";
+            nextButton.Size = new Size(126, 50);
+            nextButton.TabIndex = 7;
+            nextButton.Text = "next >";
+            nextButton.UseVisualStyleBackColor = false;
+            nextButton.Click += nextButton_Click;
             // 
-            // main.Panel1
+            // answerPanel
             // 
-            main.Panel1.Controls.Add(qnav);
+            answerPanel.BackColor = Color.White;
+            answerPanel.Controls.Add(questionText);
+            answerPanel.Location = new Point(74, 173);
+            answerPanel.Name = "answerPanel";
+            answerPanel.Size = new Size(973, 609);
+            answerPanel.TabIndex = 4;
+            answerPanel.Paint += answerPanel_Paint;
             // 
-            // main.Panel2
+            // questionText
             // 
-            main.Panel2.Controls.Add(qbody);
-            main.Panel2.Controls.Add(qhead);
-            main.Size = new Size(1180, 501);
-            main.SplitterDistance = 182;
-            main.TabIndex = 48;
+            questionText.AutoSize = true;
+            questionText.Font = new Font("Segoe UI", 12F);
+            questionText.ForeColor = Color.Black;
+            questionText.Location = new Point(20, 20);
+            questionText.Name = "questionText";
+            questionText.Size = new Size(235, 21);
+            questionText.TabIndex = 0;
+            questionText.Text = "Q1. What is the color of the sun?";
             // 
-            // qnav
+            // userNameTextBox
             // 
-            qnav.BorderStyle = BorderStyle.Fixed3D;
-            qnav.Location = new Point(10, 3);
-            qnav.Name = "qnav";
-            qnav.Size = new Size(163, 491);
-            qnav.TabIndex = 1;
+            userNameTextBox.BackColor = Color.FromArgb(188, 204, 220);
+            userNameTextBox.BorderStyle = BorderStyle.None;
+            userNameTextBox.CausesValidation = false;
+            userNameTextBox.Enabled = false;
+            userNameTextBox.Font = new Font("Segoe UI", 15.75F);
+            userNameTextBox.ForeColor = Color.Black;
+            userNameTextBox.Location = new Point(428, 87);
+            userNameTextBox.Multiline = true;
+            userNameTextBox.Name = "userNameTextBox";
+            userNameTextBox.ReadOnly = true;
+            userNameTextBox.Size = new Size(150, 42);
+            userNameTextBox.TabIndex = 3;
+            userNameTextBox.Text = "User Name";
+            userNameTextBox.TextAlign = HorizontalAlignment.Center;
+            userNameTextBox.WordWrap = false;
             // 
-            // qbody
+            // examNameTextBox
             // 
-            qbody.BorderStyle = BorderStyle.Fixed3D;
-            qbody.Location = new Point(7, 134);
-            qbody.Name = "qbody";
-            qbody.Size = new Size(975, 360);
-            qbody.TabIndex = 3;
+            examNameTextBox.BackColor = Color.FromArgb(188, 204, 220);
+            examNameTextBox.BorderStyle = BorderStyle.None;
+            examNameTextBox.CausesValidation = false;
+            examNameTextBox.Enabled = false;
+            examNameTextBox.Font = new Font("Segoe UI", 15.75F);
+            examNameTextBox.ForeColor = Color.Black;
+            examNameTextBox.Location = new Point(897, 87);
+            examNameTextBox.Multiline = true;
+            examNameTextBox.Name = "examNameTextBox";
+            examNameTextBox.ReadOnly = true;
+            examNameTextBox.Size = new Size(150, 42);
+            examNameTextBox.TabIndex = 2;
+            examNameTextBox.Text = "Exam Name";
+            examNameTextBox.TextAlign = HorizontalAlignment.Center;
             // 
-            // qhead
+            // examTimeLabel
             // 
-            qhead.BorderStyle = BorderStyle.Fixed3D;
-            qhead.Controls.Add(qh);
-            qhead.Location = new Point(9, 3);
-            qhead.Name = "qhead";
-            qhead.Size = new Size(973, 125);
-            qhead.TabIndex = 2;
+            examTimeLabel.BackColor = Color.FromArgb(188, 204, 220);
+            examTimeLabel.Font = new Font("Segoe UI", 15.75F);
+            examTimeLabel.ForeColor = Color.Black;
+            examTimeLabel.ImageAlign = ContentAlignment.MiddleLeft;
+            examTimeLabel.Location = new Point(74, 87);
+            examTimeLabel.Name = "examTimeLabel";
+            examTimeLabel.Size = new Size(150, 42);
+            examTimeLabel.TabIndex = 1;
+            examTimeLabel.Text = "00:00:00";
+            examTimeLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // qh
+            // mainPanel
             // 
-            qh.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            qh.AutoSize = true;
-            qh.BackColor = Color.Transparent;
-            qh.Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            qh.ForeColor = SystemColors.ActiveCaptionText;
-            qh.Location = new Point(12, 57);
-            qh.Name = "qh";
-            qh.Size = new Size(106, 29);
-            qh.TabIndex = 50;
-            qh.Text = "Question";
-            qh.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // footer
-            // 
-            footer.BackColor = Color.Snow;
-            footer.Controls.Add(pre_btn);
-            footer.Controls.Add(nxt_btn);
-            footer.Controls.Add(submit_btn);
-            footer.Dock = DockStyle.Bottom;
-            footer.Location = new Point(0, 619);
-            footer.Name = "footer";
-            footer.Size = new Size(1180, 101);
-            footer.TabIndex = 49;
-            // 
-            // pre_btn
-            // 
-            pre_btn.Location = new Point(488, 24);
-            pre_btn.Name = "pre_btn";
-            pre_btn.OverrideDefault.Back.Color1 = Color.Brown;
-            pre_btn.OverrideDefault.Back.Color2 = Color.Brown;
-            pre_btn.OverrideFocus.Back.Color1 = Color.Brown;
-            pre_btn.OverrideFocus.Back.Color2 = Color.Brown;
-            pre_btn.Size = new Size(81, 47);
-            pre_btn.StateCommon.Back.Color1 = Color.Brown;
-            pre_btn.StateCommon.Back.Color2 = Color.Brown;
-            pre_btn.StateCommon.Back.ColorAngle = 1F;
-            pre_btn.StateCommon.Border.Color1 = Color.FromArgb(64, 64, 64);
-            pre_btn.StateCommon.Border.Color2 = Color.FromArgb(64, 64, 64);
-            pre_btn.StateCommon.Border.ColorAngle = 1F;
-            pre_btn.StateCommon.Border.Rounding = 3F;
-            pre_btn.StateCommon.Border.Width = 2;
-            pre_btn.StateCommon.Content.LongText.Color1 = Color.FromArgb(224, 224, 224);
-            pre_btn.StateCommon.Content.LongText.Color2 = Color.White;
-            pre_btn.StateCommon.Content.ShortText.Color1 = Color.White;
-            pre_btn.StateCommon.Content.ShortText.Color2 = Color.White;
-            pre_btn.StateCommon.Content.ShortText.Font = new Font("Tahoma", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pre_btn.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            pre_btn.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            pre_btn.StateDisabled.Back.Color1 = Color.Brown;
-            pre_btn.StateDisabled.Back.Color2 = Color.Brown;
-            pre_btn.StateDisabled.Border.Rounding = 3F;
-            pre_btn.StateDisabled.Border.Width = 2;
-            pre_btn.StateNormal.Back.Color1 = Color.Brown;
-            pre_btn.StateNormal.Back.Color2 = Color.Brown;
-            pre_btn.StatePressed.Back.Color1 = Color.Maroon;
-            pre_btn.StatePressed.Back.Color2 = Color.Maroon;
-            pre_btn.StatePressed.Border.Rounding = 3F;
-            pre_btn.StatePressed.Border.Width = 5;
-            pre_btn.StateTracking.Back.Color1 = Color.Brown;
-            pre_btn.StateTracking.Back.Color2 = Color.Brown;
-            pre_btn.TabIndex = 50;
-            pre_btn.UseMnemonic = false;
-            pre_btn.Values.DropDownArrowColor = Color.Empty;
-            pre_btn.Values.ImageTransparentColor = Color.White;
-            pre_btn.Values.Text = "Prev";
-            pre_btn.Click += pre_btn_Click;
-            // 
-            // nxt_btn
-            // 
-            nxt_btn.Location = new Point(605, 24);
-            nxt_btn.Name = "nxt_btn";
-            nxt_btn.OverrideDefault.Back.Color1 = Color.Brown;
-            nxt_btn.OverrideDefault.Back.Color2 = Color.Brown;
-            nxt_btn.OverrideFocus.Back.Color1 = Color.Brown;
-            nxt_btn.OverrideFocus.Back.Color2 = Color.Brown;
-            nxt_btn.Size = new Size(81, 47);
-            nxt_btn.StateCommon.Back.Color1 = Color.Brown;
-            nxt_btn.StateCommon.Back.Color2 = Color.Brown;
-            nxt_btn.StateCommon.Back.ColorAngle = 1F;
-            nxt_btn.StateCommon.Border.Color1 = Color.FromArgb(64, 64, 64);
-            nxt_btn.StateCommon.Border.Color2 = Color.FromArgb(64, 64, 64);
-            nxt_btn.StateCommon.Border.ColorAngle = 1F;
-            nxt_btn.StateCommon.Border.Rounding = 3F;
-            nxt_btn.StateCommon.Border.Width = 2;
-            nxt_btn.StateCommon.Content.LongText.Color1 = Color.FromArgb(224, 224, 224);
-            nxt_btn.StateCommon.Content.LongText.Color2 = Color.White;
-            nxt_btn.StateCommon.Content.ShortText.Color1 = Color.White;
-            nxt_btn.StateCommon.Content.ShortText.Color2 = Color.White;
-            nxt_btn.StateCommon.Content.ShortText.Font = new Font("Tahoma", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            nxt_btn.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            nxt_btn.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            nxt_btn.StateDisabled.Back.Color1 = Color.Brown;
-            nxt_btn.StateDisabled.Back.Color2 = Color.Brown;
-            nxt_btn.StateDisabled.Border.Rounding = 3F;
-            nxt_btn.StateDisabled.Border.Width = 2;
-            nxt_btn.StateNormal.Back.Color1 = Color.Brown;
-            nxt_btn.StateNormal.Back.Color2 = Color.Brown;
-            nxt_btn.StatePressed.Back.Color1 = Color.Maroon;
-            nxt_btn.StatePressed.Back.Color2 = Color.Maroon;
-            nxt_btn.StatePressed.Border.Rounding = 3F;
-            nxt_btn.StatePressed.Border.Width = 5;
-            nxt_btn.StateTracking.Back.Color1 = Color.Brown;
-            nxt_btn.StateTracking.Back.Color2 = Color.Brown;
-            nxt_btn.TabIndex = 50;
-            nxt_btn.UseMnemonic = false;
-            nxt_btn.Values.DropDownArrowColor = Color.Empty;
-            nxt_btn.Values.ImageTransparentColor = Color.White;
-            nxt_btn.Values.Text = "Next";
-            nxt_btn.Click += nxt_btn_Click;
-            // 
-            // submit_btn
-            // 
-            submit_btn.Location = new Point(1008, 24);
-            submit_btn.Name = "submit_btn";
-            submit_btn.OverrideDefault.Back.Color1 = Color.Brown;
-            submit_btn.OverrideDefault.Back.Color2 = Color.Brown;
-            submit_btn.OverrideFocus.Back.Color1 = Color.Brown;
-            submit_btn.OverrideFocus.Back.Color2 = Color.Brown;
-            submit_btn.Size = new Size(138, 47);
-            submit_btn.StateCommon.Back.Color1 = Color.Brown;
-            submit_btn.StateCommon.Back.Color2 = Color.Brown;
-            submit_btn.StateCommon.Back.ColorAngle = 1F;
-            submit_btn.StateCommon.Border.Color1 = Color.FromArgb(64, 64, 64);
-            submit_btn.StateCommon.Border.Color2 = Color.FromArgb(64, 64, 64);
-            submit_btn.StateCommon.Border.ColorAngle = 1F;
-            submit_btn.StateCommon.Border.Rounding = 3F;
-            submit_btn.StateCommon.Border.Width = 2;
-            submit_btn.StateCommon.Content.LongText.Color1 = Color.FromArgb(224, 224, 224);
-            submit_btn.StateCommon.Content.LongText.Color2 = Color.White;
-            submit_btn.StateCommon.Content.ShortText.Color1 = Color.White;
-            submit_btn.StateCommon.Content.ShortText.Color2 = Color.White;
-            submit_btn.StateCommon.Content.ShortText.Font = new Font("Tahoma", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            submit_btn.StateCommon.Content.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            submit_btn.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
-            submit_btn.StateDisabled.Back.Color1 = Color.Brown;
-            submit_btn.StateDisabled.Back.Color2 = Color.Brown;
-            submit_btn.StateDisabled.Border.Rounding = 3F;
-            submit_btn.StateDisabled.Border.Width = 2;
-            submit_btn.StateNormal.Back.Color1 = Color.Brown;
-            submit_btn.StateNormal.Back.Color2 = Color.Brown;
-            submit_btn.StatePressed.Back.Color1 = Color.Maroon;
-            submit_btn.StatePressed.Back.Color2 = Color.Maroon;
-            submit_btn.StatePressed.Border.Rounding = 3F;
-            submit_btn.StatePressed.Border.Width = 5;
-            submit_btn.StateTracking.Back.Color1 = Color.Brown;
-            submit_btn.StateTracking.Back.Color2 = Color.Brown;
-            submit_btn.TabIndex = 43;
-            submit_btn.UseMnemonic = false;
-            submit_btn.Values.DropDownArrowColor = Color.Empty;
-            submit_btn.Values.ImageTransparentColor = Color.White;
-            submit_btn.Values.Text = "Submit";
-            submit_btn.Click += submit_btn_Click;
+            mainPanel.BackColor = Color.White;
+            mainPanel.BorderStyle = BorderStyle.FixedSingle;
+            mainPanel.Location = new Point(0, 0);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Size = new Size(200, 100);
+            mainPanel.TabIndex = 0;
             // 
             // ExamForm
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
-            ClientSize = new Size(1180, 720);
-            Controls.Add(footer);
-            Controls.Add(main);
-            Controls.Add(header);
+            AutoSize = true;
+            ClientSize = new Size(1402, 920);
+            Controls.Add(contentPanel);
+            Controls.Add(navPanel);
+            Margin = new Padding(4, 5, 4, 5);
             Name = "ExamForm";
             ShowIcon = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "ExamForm";
+            WindowState = FormWindowState.Maximized;
             Load += ExamForm_Load;
-            header.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            main.Panel1.ResumeLayout(false);
-            main.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)main).EndInit();
-            main.ResumeLayout(false);
-            qhead.ResumeLayout(false);
-            qhead.PerformLayout();
-            footer.ResumeLayout(false);
+            navPanel.ResumeLayout(false);
+            contentPanel.ResumeLayout(false);
+            contentPanel.PerformLayout();
+            answerPanel.ResumeLayout(false);
+            answerPanel.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-        private System.Windows.Forms.Timer timer;
-        private Panel header;
-        private Label sd_name;
-        private PictureBox pictureBox1;
-        private Label logo;
-        private SplitContainer main;
-        private Panel qnav;
-        private Panel qhead;
-        private Panel footer;
-        private Panel qbody;
-        private Krypton.Toolkit.KryptonButton submit_btn;
-        private Label qh;
-        private Label timer_label;
-        private Krypton.Toolkit.KryptonButton pre_btn;
-        private Krypton.Toolkit.KryptonButton nxt_btn;
+
+        private System.Windows.Forms.Panel navPanel;
+        private System.Windows.Forms.Button question1Button;
+        private System.Windows.Forms.Panel contentPanel;
+        private System.Windows.Forms.Panel mainPanel;
+        private System.Windows.Forms.Button submitButton;
+        private System.Windows.Forms.Button nextButton;
+        private System.Windows.Forms.Button prevButton;
+        private System.Windows.Forms.Button flagButton;
+        private System.Windows.Forms.Panel answerPanel;
+        private System.Windows.Forms.Label questionText;
+        private System.Windows.Forms.TextBox userNameTextBox;
+        private System.Windows.Forms.TextBox examNameTextBox;
+        private System.Windows.Forms.Label examTimeLabel;
     }
 }
