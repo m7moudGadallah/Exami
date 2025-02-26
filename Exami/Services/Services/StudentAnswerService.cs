@@ -41,4 +41,31 @@ public class StudentAnswerService : CRUDService<StudentAnswer>
     {
         throw new NotImplementedException();
     }
+
+    public override bool Delete(int id)
+    {
+        throw new NotSupportedException();
+    }
+
+    public bool Delete(int studentExamId, int answerId)
+    {
+        try
+        {
+            var @sql = $@"
+                DELETE [{_tableName}]
+                WHERE StudentExamId = @StudentExamId
+                    AND AnswerId = @AnswerId";
+
+
+            DbCommandParams cmdParams = new(sql, CommandType.Text, new() { ["@StudentExamId"] = studentExamId, ["@AnswerId"] = answerId });
+
+            int rowsAffected = _dbContext.ExecuteNonQuery(cmdParams);
+
+            return rowsAffected > 0;
+        }
+        catch (Exception ex)
+        {
+            throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
+        }
+    }
 }
