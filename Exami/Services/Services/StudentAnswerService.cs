@@ -12,6 +12,20 @@ public class StudentAnswerService : CRUDService<StudentAnswer>
 {
     public StudentAnswerService() : base("StudentAnswer", new StudentAnswerMapper()) { }
 
+    public override List<StudentAnswer> GetAll(GetAllDto? dto = null)
+    {
+        if (dto == null)
+            dto = new();
+
+        if (dto?.OrderBy == null || dto.OrderBy.Count == 0)
+        {
+            dto.OrderBy = new() { ["StudentExamId"] = 1, ["AnswerId"] = 1 };
+        }
+
+        return base.GetAll(dto);
+    }
+
+
     public override StudentAnswer Create(StudentAnswer dto)
     {
         try
