@@ -16,6 +16,7 @@
 
 ### Mappers
 
+- `BaseMapper`
 - `AnswerMapper`
 - `ExamMapper`
 - `ExamQuestionMapper`
@@ -25,53 +26,82 @@
 - `StudentExamMapper`
 - `SubjectMapper`
 - `UserMapper`
+- `ExamStudentPerformanceMapper`
+- `ExamStatisticsMapper`
 
 ### Services
 
-### AuthService
+#### AuthService
 
 - `Login`
 
-### UserService
+#### UserService
 
-- `GetAllUsers`
-- `CreateUser`
-- `UpdateUser`
-- `DeleteUser`
+- `GetAll` (with rich features like pagination, sorting, filtering)
+- `Create`
+- `Update`
+- `Delete`
 
-### ExamService
+#### SubjectService
 
-- `GetAllExams`
-- `CreateExam`
-- `UpdateExam`
-- `DeleteExam`
+- `GetAll` (with rich features like pagination, sorting, filtering)
+- `Create`
+- `Update`
+- `Delete`
 
-### StudentExamService
+#### ExamService
 
-- `GetAllStudentExams`
-- `GetStudentExam`
+- `GetAll` (with rich features like pagination, sorting, filtering)
+- `Create`
+- `Update`
+- `Delete`
 
-### QuestionService
+#### StudentExamService
 
-- `GetAllQuestions`
-- `CreateQuestion`
-- `UpdateQuestion`
-- `DeleteQuestion`
+- `GetAll` (with rich features like pagination, sorting, filtering)
+- `Create`
+- `Update`
+- `Delete`
 
-### AnswerService
+#### QuestionService
 
-- `GetAllAnswers`
+- `GetAll` (with rich features like pagination, sorting, filtering)
+- `Create`
+- `Update`
+- `Delete`
 
-### StudentAnswerService
+#### ExamQuestionService
 
-- `GetAllStudentAnswers`
-- `CreateStudentAnswer`
-- `DeleteStudentAnswer`
+- `GetAll` (with rich features like pagination, sorting, filtering)
+- `Create`
+- `Delete`
+
+#### AnswerService
+
+- `GetAll` (with rich features like pagination, sorting, filtering)
+- `Create`
+- `Update`
+- `Delete`
+
+#### StudentAnswerService
+
+- `GetAll` (with rich features like pagination, sorting, filtering)
+- `Create`
+- `Delete`
+
+#### ExamStudentPerformanceService
+
+- `GetAll` (with rich features like pagination, sorting, filtering)
+
+#### ExamStatisticsService
+
+- `GetAll` (with rich features like pagination, sorting, filtering)
 
 ### Database (App Classes)
 
-- `DatabaseManager`
-- `DBCommandParams`
+- `DbContext`
+- `DbCommandParams`
+- `SqlQueryBuilder`
 
 ### Utilities
 
