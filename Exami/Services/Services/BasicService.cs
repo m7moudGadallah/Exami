@@ -2,7 +2,7 @@
 
 namespace Services.Services;
 
-public class BasicService : IBasicService
+public abstract class BasicService : IBasicService
 {
     public BasicService()
     {

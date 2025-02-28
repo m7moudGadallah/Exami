@@ -12,7 +12,7 @@ public static class DeleteEntityHelper
         try
         {
             var sql = $@"
-                DELETE FROM [{service.ViewName}]
+                DELETE FROM [{service.TableName}]
                 WHERE Id = @Id";
 
             DbCommandParams cmdParams = new(sql, CommandType.Text, new() { ["@Id"] = id });

@@ -2,7 +2,7 @@
 
 namespace Services.Services;
 
-public class BasicCRUDService<T> : BasicService, IBasicCRUDService<T> where T : class
+public abstract class BasicCRUDService<T> : BasicService, IBasicCRUDService<T> where T : class
 {
     protected BasicCRUDService(string tableName, string viewName, BaseMapper<T> mapper) : base()
     {
