@@ -177,7 +177,7 @@ This section defines key terms and concepts used throughout the documentation:
 - **Entities**:
   Classes that represent data models and map directly to database tables. For example, `User`, `Exam`, and `Question` are entities in this project.
 
-- **Database Manager**:
+- **DbContext**:
   A utility class responsible for handling all interactions with the database. It executes SQL queries and commands, such as inserting, updating, or retrieving data.
 
 - **DTO (Data Transfer Object)**:
