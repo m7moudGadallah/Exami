@@ -17,17 +17,13 @@ public class SubjectMapper : BaseMapper<Subject>
 
         User teacher = null;
 
-        if (row.Table.Columns.Contains("FirstName"))
-        {
-            teacher = new UserMapper().MapFromDataRow(row, new() { ["Id"] = "TeacherId" });
-        }
 
         return new()
         {
             Id = Convert.ToInt32(row[columnNameMapping["Id"]]),
             Name = row[columnNameMapping["Name"]].ToString(),
             TeacherId = (row["TeacherId"] == DBNull.Value) ? null : Convert.ToInt32(row[columnNameMapping["TeacherId"]]),
-            Teacher = teacher
+            Teacher = TryMap<UserMapper, User>(row, new() { ["Id"] = "TeacherId" })
         };
     }
 

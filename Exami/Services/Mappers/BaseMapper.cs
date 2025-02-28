@@ -30,4 +30,23 @@ public abstract class BaseMapper<T> where T : class
         }
         return result;
     }
+
+    /// <summary>
+    /// Attempts to map a related entity using a provided mapper. Returns null if mapping fails.
+    /// </summary>
+    protected TResult TryMap<TMapper, TResult>(DataRow row, Dictionary<string, string> columnMapping = null)
+        where TMapper : BaseMapper<TResult>, new()
+        where TResult : class
+    {
+        try
+        {
+            // Create instance of the specified mapper type
+            var mapper = new TMapper();
+            return mapper.MapFromDataRow(row, columnMapping);
+        }
+        catch
+        {
+            return null; // Return null if mapping fails
+        }
+    }
 }

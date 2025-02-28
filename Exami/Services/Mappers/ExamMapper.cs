@@ -33,7 +33,7 @@ public class ExamMapper : BaseMapper<Exam>
             EndTime = Convert.ToDateTime(row[columnNameMapping["EndTime"]]),
             ExamType = ParseExamType(row[columnNameMapping["ExamType"]].ToString()),
             Instructions = row[columnNameMapping["Instructions"]] == DBNull.Value ? null : row[columnNameMapping["Instructions"]].ToString(),
-            Subject = subject
+            Subject = TryMap<SubjectMapper, Subject>(row, new() { ["Name"] = "SubjectName" })
         };
     }
 

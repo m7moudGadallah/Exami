@@ -15,13 +15,11 @@ public class ExamQuestionMapper : BaseMapper<ExamQuestion>
 
         InitializeColumnNameMapping(Columns, columnNameMapping);
 
-        var question = new QuestionMapper().MapFromDataRow(row);
-
         return new ExamQuestion
         {
             ExamId = Convert.ToInt32(row[columnNameMapping["ExamId"]]),
             QuestionId = Convert.ToInt32(row[columnNameMapping["QuestionId"]]),
-            Question = question
+            Question = TryMap<QuestionMapper, Question>(row)
         };
     }
 

@@ -13,6 +13,8 @@ public class QuestionMapper : BaseMapper<Question>
 
         InitializeColumnNameMapping(Columns, columnNameMapping);
 
+        var answer = TryMap<AnswerMapper, Answer>(row, new() { ["Id"] = "AnswerId", ["QuestionId"] = "QuestionId" });
+
         List<Answer> answers = new List<Answer>();
 
         if (row.Table.Columns.Contains("AnswerId") && row["AnswerId"] != DBNull.Value)
@@ -27,7 +29,7 @@ public class QuestionMapper : BaseMapper<Question>
             Body = row[columnNameMapping["Body"]].ToString(),
             QuestionType = ParseQuestionType(row[columnNameMapping["QuestionType"]].ToString()),
             SubjectId = row[columnNameMapping["SubjectId"]] == DBNull.Value ? null : Convert.ToInt32(row[columnNameMapping["SubjectId"]]),
-            Answers = answers
+            Answers = answer != null ? new List<Answer> { answer } : new List<Answer>()
         };
     }
 

@@ -12,6 +12,7 @@ public class MarkedQuestionMapper : BaseMapper<MarkedQuestion>
         if (row == null) return null;
 
         if (columnNameMapping == null) columnNameMapping = new Dictionary<string, string>();
+        InitializeColumnNameMapping(Columns, columnNameMapping);
 
         return new()
         {

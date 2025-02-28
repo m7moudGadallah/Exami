@@ -24,8 +24,8 @@ public class StudentExamMapper : BaseMapper<StudentExam>
             SubmissionTime = row[columnNameMapping["SubmissionTime"]] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row[columnNameMapping["SubmissionTime"]]),
             CreatedAt = Convert.ToDateTime(row[columnNameMapping["CreatedAt"]]),
             UpdatedAt = Convert.ToDateTime(row[columnNameMapping["UpdatedAt"]]),
-            Student = new UserMapper().MapFromDataRow(row, new() { ["Id"] = "StudentId" }),
-            Exam = new ExamMapper().MapFromDataRow(row, new() { ["Id"] = "ExamId" })
+            Student = TryMap<UserMapper, User>(row, new() { ["Id"] = "StudentId" }),
+            Exam = TryMap<ExamMapper, Exam>(row, new() { ["Id"] = "ExamId" })
         };
     }
 
