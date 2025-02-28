@@ -244,6 +244,7 @@ FROM
     [Question] q
 LEFT JOIN 
     [Answer] a ON q.Id = a.QuestionId;
+GO
 
     CREATE VIEW [ExamFullView] AS
 SELECT
@@ -267,6 +268,7 @@ LEFT JOIN
 	[Subject] s ON e.SubjectId = s.Id
 LEFT JOIN 
 	[User] t ON s.TeacherId = t.Id;
+GO
 
 CREATE VIEW [SubjectFullView] AS
 SELECT
@@ -282,6 +284,7 @@ FROM
 	[Subject] s
 LEFT JOIN 
 	[User] t ON s.TeacherId = t.Id;
+GO
 
 CREATE VIEW [ExamQuestionFullView] AS
 SELECT
@@ -297,3 +300,4 @@ SELECT
 FROM ExamQuestion eq
 LEFT JOIN
 	[QuestionFullView]  q on eq.QuestionId = q.Id;
+GO
