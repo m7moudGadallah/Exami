@@ -301,3 +301,57 @@ FROM ExamQuestion eq
 LEFT JOIN
 	[QuestionFullView]  q on eq.QuestionId = q.Id;
 GO
+
+CREATE VIEW StudentExamScores AS
+WITH ExamTotalMarks AS (
+    -- Get total marks for each exam (include exams with no questions)
+    SELECT 
+        e.Id AS ExamId, 
+        COALESCE(SUM(q.Marks), 0) AS ExamScore  -- Default to 0 if no questions
+    FROM Exam e
+    LEFT JOIN ExamQuestion eq ON e.Id = eq.ExamId
+    LEFT JOIN Question q ON eq.QuestionId = q.Id
+    GROUP BY e.Id
+), 
+
+StudentCorrectAnswers AS (
+    -- Check if student selected ALL correct answers for a question
+    SELECT 
+        se.Id AS StudentExamId, 
+        q.Id AS QuestionId,
+        q.Marks,
+        CASE 
+            WHEN COUNT(CASE WHEN a.IsCorrect = 1 THEN sa.AnswerId END) = 
+                 COUNT(CASE WHEN a.IsCorrect = 1 THEN a.Id END) 
+            AND COUNT(CASE WHEN a.IsCorrect = 0 THEN sa.AnswerId END) = 0
+            THEN q.Marks 
+            ELSE 0 
+        END AS EarnedMarks
+    FROM StudentExam se
+    JOIN Exam e ON se.ExamId = e.Id
+    LEFT JOIN ExamQuestion eq ON e.Id = eq.ExamId
+    LEFT JOIN Question q ON eq.QuestionId = q.Id
+    LEFT JOIN Answer a ON q.Id = a.QuestionId
+    LEFT JOIN StudentAnswer sa ON sa.StudentExamId = se.Id AND sa.AnswerId = a.Id
+    GROUP BY se.Id, q.Id, q.Marks
+),
+
+StudentTotalScore AS (
+    -- Sum up the marks earned per student exam (ensure all students are included)
+    SELECT 
+        se.Id AS StudentExamId, 
+        COALESCE(SUM(sca.EarnedMarks), 0) AS StudentScore  -- Default to 0 if no answers
+    FROM StudentExam se
+    LEFT JOIN StudentCorrectAnswers sca ON se.Id = sca.StudentExamId
+    GROUP BY se.Id
+)
+
+-- Final View (Only Exams that Have at Least One StudentExamId)
+SELECT 
+    se.Id AS StudentExamId, 
+    etm.ExamScore, 
+    COALESCE(sts.StudentScore, 0) AS StudentScore  -- Default to 0 if no student score
+FROM StudentExam se
+JOIN ExamTotalMarks etm ON se.ExamId = etm.ExamId
+LEFT JOIN StudentTotalScore sts ON se.Id = sts.StudentExamId;
+GO
