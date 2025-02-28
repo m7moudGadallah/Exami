@@ -1,4 +1,4 @@
---DATABASE Creation --
+-- DATABASE Creation
 USE master;
 DROP DATABASE IF EXISTS Exami;
 GO
@@ -9,6 +9,7 @@ GO
 USE Exami;
 GO
 
+-- User Table
 CREATE TABLE [User] (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     FirstName VARCHAR(25),
@@ -18,12 +19,14 @@ CREATE TABLE [User] (
     Password VARCHAR(30) NOT NULL
 );
 
+-- Subject Table
 CREATE TABLE Subject (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Name VARCHAR(30) NOT NULL,
     TeacherId INT FOREIGN KEY REFERENCES [User](Id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
+-- Exam Table
 CREATE TABLE Exam (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Name NVARCHAR(100) NOT NULL,
@@ -34,6 +37,7 @@ CREATE TABLE Exam (
     Instructions NVARCHAR(1000)
 );
 
+-- Question Table
 CREATE TABLE Question (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Body NVARCHAR(500) NOT NULL,
@@ -42,6 +46,7 @@ CREATE TABLE Question (
     SubjectId INT FOREIGN KEY REFERENCES Subject(Id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+-- Answer Table
 CREATE TABLE Answer (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     QuestionId INT FOREIGN KEY REFERENCES Question(Id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -49,23 +54,26 @@ CREATE TABLE Answer (
     IsCorrect BIT NOT NULL
 );
 
+-- ExamQuestion Table
 CREATE TABLE ExamQuestion (
     ExamId INT NOT NULL,
     QuestionId INT NOT NULL,
     PRIMARY KEY (ExamId, QuestionId),
-    FOREIGN KEY (ExamId) REFERENCES Exam(Id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (QuestionId) REFERENCES Question(Id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (ExamId) REFERENCES Exam(Id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY (QuestionId) REFERENCES Question(Id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
+-- StudentExam Table
 CREATE TABLE StudentExam (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    ExamId INT NOT NULL FOREIGN KEY REFERENCES Exam(Id) ON DELETE CASCADE ON UPDATE CASCADE,
-    StudentId INT NOT NULL FOREIGN KEY REFERENCES [User](Id) ON DELETE CASCADE ON UPDATE CASCADE,
+    ExamId INT NOT NULL FOREIGN KEY REFERENCES Exam(Id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    StudentId INT NOT NULL FOREIGN KEY REFERENCES [User](Id) ON DELETE NO ACTION ON UPDATE NO ACTION,
     SubmissionTime DATETIME,
     CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
-    UpdatedAt DATETIME NOT NULL
+    UpdatedAt DATETIME NOT NULL DEFAULT GETDATE()
 );
 
+-- MarkedQuestion Table
 CREATE TABLE MarkedQuestion (
     StudentExamId INT NOT NULL,
     QuestionId INT NOT NULL,
@@ -74,6 +82,7 @@ CREATE TABLE MarkedQuestion (
     FOREIGN KEY (QuestionId) REFERENCES Question(Id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+-- StudentAnswer Table
 CREATE TABLE StudentAnswer (
     StudentExamId INT NOT NULL,
     AnswerId INT NOT NULL,
@@ -84,20 +93,139 @@ CREATE TABLE StudentAnswer (
 );
 GO
 
+-- Triggers to Handle Manual Cascade for DELETE and UPDATE
+
+-- DELETE TRIGGERS
+
+-- Delete ExamQuestion when Exam is deleted
+CREATE TRIGGER trg_Delete_ExamQuestion
+ON Exam
+AFTER DELETE
+AS
+BEGIN
+    DELETE FROM ExamQuestion WHERE ExamId IN (SELECT Id FROM deleted);
+END;
+GO
+
+-- Delete ExamQuestion when Question is deleted
+CREATE TRIGGER trg_Delete_ExamQuestion_Question
+ON Question
+AFTER DELETE
+AS
+BEGIN
+    DELETE FROM ExamQuestion WHERE QuestionId IN (SELECT Id FROM deleted);
+END;
+GO
+
+-- Delete StudentExam when Exam is deleted
+CREATE TRIGGER trg_Delete_StudentExam
+ON Exam
+AFTER DELETE
+AS
+BEGIN
+    DELETE FROM StudentExam WHERE ExamId IN (SELECT Id FROM deleted);
+END;
+GO
+
+-- Delete StudentExam when User (Student) is deleted
+CREATE TRIGGER trg_Delete_StudentExam_User
+ON [User]
+AFTER DELETE
+AS
+BEGIN
+    DELETE FROM StudentExam WHERE StudentId IN (SELECT Id FROM deleted);
+END;
+GO
+
+-- Delete dependent MarkedQuestion when StudentExam is deleted
+CREATE TRIGGER trg_Delete_MarkedQuestion
+ON StudentExam
+AFTER DELETE
+AS
+BEGIN
+    DELETE FROM MarkedQuestion WHERE StudentExamId IN (SELECT Id FROM deleted);
+END;
+GO
+
+-- Delete dependent StudentAnswer when StudentExam is deleted
+CREATE TRIGGER trg_Delete_StudentAnswer
+ON StudentExam
+AFTER DELETE
+AS
+BEGIN
+    DELETE FROM StudentAnswer WHERE StudentExamId IN (SELECT Id FROM deleted);
+END;
+GO
+
+-- UPDATE TRIGGERS
+
+-- Update ExamQuestion when ExamId changes
+CREATE TRIGGER trg_Update_ExamQuestion
+ON Exam
+AFTER UPDATE
+AS
+BEGIN
+    UPDATE eq
+    SET ExamId = i.Id
+    FROM ExamQuestion eq
+    INNER JOIN inserted i ON eq.ExamId = i.Id;
+END;
+GO
+
+-- Update ExamQuestion when QuestionId changes
+CREATE TRIGGER trg_Update_ExamQuestion_Question
+ON Question
+AFTER UPDATE
+AS
+BEGIN
+    UPDATE eq
+    SET QuestionId = i.Id
+    FROM ExamQuestion eq
+    INNER JOIN inserted i ON eq.QuestionId = i.Id;
+END;
+GO
+
+-- Update StudentExam when ExamId changes
+CREATE TRIGGER trg_Update_StudentExam
+ON Exam
+AFTER UPDATE
+AS
+BEGIN
+    UPDATE se
+    SET ExamId = i.Id
+    FROM StudentExam se
+    INNER JOIN inserted i ON se.ExamId = i.Id;
+END;
+GO
+
+-- Update StudentExam when StudentId changes
+CREATE TRIGGER trg_Update_StudentExam_User
+ON [User]
+AFTER UPDATE
+AS
+BEGIN
+    UPDATE se
+    SET StudentId = i.Id
+    FROM StudentExam se
+    INNER JOIN inserted i ON se.StudentId = i.Id;
+END;
+GO
+
+-- Views
 CREATE VIEW [StudentExamFullView] AS
 SELECT
-    se.*,
-    u.FirstName,
-    u.LastName,
-    u.Role,
-    u.Email,
-    u.Password,
-    e.Name,
-    e.SubjectId,
-    e.StartTime,
-    e.EndTime,
-    e.ExamType,
-    e.Instructions
+	se.*,
+	u.FirstName,
+	u.LastName,
+	u.Role,
+	u.Email,
+	u.Password,
+	e.Name,
+	e.SubjectId,
+	e.StartTime,
+	e.EndTime,
+	e.ExamType,
+	e.Instructions
 FROM 
     [StudentExam] se
 INNER JOIN 
@@ -108,64 +236,64 @@ GO
 
 CREATE VIEW [QuestionFullView] AS
 SELECT
-    q.*,
-    a.Id AS AnswerId,
-    a.AnswerText,
-    a.IsCorrect
+	q.*,
+	a.Id AS AnswerId,
+	a.AnswerText,
+	a.IsCorrect
 FROM 
     [Question] q
 LEFT JOIN 
     [Answer] a ON q.Id = a.QuestionId;
 
-CREATE VIEW [ExamFullView] AS
+    CREATE VIEW [ExamFullView] AS
 SELECT
-    e.Id,
-    e.Name,
-    e.StartTime,
-    e.EndTime,
-    e.ExamType,
-    e.Instructions,
-    e.SubjectId,
-    s.Name AS SubjectName,
-    s.TeacherId,
-    t.FirstName,
-    t.LastName,
-    t.Role,
-    t.Email,
-    t.Password
+	e.Id,
+	e.Name,
+	e.StartTime,
+	e.EndTime,
+	e.ExamType,
+	e.Instructions,
+	e.SubjectId,
+	s.Name AS SubjectName,
+	s.TeacherId,
+	t.FirstName,
+	t.LastName,
+	t.Role,
+	t.Email,
+	t.Password
 FROM 
-    [Exam] e
+	[Exam] e
 LEFT JOIN
-    [Subject] s ON e.SubjectId = s.Id
+	[Subject] s ON e.SubjectId = s.Id
 LEFT JOIN 
-    [User] t ON s.TeacherId = t.Id;
+	[User] t ON s.TeacherId = t.Id;
 
 CREATE VIEW [SubjectFullView] AS
 SELECT
-    s.Id,
-    s.Name,
-    s.TeacherId,
-    t.FirstName,
-    t.LastName,
-    t.Role,
-    t.Email,
-    t.Password
+	s.Id,
+	s.Name,
+	s.TeacherId,
+	t.FirstName,
+	t.LastName,
+	t.Role,
+	t.Email,
+	t.Password
 FROM
-    [Subject] s
+	[Subject] s
 LEFT JOIN 
-    [User] t ON s.TeacherId = t.Id;
+	[User] t ON s.TeacherId = t.Id;
 
 CREATE VIEW [ExamQuestionFullView] AS
 SELECT
-    eq.*,
-    eq.QuestionId AS Id,
-    q.Body,
-    q.Marks,
-    q.QuestionType,
-    q.SubjectId,
-    q.AnswerId,
-    q.AnswerText,
-    q.IsCorrect
+	eq.*,
+	eq.QuestionId AS Id,
+	q.Body,
+	q.Marks,
+	q.QuestionType,
+	q.SubjectId,
+	q.AnswerId,
+	q.AnswerText,
+	q.IsCorrect
 FROM ExamQuestion eq
 LEFT JOIN
-    [QuestionFullView] q ON eq.QuestionId = q.Id;
+	[QuestionFullView]  q on eq.QuestionId = q.Id;

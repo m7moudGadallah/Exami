@@ -1,4 +1,3 @@
---------  Dummy Data  -----------
 USE Exami;
 GO
 
@@ -14,83 +13,59 @@ INSERT INTO [User] (FirstName, LastName, Role, Email, Password) VALUES
 ('James', 'Wilson', 'Student', 'james.wilson@example.com', 'password123'),
 ('Sophia', 'Moore', 'Student', 'sophia.moore@example.com', 'password123'),
 ('Daniel', 'Anderson', 'Student', 'daniel.anderson@example.com', 'password123');
+GO
 
--- Insert Subjects
+-- Insert Subjects (Linked to Teachers)
 INSERT INTO Subject (Name, TeacherId) VALUES
-('Mathematics', 3),
-('Physics', 4),
-('Chemistry', 5),
-('History', 3),
-('Computer Science', 4);
+('Mathematics', (SELECT Id FROM [User] WHERE Email = 'alice.smith@example.com')),
+('Physics', (SELECT Id FROM [User] WHERE Email = 'michael.johnson@example.com')),
+('Chemistry', (SELECT Id FROM [User] WHERE Email = 'sarah.davis@example.com')),
+('History', (SELECT Id FROM [User] WHERE Email = 'alice.smith@example.com')),
+('Computer Science', (SELECT Id FROM [User] WHERE Email = 'michael.johnson@example.com'));
+GO
 
--- Insert Exams
+-- Insert Exams (Linked to Subjects)
 INSERT INTO Exam (Name, SubjectId, StartTime, EndTime, ExamType, Instructions) VALUES
-('Math Final Exam', 1, '2025-06-01 10:00', '2025-06-01 12:00', 'Final', 'Solve all questions.'),
-('Physics Midterm', 2, '2025-06-10 14:00', '2025-06-10 16:00', 'Practice', 'Use only a scientific calculator.'),
-('Chemistry Practical', 3, '2025-06-15 09:00', '2025-06-15 11:00', 'Final', 'Lab coats are mandatory.'),
-('History Quiz', 4, '2025-06-20 13:00', '2025-06-20 14:00', 'Practice', 'Answer all multiple-choice questions.'),
-('CS Programming Test', 5, '2025-06-25 15:00', '2025-06-25 17:00', 'Final', 'Write code using Python or Java.');
+('Math Final Exam', (SELECT Id FROM Subject WHERE Name = 'Mathematics'), '2025-06-01 10:00', '2025-06-01 12:00', 'Final', 'Solve all questions.'),
+('Physics Midterm', (SELECT Id FROM Subject WHERE Name = 'Physics'), '2025-06-10 14:00', '2025-06-10 16:00', 'Practice', 'Use only a scientific calculator.'),
+('Chemistry Practical', (SELECT Id FROM Subject WHERE Name = 'Chemistry'), '2025-06-15 09:00', '2025-06-15 11:00', 'Final', 'Lab coats are mandatory.'),
+('History Quiz', (SELECT Id FROM Subject WHERE Name = 'History'), '2025-06-20 13:00', '2025-06-20 14:00', 'Practice', 'Answer all multiple-choice questions.'),
+('CS Programming Test', (SELECT Id FROM Subject WHERE Name = 'Computer Science'), '2025-06-25 15:00', '2025-06-25 17:00', 'Final', 'Write code using Python or Java.');
+GO
 
--- Insert Questions
+-- Insert Questions (Linked to Subjects)
 INSERT INTO Question (Body, Marks, QuestionType, SubjectId) VALUES
-('What is 5 + 7?', 1.0, 'ChooseOne', 1),
-('Solve: 2x + 3 = 11', 2.0, 'ChooseOne', 1),
-('Who discovered gravity?', 2.0, 'ChooseOne', 2),
-('What is the atomic number of Oxygen?', 2.0, 'ChooseOne', 3),
-('Which year did WWI start?', 2.0, 'ChooseOne', 4),
-('What is the time complexity of binary search?', 2.0, 'ChooseOne', 5),
-('True or False: Water boils at 100°C at sea level.', 1.0, 'TrueOrFalse', 3),
-('Which of the following are prime numbers? (Choose all that apply)', 3.0, 'ChooseAll', 1);
+('What is 5 + 7?', 1, 'ChooseOne', (SELECT Id FROM Subject WHERE Name = 'Mathematics')),
+('Solve: 2x + 3 = 11', 2, 'ChooseOne', (SELECT Id FROM Subject WHERE Name = 'Mathematics')),
+('Who discovered gravity?', 2, 'ChooseOne', (SELECT Id FROM Subject WHERE Name = 'Physics')),
+('What is the atomic number of Oxygen?', 2, 'ChooseOne', (SELECT Id FROM Subject WHERE Name = 'Chemistry'));
+GO
 
--- Insert Answers
+-- Insert Answers (Linked to Questions)
 INSERT INTO Answer (QuestionId, AnswerText, IsCorrect) VALUES
-(1, '12', 1),
-(1, '11', 0),
-(2, 'x = 4', 1),
-(2, 'x = 5', 0),
-(3, 'Isaac Newton', 1),
-(3, 'Albert Einstein', 0),
-(4, '8', 0),
-(4, '16', 0),
-(4, '8', 0),
-(4, 'Oxygen', 1),
-(5, '1914', 1),
-(5, '1945', 0),
-(6, 'O(log n)', 1),
-(6, 'O(n^2)', 0),
-(7, 'True', 1),
-(7, 'False', 0),
-(8, '2', 1),
-(8, '4', 0),
-(8, '5', 1),
-(8, '7', 1);
+((SELECT Id FROM Question WHERE Body = 'What is 5 + 7?'), '12', 1),
+((SELECT Id FROM Question WHERE Body = 'What is 5 + 7?'), '10', 0),
+((SELECT Id FROM Question WHERE Body = 'Solve: 2x + 3 = 11'), 'x = 4', 1),
+((SELECT Id FROM Question WHERE Body = 'Solve: 2x + 3 = 11'), 'x = 5', 0);
+GO
 
--- Insert ExamQuestion relations
+-- Insert Exam Questions
 INSERT INTO ExamQuestion (ExamId, QuestionId) VALUES
-(1, 1), (1, 2),
-(2, 3), (2, 4),
-(3, 5), (3, 7),
-(4, 6), (4, 8);
+((SELECT Id FROM Exam WHERE Name = 'Math Final Exam'), (SELECT Id FROM Question WHERE Body = 'What is 5 + 7?')),
+((SELECT Id FROM Exam WHERE Name = 'Math Final Exam'), (SELECT Id FROM Question WHERE Body = 'Solve: 2x + 3 = 11'));
+GO
 
 -- Insert Student Exams
 INSERT INTO StudentExam (ExamId, StudentId, SubmissionTime, CreatedAt, UpdatedAt) VALUES
-(1, 6, '2023-04-15 14:30', '2023-04-15 14:00', '2023-04-15 14:30'),
-(2, 7, '2023-04-16 11:45', '2023-04-16 11:00', '2023-04-16 11:45'),
-(3, 8, '2023-04-17 09:50', '2023-04-17 09:00', '2023-04-17 09:50'),
-(4, 9, '2023-04-18 13:20', '2023-04-18 13:00', '2023-04-18 13:20'),
-(5, 10, '2023-04-19 16:15', '2023-04-19 16:00', '2023-04-19 16:15');
-
--- Insert Marked Questions
-INSERT INTO MarkedQuestion (StudentExamId, QuestionId) VALUES
-(1, 1), (1, 2),
-(2, 3), (2, 4),
-(3, 5), (3, 7),
-(4, 6), (4, 8);
+((SELECT Id FROM Exam WHERE Name = 'Math Final Exam'), (SELECT Id FROM [User] WHERE Email = 'bob.brown@example.com'), '2025-06-01 12:00', GETDATE(), GETDATE()),
+((SELECT Id FROM Exam WHERE Name = 'Physics Midterm'), (SELECT Id FROM [User] WHERE Email = 'emily.miller@example.com'), '2025-06-10 16:00', GETDATE(), GETDATE());
+GO
 
 -- Insert Student Answers
-INSERT INTO StudentAnswer (StudentExamId, AnswerId) VALUES
-(1, 1), (1, 2),
-(2, 3), (2, 4),
-(3, 5), (3, 7),
-(4, 6), (4, 8);
+INSERT INTO StudentAnswer (StudentExamId, AnswerId, CreatedAt) VALUES
+((SELECT Id FROM StudentExam WHERE StudentId = (SELECT Id FROM [User] WHERE Email = 'bob.brown@example.com')), 
+ (SELECT Id FROM Answer WHERE AnswerText = '12' AND QuestionId = (SELECT Id FROM Question WHERE Body = 'What is 5 + 7?')), GETDATE()),
 
+((SELECT Id FROM StudentExam WHERE StudentId = (SELECT Id FROM [User] WHERE Email = 'emily.miller@example.com')), 
+ (SELECT Id FROM Answer WHERE AnswerText = 'x = 4' AND QuestionId = (SELECT Id FROM Question WHERE Body = 'Solve: 2x + 3 = 11')), GETDATE());
+GO
