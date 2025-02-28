@@ -1,4 +1,3 @@
--- DATABASE Creation
 USE master;
 DROP DATABASE IF EXISTS Exami;
 GO
@@ -9,6 +8,7 @@ GO
 USE Exami;
 GO
 
+
 -- User Table
 CREATE TABLE [User] (
     Id INT IDENTITY(1,1) PRIMARY KEY,
@@ -18,6 +18,7 @@ CREATE TABLE [User] (
     Email VARCHAR(100) NOT NULL UNIQUE,
     Password VARCHAR(30) NOT NULL
 );
+GO
 
 -- Subject Table
 CREATE TABLE Subject (
@@ -25,17 +26,19 @@ CREATE TABLE Subject (
     Name VARCHAR(30) NOT NULL,
     TeacherId INT FOREIGN KEY REFERENCES [User](Id) ON DELETE SET NULL ON UPDATE CASCADE
 );
+GO
 
 -- Exam Table
 CREATE TABLE Exam (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Name NVARCHAR(100) NOT NULL,
-    SubjectId INT FOREIGN KEY REFERENCES Subject(Id) ON DELETE CASCADE ON UPDATE CASCADE,
+    SubjectId INT FOREIGN KEY REFERENCES Subject(Id) ON DELETE CASCADE ON UPDATE CASCADE, -- If a Subject is deleted, delete related Exams
     StartTime DATETIME NOT NULL,
     EndTime DATETIME NOT NULL,
     ExamType NVARCHAR(20) NOT NULL CHECK (ExamType IN ('Practice', 'Final')),
     Instructions NVARCHAR(1000)
 );
+GO
 
 -- Question Table
 CREATE TABLE Question (
@@ -43,44 +46,62 @@ CREATE TABLE Question (
     Body NVARCHAR(500) NOT NULL,
     Marks FLOAT NOT NULL,
     QuestionType VARCHAR(20) NOT NULL CHECK (QuestionType IN ('TrueOrFalse', 'ChooseOne', 'ChooseAll')),
-    SubjectId INT FOREIGN KEY REFERENCES Subject(Id) ON DELETE CASCADE ON UPDATE CASCADE
+    SubjectId INT FOREIGN KEY REFERENCES Subject(Id) ON DELETE CASCADE ON UPDATE CASCADE -- If Subject is deleted, delete related Questions
 );
+GO
 
 -- Answer Table
 CREATE TABLE Answer (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    QuestionId INT FOREIGN KEY REFERENCES Question(Id) ON DELETE CASCADE ON UPDATE CASCADE,
-    AnswerText NVARCHAR(50) NOT NULL,
+    QuestionId INT FOREIGN KEY REFERENCES Question(Id) ON DELETE CASCADE ON UPDATE CASCADE, -- If Question is deleted, delete related Answers
+	AnswerText NVARCHAR(50) NOT NULL,
     IsCorrect BIT NOT NULL
 );
+GO
 
 -- ExamQuestion Table
 CREATE TABLE ExamQuestion (
     ExamId INT NOT NULL,
     QuestionId INT NOT NULL,
     PRIMARY KEY (ExamId, QuestionId),
-    FOREIGN KEY (ExamId) REFERENCES Exam(Id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY (QuestionId) REFERENCES Question(Id) ON DELETE NO ACTION ON UPDATE NO ACTION
+    FOREIGN KEY (ExamId) REFERENCES Exam(Id) ON DELETE CASCADE ON UPDATE CASCADE, -- If Exam is deleted, remove its questions
+    FOREIGN KEY (QuestionId) REFERENCES Question(Id) ON DELETE NO ACTION ON UPDATE NO ACTION -- Prevent cycle with Question
 );
+GO
 
 -- StudentExam Table
 CREATE TABLE StudentExam (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    ExamId INT NOT NULL FOREIGN KEY REFERENCES Exam(Id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    StudentId INT NOT NULL FOREIGN KEY REFERENCES [User](Id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    ExamId INT NULL FOREIGN KEY REFERENCES Exam(Id) ON DELETE SET NULL,
+    StudentId INT NULL FOREIGN KEY REFERENCES [User](Id) ON DELETE SET NULL,
     SubmissionTime DATETIME,
     CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
     UpdatedAt DATETIME NOT NULL DEFAULT GETDATE()
 );
+GO
+
+-- Trigger to Delete Orphaned StudentExam Records
+CREATE TRIGGER trg_Cleanup_Orphaned_StudentExam
+ON StudentExam
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Delete rows where both ExamId and StudentId are NULL (orphaned)
+    DELETE FROM StudentExam WHERE ExamId IS NULL OR StudentId IS NULL;
+END;
+GO
 
 -- MarkedQuestion Table
 CREATE TABLE MarkedQuestion (
     StudentExamId INT NOT NULL,
     QuestionId INT NOT NULL,
     PRIMARY KEY (StudentExamId, QuestionId),
-    FOREIGN KEY (StudentExamId) REFERENCES StudentExam(Id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (QuestionId) REFERENCES Question(Id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (StudentExamId) REFERENCES StudentExam(Id) ON DELETE CASCADE, -- If StudentExam is deleted, remove marks
+    FOREIGN KEY (QuestionId) REFERENCES Question(Id) ON DELETE CASCADE -- If Question is deleted, remove marks
 );
+GO
 
 -- StudentAnswer Table
 CREATE TABLE StudentAnswer (
@@ -88,127 +109,9 @@ CREATE TABLE StudentAnswer (
     AnswerId INT NOT NULL,
     CreatedAt DATETIME DEFAULT GETDATE(),
     PRIMARY KEY (StudentExamId, AnswerId),
-    FOREIGN KEY (StudentExamId) REFERENCES StudentExam(Id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (AnswerId) REFERENCES Answer(Id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (StudentExamId) REFERENCES StudentExam(Id) ON DELETE CASCADE, -- If StudentExam is deleted, remove answers
+    FOREIGN KEY (AnswerId) REFERENCES Answer(Id) ON DELETE CASCADE -- If Answer is deleted, remove StudentAnswer
 );
-GO
-
--- Triggers to Handle Manual Cascade for DELETE and UPDATE
-
--- DELETE TRIGGERS
-
--- Delete ExamQuestion when Exam is deleted
-CREATE TRIGGER trg_Delete_ExamQuestion
-ON Exam
-AFTER DELETE
-AS
-BEGIN
-    DELETE FROM ExamQuestion WHERE ExamId IN (SELECT Id FROM deleted);
-END;
-GO
-
--- Delete ExamQuestion when Question is deleted
-CREATE TRIGGER trg_Delete_ExamQuestion_Question
-ON Question
-AFTER DELETE
-AS
-BEGIN
-    DELETE FROM ExamQuestion WHERE QuestionId IN (SELECT Id FROM deleted);
-END;
-GO
-
--- Delete StudentExam when Exam is deleted
-CREATE TRIGGER trg_Delete_StudentExam
-ON Exam
-AFTER DELETE
-AS
-BEGIN
-    DELETE FROM StudentExam WHERE ExamId IN (SELECT Id FROM deleted);
-END;
-GO
-
--- Delete StudentExam when User (Student) is deleted
-CREATE TRIGGER trg_Delete_StudentExam_User
-ON [User]
-AFTER DELETE
-AS
-BEGIN
-    DELETE FROM StudentExam WHERE StudentId IN (SELECT Id FROM deleted);
-END;
-GO
-
--- Delete dependent MarkedQuestion when StudentExam is deleted
-CREATE TRIGGER trg_Delete_MarkedQuestion
-ON StudentExam
-AFTER DELETE
-AS
-BEGIN
-    DELETE FROM MarkedQuestion WHERE StudentExamId IN (SELECT Id FROM deleted);
-END;
-GO
-
--- Delete dependent StudentAnswer when StudentExam is deleted
-CREATE TRIGGER trg_Delete_StudentAnswer
-ON StudentExam
-AFTER DELETE
-AS
-BEGIN
-    DELETE FROM StudentAnswer WHERE StudentExamId IN (SELECT Id FROM deleted);
-END;
-GO
-
--- UPDATE TRIGGERS
-
--- Update ExamQuestion when ExamId changes
-CREATE TRIGGER trg_Update_ExamQuestion
-ON Exam
-AFTER UPDATE
-AS
-BEGIN
-    UPDATE eq
-    SET ExamId = i.Id
-    FROM ExamQuestion eq
-    INNER JOIN inserted i ON eq.ExamId = i.Id;
-END;
-GO
-
--- Update ExamQuestion when QuestionId changes
-CREATE TRIGGER trg_Update_ExamQuestion_Question
-ON Question
-AFTER UPDATE
-AS
-BEGIN
-    UPDATE eq
-    SET QuestionId = i.Id
-    FROM ExamQuestion eq
-    INNER JOIN inserted i ON eq.QuestionId = i.Id;
-END;
-GO
-
--- Update StudentExam when ExamId changes
-CREATE TRIGGER trg_Update_StudentExam
-ON Exam
-AFTER UPDATE
-AS
-BEGIN
-    UPDATE se
-    SET ExamId = i.Id
-    FROM StudentExam se
-    INNER JOIN inserted i ON se.ExamId = i.Id;
-END;
-GO
-
--- Update StudentExam when StudentId changes
-CREATE TRIGGER trg_Update_StudentExam_User
-ON [User]
-AFTER UPDATE
-AS
-BEGIN
-    UPDATE se
-    SET StudentId = i.Id
-    FROM StudentExam se
-    INNER JOIN inserted i ON se.StudentId = i.Id;
-END;
 GO
 
 -- Views
