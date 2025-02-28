@@ -355,3 +355,18 @@ FROM StudentExam se
 JOIN ExamTotalMarks etm ON se.ExamId = etm.ExamId
 LEFT JOIN StudentTotalScore sts ON se.Id = sts.StudentExamId;
 GO
+
+CREATE VIEW ExamStudentPerformanceView AS
+SELECT 
+    e.Id AS ExamId,
+	se.Id As StudentExamId,
+    e.Name AS ExamName,
+    CONCAT(u.FirstName, ' ', u.LastName) AS StudentName,
+    e.StartTime AS ExamStartTime,
+    se.SubmissionTime AS ExamSubmissionTime,
+    ses.StudentScore AS StudentScore
+FROM StudentExam se
+JOIN StudentExamScores ses ON se.Id = ses.StudentExamId
+JOIN Exam e ON se.ExamId = e.Id
+JOIN [User] u ON se.StudentId = u.Id;
+GO
