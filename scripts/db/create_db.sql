@@ -370,3 +370,13 @@ JOIN StudentExamScores ses ON se.Id = ses.StudentExamId
 JOIN Exam e ON se.ExamId = e.Id
 JOIN [User] u ON se.StudentId = u.Id;
 GO
+
+CREATE VIEW ExamStatisticsView AS
+SELECT 
+    e.Id AS ExamId,
+    COALESCE(AVG(ses.StudentScore), 0) AS AverageScore
+FROM Exam e
+LEFT JOIN StudentExam se ON e.Id = se.ExamId
+LEFT JOIN StudentExamScores ses ON se.Id = ses.StudentExamId
+GROUP BY e.Id;
+GO
