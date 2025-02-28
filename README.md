@@ -39,8 +39,8 @@ Our project follows a simplified **multi-tier architecture** to ensure better or
 
 - **Entities (Data Model)** – Classes that map to database tables and represent the data structure.
 - **Mappers**: Converts database rows (`DataRow` or `DataTable`) into entity objects and vice versa.
-- **DatabaseManager**: Handles all database interactions, such as executing queries and commands.
-- **Service Layer (Business Logic)** – Contains the core logic of the system. This layer interacts with the database using the `DatabaseManager` and mappers. SQL statements are written directly within service methods for simplicity.
+- **DbContext(Singleton Class)**: Handles all database interactions, such as executing queries and commands.
+- **Service Layer (Business Logic)** – Contains the core logic of the system. This layer interacts with the database using the `DbContext` and mappers. SQL statements are written directly within service methods for simplicity.
 - **Presentation Layer (UI)** – The **Windows Forms** application that interacts with users and provides an intuitive interface for admins, teachers, and students.
 
 ![High-Level Architecture](./attachments/imgs/iti-examination-system-architecture.png)
@@ -67,6 +67,7 @@ We use a **single .NET solution** with multiple projects, ensuring **a clear sep
   - **Services**: Implements business logic for different features (e.g., `ExamService.cs`, `UserService.cs`).
   - **DTOs**: Custom types for input/output used in service methods.
   - **Mappers**: Mapping logic between entities and DTOs if needed.
+  - **Helpers**: Contains static classes with helper extension methods for services (e.g. `GetAllEntitiesHelper.cs`).
 
 - **Exami.Utilities** – A helper project for common functionalities.
 
@@ -75,8 +76,9 @@ We use a **single .NET solution** with multiple projects, ensuring **a clear sep
   - **Extensions**: Utility methods or extension methods.
 
 - **Exami.Database** – Manages shared database logic.
-  - **DatabaseManager**: Handles all database interactions.
-  - **DBCommandParams**: Encapsulates parameters for database commands.
+  - **DbContext**: Handles all database interactions.
+  - **DbCommandParams**: Encapsulates parameters for database commands.
+  - **SqlQueryBuilder**: Builds SQL queries dynamically.
 - **Exami.Test** – A console application used for **manual testing purposes** during development.
   - This project allows developers to test specific functionalities without running the full application.
   - **Note** : This project is **development-only** and will be **excluded from the final build and shipment** .
@@ -96,7 +98,7 @@ _For more details, Please review [Database Schema in detail using DBML](./attach
 
 ## Class Diagram
 
-The class diagram below illustrates the relationships between key classes in the system. It show how services interact with `DatabaseManager` to perform operations and how it uses mappers to convert data from different formats like `DataTable` to entities.
+The class diagram below illustrates the relationships between key classes in the system. It show how services interact with `DbContext` to perform operations and how it uses mappers to convert data from different formats like `DataTable` to entities.
 
 ![General Class Diagram](./attachments/imgs/iti-examination-system-general-class-diagram.png)
 
@@ -194,7 +196,7 @@ This section defines key terms and concepts used throughout the documentation:
   The rules and processes that govern how the application works. In this project, business logic is implemented in the service layer.
 
 - **Data Access Layer**:  
-  The layer responsible for interacting with the database. In this project, the `DatabaseManager` acts as the data access layer.
+  The layer responsible for interacting with the database. In this project, the `DbContext` acts as the data access layer.
 
 - **Presentation Layer**:  
   The layer responsible for displaying information to users and collecting input. In this project, the presentation layer is implemented using Windows Forms.
