@@ -15,7 +15,7 @@ TABLE Subject {
 
 TABLE Exam {
     Id INT [pk, increment]
-    Name nvarchar(100) [not null]
+    Name NVARCHAR(100) [not null]
     SubjectId INT
     StartTime DATETIME [not null]
     EndTime DATETIME [not null]
@@ -39,8 +39,8 @@ TABLE Answer {
 }
 
 TABLE ExamQuestion {
-    QuestionId INT [ref: > Question.Id, not null]
-    ExamId INT [ref: > Exam.Id, not null]
+    QuestionId INT [not null]
+    ExamId INT [not null]
     indexes {
       (ExamId, QuestionId) [pk]
     } // Composite primary key
@@ -49,16 +49,15 @@ TABLE ExamQuestion {
 TABLE StudentExam {
     Id INT [pk, increment]
     ExamId INT
-    StudentId  INT
+    StudentId INT
     SubmissionTime DATETIME
     CreatedAt DATETIME [default: `now()`]
-    UpdatedAt DATETIME
+    UpdatedAt DATETIME [not null]
 }
 
 TABLE MarkedQuestion {
   StudentExamId INT [not null]
   QuestionId INT [not null]
-
   indexes {
     (StudentExamId, QuestionId) [pk]
   } // Composite primary key
@@ -68,21 +67,21 @@ TABLE StudentAnswer {
     StudentExamId INT
     AnswerId INT
     CreatedAt DATETIME [default: `now()`]
-
     indexes {
       (StudentExamId, AnswerId) [pk]
     } // Composite primary key
 }
 
-
 // Relationships
-REF: Subject.TeacherId > User.Id
-REF: Exam.SubjectId > Subject.Id
-REF: Question.SubjectId > Subject.Id
-REF: Answer.QuestionId > Question.Id
-REF: StudentExam.ExamId > Exam.Id
-REF: StudentExam.StudentId > User.Id
-REF: StudentAnswer.StudentExamId > Exam.Id
-REF: StudentAnswer.AnswerId > Answer.Id
-REF: MarkedQuestion.StudentExamId > StudentExam.Id
-REF: MarkedQuestion.QuestionId > Question.Id
+REF: Subject.TeacherId > User.Id [on delete set null, on update cascade]
+REF: Exam.SubjectId > Subject.Id [on delete cascade, on update cascade]
+REF: Question.SubjectId > Subject.Id [on delete cascade, on update cascade]
+REF: Answer.QuestionId > Question.Id [on delete cascade, on update cascade]
+REF: ExamQuestion.QuestionId > Question.Id [on delete cascade, on update cascade]
+REF: ExamQuestion.ExamId > Exam.Id [on delete cascade, on update cascade]
+REF: StudentExam.ExamId > Exam.Id [on delete cascade, on update cascade]
+REF: StudentExam.StudentId > User.Id [on delete cascade, on update cascade]
+REF: StudentAnswer.StudentExamId > StudentExam.Id [on delete cascade, on update cascade]
+REF: StudentAnswer.AnswerId > Answer.Id [on delete cascade, on update cascade]
+REF: MarkedQuestion.StudentExamId > StudentExam.Id [on delete cascade, on update cascade]
+REF: MarkedQuestion.QuestionId > Question.Id [on delete cascade, on update cascade]
