@@ -7,7 +7,7 @@ namespace Services.Mappers;
 
 public class ExamStatisticsMapper : BaseMapper<ExamStatistics>
 {
-    private readonly static string[] Columns = ["ExamId", "AverageScore"];
+    private readonly static string[] Columns = ["ExamId", "AverageScore", "NumberOfStudents"];
 
     public override ExamStatistics MapFromDataRow(DataRow row, Dictionary<string, string> columnNameMapping = null)
     {
@@ -20,7 +20,8 @@ public class ExamStatisticsMapper : BaseMapper<ExamStatistics>
         return new()
         {
             ExamId = Convert.ToInt32(row[columnNameMapping["ExamId"]]),
-            AverageScore = Convert.ToDouble(row[columnNameMapping["AverageScore"]])
+            AverageScore = Convert.ToDouble(row[columnNameMapping["AverageScore"]]),
+            NumberOfStudents = Convert.ToInt32(row[columnNameMapping["NumberOfStudents"]])
         };
     }
 }
