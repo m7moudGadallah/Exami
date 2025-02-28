@@ -277,7 +277,8 @@ GO
 CREATE VIEW ExamStatisticsView AS
 SELECT 
     e.Id AS ExamId,
-    COALESCE(AVG(ses.StudentScore), 0) AS AverageScore
+    COALESCE(AVG(ses.StudentScore), 0) AS AverageScore,
+    COUNT(se.Id) AS NumberOfStudents  -- Count number of students who took the exam
 FROM Exam e
 LEFT JOIN StudentExam se ON e.Id = se.ExamId
 LEFT JOIN StudentExamScores ses ON se.Id = ses.StudentExamId
