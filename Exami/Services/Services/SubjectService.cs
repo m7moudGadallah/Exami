@@ -1,22 +1,26 @@
 ﻿using Database;
 using Entities;
 using Services.DTOs;
+using Services.Helpers;
 using Services.Mappers;
 using System.Data;
 using Utilities.Exceptoins;
 
 namespace Services.Services;
 
-public class SubjectService : CRUDService<Subject>
+public class SubjectService : BasicCRUDService<Subject>, IGetAllEntitiesService<Subject>, ICreateEntityService<Subject>, IUpdateEntityService<Subject>, IDeleteEntityService<Subject>
 {
     public SubjectService() : base("Subject", "SubjectFullView", new SubjectMapper()) { }
 
-    public override Subject Create(Subject dto)
+    public List<Subject> GetAll(GetAllDto? dto = null) => this.DefaultGetAll(dto);
+
+
+    public Subject Create(Subject dto)
     {
         try
         {
             var sql = $@"
-                INSERT INTO [{_tableName}] (Name, TeacherId)
+                INSERT INTO [{TableName}] (Name, TeacherId)
                 OUTPUT INSERTED.*
                 VALUES (@Name, @TeacherId);";
 
@@ -26,7 +30,7 @@ public class SubjectService : CRUDService<Subject>
                 ["@TeacherId"] = dto.TeacherId == null ? DBNull.Value : dto.TeacherId,
             });
 
-            var subject = _mapper.MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams))[0];
+            var subject = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams))[0];
 
             return subject;
         }
@@ -36,12 +40,12 @@ public class SubjectService : CRUDService<Subject>
         }
     }
 
-    public override Subject Update(Subject dto)
+    public Subject Update(Subject dto)
     {
         try
         {
             var sql = $@"
-            UPDATE [{_tableName}]
+            UPDATE [{TableName}]
             SET Name = @Name,
                 TeacherId = @TeacherId
             OUTPUT INSERTED.*
@@ -54,7 +58,7 @@ public class SubjectService : CRUDService<Subject>
                 ["@TeacherId"] = dto.TeacherId == null ? DBNull.Value : dto.TeacherId,
             });
 
-            var subjects = _mapper.MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams));
+            var subjects = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams));
 
             if (subjects.Count == 0)
             {
@@ -69,4 +73,6 @@ public class SubjectService : CRUDService<Subject>
             throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
         }
     }
+
+    public bool Delete(int id) => this.DefaultDelete(id);
 }

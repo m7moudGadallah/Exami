@@ -1,22 +1,40 @@
 ﻿using Database;
 using System.Data;
 using Entities;
-using Services.DTOs;
 using Services.Mappers;
 using Utilities.Exceptoins;
+using Services.DTOs;
+using Services.Helpers;
 
 namespace Services.Services;
 
-public class ExamQuestionService : CRUDService<ExamQuestion>
+public class ExamQuestionService : BasicCRUDService<ExamQuestion>, IGetAllEntitiesService<ExamQuestion>, ICreateEntityService<ExamQuestion>, IDeleteEntityService<ExamQuestion>
 {
     public ExamQuestionService() : base("ExamQuestion", "ExamQuestionFullView", new ExamQuestionMapper()) { }
 
-    public override ExamQuestion Create(ExamQuestion dto)
+    public List<ExamQuestion> GetAll(GetAllDto? dto = null)
+    {
+        if (dto == null)
+            dto = new();
+
+        if (dto?.OrderBy == null)
+        {
+            dto.OrderBy = new()
+            {
+                ["ExamId"] = 1,
+                ["QuestionId"] = 1
+            };
+        }
+
+        return this.DefaultGetAll(dto);
+    }
+
+    public ExamQuestion Create(ExamQuestion dto)
     {
         try
         {
             var sql = $@"
-                INSERT INTO [{_tableName}] (ExamId, QuestionId)
+                INSERT INTO [{TableName}] (ExamId, QuestionId)
                 OUTPUT INSERTED.*
                 VALUES (@ExamId, @QuestionId);";
 
@@ -26,7 +44,7 @@ public class ExamQuestionService : CRUDService<ExamQuestion>
                 ["@QuestionId"] = dto.QuestionId
             });
 
-            var examQuestion = _mapper.MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams))[0];
+            var examQuestion = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams))[0];
 
             return examQuestion;
         }
@@ -36,8 +54,5 @@ public class ExamQuestionService : CRUDService<ExamQuestion>
         }
     }
 
-    public override ExamQuestion Update(ExamQuestion dto)
-    {
-        throw new NotImplementedException();
-    }
+    public bool Delete(int id) => this.DefaultDelete(id);
 }

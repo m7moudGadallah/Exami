@@ -3,19 +3,24 @@ using System.Data;
 using Entities;
 using Services.Mappers;
 using Utilities.Exceptoins;
+using Services.DTOs;
+using Services.Helpers;
 
 namespace Services.Services;
 
-public class ExamService : CRUDService<Exam>
+public class ExamService : BasicCRUDService<Exam>, IGetAllEntitiesService<Exam>, ICreateEntityService<Exam>, IUpdateEntityService<Exam>, IDeleteEntityService<Exam>
 {
     public ExamService() : base("Exam", "ExamFullView", new ExamMapper()) { }
 
-    public override Exam Create(Exam dto)
+    public List<Exam> GetAll(GetAllDto? dto = null) => this.DefaultGetAll(dto);
+
+
+    public Exam Create(Exam dto)
     {
         try
         {
             var sql = $@"
-                INSERT INTO [{_tableName}] (Name, StartTime, EndTime, ExamType, Instructions, SubjectId)
+                INSERT INTO [{TableName}] (Name, StartTime, EndTime, ExamType, Instructions, SubjectId)
                 OUTPUT INSERTED.*
                 VALUES (@Name, @StartTime, @EndTime, @ExamType, @Instructions, @SubjectId);";
 
@@ -29,7 +34,7 @@ public class ExamService : CRUDService<Exam>
                 ["@SubjectId"] = dto?.SubjectId == null ? DBNull.Value : dto.SubjectId
             });
 
-            var exam = _mapper.MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams))[0];
+            var exam = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams))[0];
 
             return exam;
         }
@@ -39,12 +44,12 @@ public class ExamService : CRUDService<Exam>
         }
     }
 
-    public override Exam Update(Exam dto)
+    public Exam Update(Exam dto)
     {
         try
         {
             var sql = $@"
-            UPDATE [{_tableName}]
+            UPDATE [{TableName}]
             SET Name = @Name,
                 StartTime = @StartTime,
                 EndTime = @EndTime,
@@ -65,7 +70,7 @@ public class ExamService : CRUDService<Exam>
                 ["@Instructions"] = (dto?.Instructions == null) ? DBNull.Value : dto.Instructions,
             });
 
-            var exams = _mapper.MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams));
+            var exams = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams));
 
             if (exams.Count == 0)
             {
@@ -80,4 +85,6 @@ public class ExamService : CRUDService<Exam>
             throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
         }
     }
+
+    public bool Delete(int id) => this.DefaultDelete(id);
 }

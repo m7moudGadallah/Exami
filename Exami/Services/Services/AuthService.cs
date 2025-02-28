@@ -10,7 +10,7 @@ namespace Services.Services;
 /// <summary>
 /// Provides authentication-related services, such as user login functionality.
 /// </summary>
-public class AuthService : Service
+public class AuthService : BasicService
 {
     /// <summary>
     /// Authenticates a user by verifying their email and password.
@@ -31,7 +31,7 @@ public class AuthService : Service
         {
             ["@Email"] = dto.Email
         });
-        var users = new UserMapper().MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams));
+        var users = new UserMapper().MapFromDataTable(Context.ExecuteDataTable(cmdParams));
 
         if (users.Count == 0 || users[0]?.Password != dto.Password)
         {

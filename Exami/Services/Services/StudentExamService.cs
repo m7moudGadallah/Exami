@@ -1,25 +1,25 @@
 ﻿using Database;
 using Entities;
-using Microsoft.IdentityModel.Tokens;
 using Services.DTOs;
+using Services.Helpers;
 using Services.Mappers;
 using System.Data;
-using System.Data.Common;
-using System.Text;
 using Utilities.Exceptoins;
 
 namespace Services.Services;
 
-public class StudentExamService : CRUDService<StudentExam>
+public class StudentExamService : BasicCRUDService<StudentExam>, IGetAllEntitiesService<StudentExam>, ICreateEntityService<StudentExam>, IUpdateEntityService<StudentExam>, IDeleteEntityService<StudentExam>
 {
     public StudentExamService() : base("StudentExam", "StudentExamFullView", new StudentExamMapper()) { }
 
-    public override StudentExam Create(StudentExam dto)
+    public List<StudentExam> GetAll(GetAllDto? dto = null) => this.DefaultGetAll(dto);
+
+    public StudentExam Create(StudentExam dto)
     {
         try
         {
             var sql = $@"
-                INSERT INTO [{_tableName}] (ExamId, StudentId, SubmissionTime, CreatedAt, UpdatedAt)
+                INSERT INTO [{TableName}] (ExamId, StudentId, SubmissionTime, CreatedAt, UpdatedAt)
                 OUTPUT INSERTED.*
                 VALUES (@ExamId, @StudentId, @SubmissionTime, GETDATE(), GETDATE());";
 
@@ -30,7 +30,7 @@ public class StudentExamService : CRUDService<StudentExam>
                 ["@SubmissionTime"] = dto.SubmissionTime == null ? DBNull.Value : dto.SubmissionTime,
             });
 
-            var exam = _mapper.MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams))[0];
+            var exam = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams))[0];
 
             return exam;
         }
@@ -40,12 +40,12 @@ public class StudentExamService : CRUDService<StudentExam>
         }
     }
 
-    public override StudentExam Update(StudentExam dto)
+    public StudentExam Update(StudentExam dto)
     {
         try
         {
             var sql = $@"
-            UPDATE [{_tableName}]
+            UPDATE [{TableName}]
             SET ExamId = @ExamId,
                 StudentId = @StudentId,
                 SubmissionTime = @SubmissionTime,
@@ -61,7 +61,7 @@ public class StudentExamService : CRUDService<StudentExam>
                 ["@SubmissionTime"] = (dto.SubmissionTime == null) ? DBNull.Value : dto.SubmissionTime,
             });
 
-            var exams = _mapper.MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams));
+            var exams = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams));
 
             if (exams.Count == 0)
             {
@@ -76,4 +76,6 @@ public class StudentExamService : CRUDService<StudentExam>
             throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
         }
     }
+
+    public bool Delete(int id) => this.DefaultDelete(id);
 }

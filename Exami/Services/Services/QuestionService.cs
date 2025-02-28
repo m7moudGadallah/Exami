@@ -1,22 +1,25 @@
 ﻿using Database;
 using System.Data;
 using Entities;
-using Services.DTOs;
 using Services.Mappers;
 using Utilities.Exceptoins;
+using Services.DTOs;
+using Services.Helpers;
 
 namespace Services.Services;
 
-public class QuestionService : CRUDService<Question>
+public class QuestionService : BasicCRUDService<Question>, IGetAllEntitiesService<Question>, ICreateEntityService<Question>, IUpdateEntityService<Question>, IDeleteEntityService<Question>
 {
     public QuestionService() : base("Question", "QuestionFullView", new QuestionMapper()) { }
 
-    public override Question Create(Question dto)
+    public List<Question> GetAll(GetAllDto? dto = null) => this.DefaultGetAll(dto);
+
+    public Question Create(Question dto)
     {
         try
         {
             var sql = $@"
-                INSERT INTO [{_tableName}] (Marks, Body, QuestionType, SubjectId)
+                INSERT INTO [{TableName}] (Marks, Body, QuestionType, SubjectId)
                 OUTPUT INSERTED.*
                 VALUES (@Marks, @Body, @QuestionType, @SubjectId);";
 
@@ -28,7 +31,7 @@ public class QuestionService : CRUDService<Question>
                 ["@SubjectId"] = dto?.SubjectId == null ? DBNull.Value : dto.SubjectId
             });
 
-            var question = _mapper.MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams))[0];
+            var question = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams))[0];
 
             return question;
         }
@@ -38,12 +41,12 @@ public class QuestionService : CRUDService<Question>
         }
     }
 
-    public override Question Update(Question dto)
+    public Question Update(Question dto)
     {
         try
         {
             var sql = $@"
-            UPDATE [{_tableName}]
+            UPDATE [{TableName}]
             SET Marks = @Marks,
                 Body = @Body,
                 QuestionType = @QuestionType,
@@ -60,7 +63,7 @@ public class QuestionService : CRUDService<Question>
                 ["@SubjectId"] = (dto.SubjectId == null) ? DBNull.Value : dto.SubjectId,
             });
 
-            var questions = _mapper.MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams));
+            var questions = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams));
 
             if (questions.Count == 0)
             {
@@ -75,4 +78,6 @@ public class QuestionService : CRUDService<Question>
             throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
         }
     }
+
+    public bool Delete(int id) => this.DefaultDelete(id);
 }

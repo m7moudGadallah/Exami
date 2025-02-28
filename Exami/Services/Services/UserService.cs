@@ -3,19 +3,24 @@ using System.Data;
 using Entities;
 using Services.Mappers;
 using Utilities.Exceptoins;
+using Services.DTOs;
+using Services.Helpers;
 
 namespace Services.Services;
 
-public class UserService : CRUDService<User>
+public class UserService : BasicCRUDService<User>, IGetAllEntitiesService<User>, ICreateEntityService<User>, IUpdateEntityService<User>, IDeleteEntityService<User>
 {
     public UserService() : base("User", new UserMapper()) { }
 
-    public override User Create(User dto)
+    public List<User> GetAll(GetAllDto? dto = null) => this.DefaultGetAll(dto);
+
+
+    public User Create(User dto)
     {
         try
         {
             var sql = $@"
-                INSERT INTO [{_tableName}] (FirstName, LastName, Role, Email, Password)
+                INSERT INTO [{TableName}] (FirstName, LastName, Role, Email, Password)
                 OUTPUT INSERTED.*
                 VALUES (@FirstName, @LastName, @Role, @Email, @Password);";
 
@@ -28,7 +33,7 @@ public class UserService : CRUDService<User>
                 ["@Password"] = dto.Password
             });
 
-            var user = new UserMapper().MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams))[0];
+            var user = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams))[0];
 
             return user;
         }
@@ -38,12 +43,12 @@ public class UserService : CRUDService<User>
         }
     }
 
-    public override User Update(User dto)
+    public User Update(User dto)
     {
         try
         {
             var sql = $@"
-            UPDATE [{_tableName}]
+            UPDATE [{TableName}]
             SET FirstName = @FirstName,
                 LastName = @LastName,
                 Role = @Role,
@@ -62,7 +67,7 @@ public class UserService : CRUDService<User>
                 ["@Password"] = dto.Password
             });
 
-            var users = new UserMapper().MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams));
+            var users = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams));
 
             if (users.Count == 0)
             {
@@ -77,4 +82,6 @@ public class UserService : CRUDService<User>
             throw new AppException(ex.Message, ExceptionStatus.Fail, ex.InnerException);
         }
     }
+
+    public bool Delete(int id) => this.DefaultDelete(id);
 }

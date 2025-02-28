@@ -1,19 +1,15 @@
 ﻿using Entities;
+using Services.DTOs;
+using Services.Helpers;
 using Services.Mappers;
 
 namespace Services.Services;
 
-public class AnswerService : CRUDService<Answer>
+public class AnswerService : BasicCRUDService<Answer>, IGetAllEntitiesService<Answer>, IDeleteEntityService<Answer>
 {
     public AnswerService() : base("Answer", new AnswerMapper()) { }
 
-    public override Answer Create(Answer dto)
-    {
-        throw new NotImplementedException();
-    }
+    public List<Answer> GetAll(GetAllDto? dto = null) => this.DefaultGetAll(dto);
 
-    public override Answer Update(Answer dto)
-    {
-        throw new NotImplementedException();
-    }
+    public bool Delete(int id) => this.DefaultDelete(id);
 }

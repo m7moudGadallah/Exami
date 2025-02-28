@@ -1,37 +1,38 @@
 ﻿using Database;
 using Entities;
 using Services.DTOs;
+using Services.Helpers;
 using Services.Mappers;
 using System.Data;
-using System.Text;
 using Utilities.Exceptoins;
 
 namespace Services.Services;
 
-public class StudentAnswerService : CRUDService<StudentAnswer>
+public class StudentAnswerService : BasicCRUDService<StudentAnswer>, IGetAllEntitiesService<StudentAnswer>, ICreateEntityService<StudentAnswer>
 {
     public StudentAnswerService() : base("StudentAnswer", new StudentAnswerMapper()) { }
 
-    public override List<StudentAnswer> GetAll(GetAllDto? dto = null)
+    public List<StudentAnswer> GetAll(GetAllDto? dto = null)
     {
         if (dto == null)
             dto = new();
 
+        // Add ordering
         if (dto?.OrderBy == null || dto.OrderBy.Count == 0)
         {
             dto.OrderBy = new() { ["StudentExamId"] = 1, ["AnswerId"] = 1 };
         }
 
-        return base.GetAll(dto);
+        return this.DefaultGetAll(dto);
     }
 
 
-    public override StudentAnswer Create(StudentAnswer dto)
+    public StudentAnswer Create(StudentAnswer dto)
     {
         try
         {
             var sql = $@"
-                INSERT INTO [{_tableName}] (StudentExamId, AnswerId, CreatedAt)
+                INSERT INTO [{TableName}] (StudentExamId, AnswerId, CreatedAt)
                 OUTPUT INSERTED.*
                 VALUES (@StudentExamId, @AnswerId, GETDATE());";
 
@@ -41,7 +42,7 @@ public class StudentAnswerService : CRUDService<StudentAnswer>
                 ["@AnswerId"] = dto.AnswerId
             });
 
-            var stdAnswer = _mapper.MapFromDataTable(_dbContext.ExecuteDataTable(cmdParams))[0];
+            var stdAnswer = Mapper.MapFromDataTable(Context.ExecuteDataTable(cmdParams))[0];
 
             return stdAnswer;
         }
@@ -51,29 +52,19 @@ public class StudentAnswerService : CRUDService<StudentAnswer>
         }
     }
 
-    public override StudentAnswer Update(StudentAnswer dto)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override bool Delete(int id)
-    {
-        throw new NotSupportedException();
-    }
-
     public bool Delete(int studentExamId, int answerId)
     {
         try
         {
             var @sql = $@"
-                DELETE [{_tableName}]
+                DELETE [{TableName}]
                 WHERE StudentExamId = @StudentExamId
                     AND AnswerId = @AnswerId";
 
 
             DbCommandParams cmdParams = new(sql, CommandType.Text, new() { ["@StudentExamId"] = studentExamId, ["@AnswerId"] = answerId });
 
-            int rowsAffected = _dbContext.ExecuteNonQuery(cmdParams);
+            int rowsAffected = Context.ExecuteNonQuery(cmdParams);
 
             return rowsAffected > 0;
         }

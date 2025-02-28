@@ -2,9 +2,9 @@
 
 public static class ServicesRepo
 {
-    private static Dictionary<Type, Service> _services = new();
+    private static Dictionary<Type, BasicService> _services = new();
 
-    public static T GetService<T>() where T : Service, new()
+    public static T GetService<T>() where T : BasicService, new()
     {
         Type serviceType = typeof(T);
 
